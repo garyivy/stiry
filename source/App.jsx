@@ -7,7 +7,7 @@ import {
   Link
 } from 'react-router-dom'
 
-const Home = () => <div><i className="fa fa-home"></i><h1>Hello from Home!</h1></div>;
+const Home = () => <div><i className="fa fa-home"></i><h1>Hello from Home!!</h1></div>;
 const StirySession = () => <h1>Stiry Session</h1>;
 
 const App = () => (
