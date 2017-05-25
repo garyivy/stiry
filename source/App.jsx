@@ -1,30 +1,50 @@
 import React from 'react';
 import { render } from 'react-dom';
-import './style/app.scss';
 import {
   BrowserRouter as Router,
   Route,
-  Link
-} from 'react-router-dom'
+  Link,
+  Switch,
+  Redirect,
+  withRouter  
+} from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import  initialStore  from './shared/initialStore.js';
+import reducer from './shared/reducer.js';
 
-const Home = () => <div><i className="fa fa-home"></i><h1>Hello from Home!!</h1></div>;
-const StirySession = () => <h1>Stiry Session</h1>;
+import './style/app.scss';
 
-const App = () => (
-  <Router>
-    <div>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/session">Session</Link></li>
-      </ul>
+import PrivateRoute from './login/PrivateRoute.jsx';
+import Header from './home/Header.jsx';
+import Menu from './home/Menu.jsx';
+import Home from './home/Home.jsx';
+import Login from './login/Login.jsx';
+import StartSessionPromptContainer from './session/StartSessionPromptContainer.jsx';
+import Questionnaire from './session/Questionnaire.jsx';
+import About from './home/About.jsx';
 
-      <hr/>
+let store = createStore(reducer, initialStore);
+const history = createBrowserHistory();
 
-      <Route exact path="/" component={Home}/>
-      <Route path="/session" component={StirySession}/>
-    </div>
-  </Router>
-)
-export default App
+const layout = (
+  <div>
+    <Header/>
+    <Menu/>
+    <article className="centered-content">
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/login" component={Login} />
+        <PrivateRoute path="/start" component={StartSessionPromptContainer} />
+        <PrivateRoute path="/join" component={StartSessionPromptContainer} />
+        <Route path="/questionnaire" component={Questionnaire} />
+        <Route path="/about" component={About} />
+      </Switch>
+    </article>
+  </div>
+);
 
-render(<App />, document.getElementById('app'));
+render(
+  <Provider store={store}><Router history={history}>{layout}</Router></Provider>,
+  document.getElementById('app'));

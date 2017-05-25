@@ -2,6 +2,195 @@
 $fa-font-path: "./../../node_modules/font-awesome/fonts";
 @import './../../node_modules/font-awesome/scss/font-awesome.scss';
 
+$default-color: black;
+$base-font-family: Calibri;
 body {
-    background-color: $primary-color;
+	background-color: $default-background-color;
+	font-family: $base-font-family;
+    margin: 0;
+    font-size: 16px;
+}
+a {
+    color: $secondary-color;
+}
+nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: $secondary-color;
+
+    li {
+        height: 28px;
+        padding-top: 7px;
+        display:inline-block;
+        border-right: 1px solid $lightgrey-color;
+        a {
+            padding-left: 10px;
+            padding-right: 10px;
+            text-decoration: none;
+            color: white;
+            &:visited {
+                color: white;
+            }
+        }
+
+        &:hover {
+            background-color: $primary-color;
+        }
+    }
+}
+
+h1 {
+    color: $primary-color;
+    font-size: 1.3em;
+}
+h2 {
+    color: $secondary-color;
+      font-size: 1.15em;
+}
+article {
+    margin: 5px;
+}
+
+.centered-content {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 800px;
+}
+.top-header {
+    font-size: 1.8em;
+    font-weight: 800;
+    padding-left: 5px;
+    background-color: $lightgrey-color;
+    color: $secondary-color;
+    i {
+        color: $primary-color;
+    }
+}
+
+.form {
+    width: 400px;
+    
+    .field {
+        width: 100%;
+        input {
+            background-color: white;
+            height: 25px;
+            border: 1px solid $lightgrey-color;
+        }
+    }
+
+}
+div.button-container {
+    text-align: center;
+}
+
+button {
+	margin: 10px;
+	margin-left: 0px;
+	background-image: linear-gradient(to bottom, lighten($default-color, 85%), lighten($default-color, 75%));
+	color: #000000;
+	height: 30px;
+	min-width: 120px;
+	font-size: 1.05em;
+	font-weight: 800;
+	border: 1px solid black;
+	font-family: $base-font-family;
+	&:hover {
+		color: lighten(#000000, 5%);
+		border-color: lighten(#000000, 5%);
+		background-image: linear-gradient(lighten($default-color, 97%), lighten($default-color, 82%));
+	}
+	&.primary {
+		color: white;
+		background-image: linear-gradient(lighten($primary-color, 10%), darken($primary-color, 10%));
+	}
+	&.primary:hover {
+		color: white;
+		background-image: linear-gradient(lighten($primary-color, 20%), $primary-color);
+	}
+}
+.question-container {
+	padding-top: 50px;
+	padding-bottom: 50px;
+	label {
+		font-size: 1.2em;
+		display: block;
+	}
+	textarea {
+		width: 100%;
+		max-width: 800px;
+		height: 120px;
+        border: 1px solid black;
+	}
+}
+
+$arrow-size: 20px;
+.step-indicator a {
+	padding: 10px 0px 10px;
+	position: relative;
+	display: inline-block;
+	text-decoration: none;
+	min-width: 14.75%;
+	margin-left: 0.25%;
+	text-align: center;
+	text-decoration: none;
+	font-size: 1.05em;
+	font-weight: 800;
+	color: $secondary-color;
+	background: #dfecd3;
+	cursor: pointer;
+}
+.step-indicator a.active {
+	color: #dfecd3;
+	background: $secondary-color;
+}
+.step-indicator a:hover {
+	text-decoration: none;
+}
+.step-indicator a:first-child {
+	margin-left: 0;
+}
+.step-indicator:not(.left-arrow) a:before {
+	width: 0;
+	height: 0;
+	border-top: $arrow-size inset transparent;
+	border-bottom: $arrow-size inset transparent;
+	border-left: $arrow-size solid #FFFFFF;
+	position: absolute;
+	content: "";
+	top: 0;
+	left: 0;
+}
+.step-indicator:not(.left-arrow) a:after {
+	width: 0;
+	height: 0;
+	border-top: $arrow-size inset transparent;
+	border-bottom: $arrow-size inset transparent;
+	border-left: $arrow-size solid #dfecd3;
+	position: absolute;
+	content: "";
+	top: 0;
+	right: -20px;
+	z-index: 2;
+}
+.step-indicator:not(.left-arrow) a.active:after {
+	border-left: $arrow-size solid $secondary-color;
+}
+.step-indicator a:first-child:before, .step-indicator a:last-child:after {
+	border: none;
+}
+
+.field {
+    label {
+        display: block;
+    }
+    input {
+        display: block;
+        width: 250px;
+    }
+    button.primary {
+        width: 250px;
+    }
 }
