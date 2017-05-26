@@ -1,8 +1,14 @@
+import { isNullOrWhitespace } from './../shared/utilities.js';
+
 const reducer = (state = {}, action) => {
   console.log(action);
   switch(action.type) {
     case 'SHOW_PRIVATE_LINKS':
       return Object.assign({}, state, {userName: action.userName, isAuthorizedUser: true});
+    case 'LOGOFF':
+      return Object.assign({}, state, {userName: '', isAuthorizedUser: false});
+    case 'START_SESSION':
+      return Object.assign({}, state, {sessionName: action.sessionName});        
     case 'RECORD_ANSWER':
       var questions = state.questions
         .map(q => q.id === state.questions[state.currentQuestionIndex].id
@@ -15,8 +21,11 @@ const reducer = (state = {}, action) => {
             return Object.assign({}, state, {currentQuestionIndex: state.currentQuestionIndex - 1 })
         }
     case 'GOTO_NEXT_QUESTION':
+        if(isNullOrWhitespace(state.questions[state.currentQuestionIndex].answer)) {
+            return Object.assign({}, state, {errors: { question: 'An answer is required before moving on to the next step.'} })          
+        }
         if(state.currentQuestionIndex < state.questions.length - 1) {
-            return Object.assign({}, state, {currentQuestionIndex: state.currentQuestionIndex + 1 })
+            return Object.assign({}, state, {currentQuestionIndex: state.currentQuestionIndex + 1, errors: {} })
         }
     default:
       return state;

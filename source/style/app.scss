@@ -86,6 +86,10 @@ div.button-container {
     text-align: center;
 }
 
+.error {
+	color: $error-color;
+}
+
 button {
 	margin: 10px;
 	margin-left: 0px;
@@ -132,15 +136,15 @@ $arrow-size: 20px;
 	position: relative;
 	display: inline-block;
 	text-decoration: none;
-	min-width: 14.75%;
+	min-width: 16.45%;
 	margin-left: 0.25%;
 	text-align: center;
 	text-decoration: none;
 	font-size: 1.05em;
-	font-weight: 800;
+	font-weight: 400;
 	color: $secondary-color;
 	background: #dfecd3;
-	cursor: pointer;
+	cursor: default;
 }
 .step-indicator a.active {
 	color: #dfecd3;
@@ -185,7 +189,11 @@ $arrow-size: 20px;
 .field {
     label {
         display: block;
+		margin-top: 15px;
     }
+	label.error {
+		margin-top: 0px;
+	}
     input {
         display: block;
         width: 250px;

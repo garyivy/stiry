@@ -25,7 +25,7 @@ const mapStateToProps = (state) => {
     return {
         shouldShowPreviousButton: state.currentQuestionIndex > 0,
         shouldShowNextButton: state.currentQuestionIndex < state.questions.length - 1,
-        shouldShowSubmitButton: state.currentQuestionIndex == state.questions.length - 1
+        shouldShowSubmitButton: state.currentQuestionIndex == state.questions.length - 1,
     }
 }
 
@@ -34,6 +34,18 @@ const mapDispatchToProps = (dispatch) => {
         onPreviousButtonClick:  (event) => dispatch({ type:'GOTO_PREVIOUS_QUESTION' }),
         onNextButtonClick:      (event) => dispatch({ type:'GOTO_NEXT_QUESTION' }),
         onSubmitButtonClick:    (event) => dispatch({ type:'SUBMIT_ANSWERS' }),
+    }
+}
+
+class QuestionnaireContainer extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <QuestionnairePresentation  />
+        );
     }
 }
 

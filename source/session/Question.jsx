@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const QuestionPresentation = ({questionText, initialAnswer, onAnswerChange}) => { 
+const QuestionPresentation = ({questionText, initialAnswer, onAnswerChange, error}) => { 
     console.log('Rendering question...' + initialAnswer);
     return ( 
     <div className="question-container">
         <label htmlFor="txtQuestion">{questionText}</label>
         <textarea onChange={onAnswerChange} value={initialAnswer}></textarea>
+        {error && <label htmlFor="txtQuestion">{error}</label>}
     </div>
 );
 }
@@ -14,7 +15,8 @@ const QuestionPresentation = ({questionText, initialAnswer, onAnswerChange}) => 
 const mapStateToProps = (state) => {
     return {
         questionText: state.questions[state.currentQuestionIndex].prompt,
-        initialAnswer: state.questions[state.currentQuestionIndex].answer
+        initialAnswer: state.questions[state.currentQuestionIndex].answer,
+        error: state.errors.question
     }
 }
 

@@ -21,7 +21,8 @@ var config = {
         publicPath: '/',
         contentBase: './build',
         compress: true,
-        port: 9000
+        port: 9000,
+        proxy: { '/api': 'http://localhost:3001' }
     },
     module: {
         rules: [
@@ -76,5 +77,6 @@ var config = {
 
 module.exports = function (apiPath) {
     console.log('API path: ' + apiPath);
+    config.plugins.push(new webpack.DefinePlugin({ 'API_PATH': JSON.stringify(apiPath)}));
     return config;
 }

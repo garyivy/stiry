@@ -1,6 +1,7 @@
 const initialStore = {
     isAuthorizedUser: false,
     userName: null,
+    sessionName: null,
     currentQuestionIndex: 0,
     questions: [ 
         { id: 1, prompt: 'Who are you?', answer: '' },
