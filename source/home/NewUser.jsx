@@ -13,13 +13,7 @@ class NewUser extends React.Component {
             emailConfirmation: '1',
             password: '123456',
             passwordConfirmation: '123456',
-            errors: {
-                userName: null,
-                email: null,
-                emailConfirmation: null,
-                password: null,
-                passwordConfirmation: null,
-            }
+            errors: {}
         };
 
         this.onChange = this.onChange.bind(this);
@@ -120,7 +114,7 @@ class NewUser extends React.Component {
                     </div>
                     <div className="field">
                         <label>Password (Re-enter)</label>
-                        <input type="passwordConfirmation" name="passwordConfirmation" value={this.state.passwordConfirmation} onChange={this.onChange} maxLength="40"/>
+                        <input type="password" name="passwordConfirmation" value={this.state.passwordConfirmation} onChange={this.onChange} maxLength="40"/>
                         {this.state.errors.passwordConfirmation && <label className="error">{this.state.errors.passwordConfirmation}</label>}
                     </div>
                     <div className="button-container">
