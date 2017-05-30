@@ -27,14 +27,15 @@ class Login extends React.Component {
 
         if(!this.hasErrors()) {
     
-            post('authenticate', { userName: this.state.userName, password: this.state.password })
+            post('login', { userName: this.state.userName, password: this.state.password })
                 .then( (result) => {
                     if(result && result.sessionToken) {
                         let loggedInPath = '/';
                         if(this.props && this.props.location && this.props.location.state && this.props.location.state.from &&this.props.location.state.from.pathname) {
                             loggedInPath = this.props.location.state.from.pathname;
                         }
-                        this.props.dispatch({ type: 'SHOW_PRIVATE_LINKS', userName: this.state.userName });
+                        localStorage.setItem("sessionToken", result.sessionToken );
+                        this.props.dispatch({ type: 'LOGIN_COMPLETE', userDisplayName: result.userDisplayName });
                         this.props.history.push(loggedInPath);                        
                     } else {
                         this.setState( { errors: { password: 'Invalid User Name or Password' } });

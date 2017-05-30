@@ -6,6 +6,8 @@ const showBusyThreshold = 300;
 const showBusy = () =>      document.documentElement.style.cursor = 'progress';
 const showNormal = () =>    document.documentElement.style.cursor = 'auto';
 
+// TODO: Refactor common stuff
+
 export const get = (url) => {
     let isComplete = false;
     setTimeout(() => {
@@ -13,7 +15,7 @@ export const get = (url) => {
     }, showBusyThreshold);
 
     return axios
-        .get(apiPath + url, { 'Content-Type': 'application/json' })
+        .get(apiPath + url, { 'Content-Type': 'application/json', headers: {'authentication': localStorage.getItem("sessionToken") }})
         .then((response) => { isComplete == true; showNormal(); return response.data })
         .catch((error) => { isComplete == true; showNormal(); console.error(error); });
 }
@@ -25,7 +27,7 @@ export const post = (url, data) => {
     }, showBusyThreshold);
 
     return axios
-        .post(apiPath + url, data)
+        .post(apiPath + url, data, { headers: {'authentication': localStorage.getItem("sessionToken") }})
         .then((response) => { isComplete == true; showNormal(); return response.data })
         .catch((error) => { isComplete == true; showNormal(); console.error(error); });
 }

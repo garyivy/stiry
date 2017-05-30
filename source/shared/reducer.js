@@ -3,8 +3,8 @@ import { isNullOrWhitespace } from './../shared/utilities.js';
 const reducer = (state = {}, action) => {
   console.log(action);
   switch(action.type) {
-    case 'SHOW_PRIVATE_LINKS':
-      return Object.assign({}, state, {userName: action.userName, isAuthorizedUser: true});
+    case 'LOGIN_COMPLETE':
+      return Object.assign({}, state, {userDisplayName: action.userDisplayName, isAuthorizedUser: true});
     case 'LOGOFF':
       return Object.assign({}, state, {userName: '', isAuthorizedUser: false});
     case 'START_SESSION':

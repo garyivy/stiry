@@ -1,6 +1,6 @@
 const initialStore = {
     isAuthorizedUser: false,
-    userName: null,
+    userDisplayName: null,
     sessionName: null,
     currentQuestionIndex: 0,
     questions: [ 

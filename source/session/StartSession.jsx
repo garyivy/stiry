@@ -2,6 +2,7 @@ import React from 'react';
 import { isNullOrWhitespace } from './../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { get } from './../shared/api.js';
 
 const StartSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
     <div>
@@ -45,9 +46,10 @@ class StartSessionContainer extends React.Component {
         } else {
             this.setState({ error: null });
 
+            get('test').then((r) => console.log(r)).catch((e) => console.log(e));
             // TODO: Validate sessionName is available
-            this.props.dispatch({ type: 'STARTING_SESSION', sessionName: this.state.sessionName });
-            this.props.history.push('/questionnaire');
+            //this.props.dispatch({ type: 'STARTING_SESSION', sessionName: this.state.sessionName });
+            //this.props.history.push('/questionnaire');
         }
     }
     render() {
