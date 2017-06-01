@@ -31,8 +31,9 @@ class ResetPassword extends React.Component {
                 resetToken: this.state.resetToken,
                 password: this.state.password
             }).then( result => {
-                this.props.dispatch({ type: 'LOGIN_COMPLETE', userName: this.state.userName });
-                this.props.history.push('/');
+                console.log(result);
+                //this.props.dispatch({ type: 'LOGIN_COMPLETE', userName: this.state.userName });
+                //  this.props.history.push('/');
             });
         }
     }

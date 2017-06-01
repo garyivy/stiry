@@ -13,7 +13,7 @@ api.route('/users').post(user.onRegisterNewUser);
 api.route('/signin').post(authenticateSignin, user.onSignin);
 api.route('/signout').post(onPlaceholder);
 api.route('/forgot').post(user.onForgotPassword);
-api.route('/reset').post(user.onResetPassword);
+api.route('/reset').post(authenticatePasswordResetToken, user.onResetPassword);
 
 api.route('/users').get(user.onGetUsers);
 api.route('/test').get(requestLogger, authenticate, (request, response) => { 

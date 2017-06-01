@@ -34,22 +34,21 @@ module.exports.onSignin = (request, response) => {
 }
 
 module.exports.onForgotPassword = (request, response) => {
-    User.findOne({
-        $or:
-        [{ userName: request.query.userName },
-        { email: request.query.userName }]
-    }).exec().then((user) => {
-        if (!user) {
-            return response.json({ resetToken: null }); // TODO: What is the best status/message to send to the client here?
-        }
+    User.findOne(
+        {
+            email: request.body.email
+        }).exec().then((user) => {
+            if (!user) {
+                return response.json({ resetToken: null }); // TODO: What is the best status/message to send to the client here?
+            }
 
-        let token = user.generatePasswordToken();
+            let token = user.generatePasswordResetToken();
 
-        // TODO: Send token via email instead of response :)
-        return user
-            ? response.json({ resetToken: token })
-            : response.json({ resetToken: null });
-    });
+            // TODO: Send token via email instead of response :)
+            return user
+                ? response.json({ resetToken: token })
+                : response.json({ resetToken: null });
+        });
 }
 
 module.exports.onResetPassword = (request, response) => {

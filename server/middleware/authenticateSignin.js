@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('./../models/User.js');
+const statusCodes = require('./../common/statusCodes.js');
 
 module.exports = (request, response, next) => {
   User.findOne({
