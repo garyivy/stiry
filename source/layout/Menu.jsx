@@ -7,8 +7,8 @@ const MenuPresentation = ({isAuthorizedUser}) => (
         <li><Link to="/">Home</Link></li>
         { isAuthorizedUser && <li><Link to="/start">Start Session</Link></li> }
         { isAuthorizedUser && <li><Link to="/join">Join Session</Link></li> }
-        { isAuthorizedUser && <li><Link to="/logoff">Log Off</Link></li> }
-        { !isAuthorizedUser && <li><Link to="/login">Log In</Link></li> }
+        { isAuthorizedUser && <li><Link to="/signout">Sign Out</Link></li> }
+        { !isAuthorizedUser && <li><Link to="/signin">Sign In</Link></li> }
         <li><Link to="/about">About</Link></li>        
     </nav>
 );

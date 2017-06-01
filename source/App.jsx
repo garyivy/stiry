@@ -16,18 +16,18 @@ import reducer from './shared/reducer.js';
 
 import './style/app.scss';
 
-import PrivateRoute from './login/PrivateRoute.jsx';
-import Header from './home/Header.jsx';
-import Menu from './home/Menu.jsx';
-import Home from './home/Home.jsx';
-import Login from './login/Login.jsx';
-import Logoff from './login/Logoff.jsx';
+import PrivateRoute from './private/PrivateRoute.jsx';
+import Header from './layout/Header.jsx';
+import Menu from './layout/Menu.jsx';
+import Home from './public/Home.jsx';
+import Signin from './public/Signin.jsx';
+import Signout from './private/Signout.jsx';
 import StartSession from './session/StartSession.jsx';
 import Questionnaire from './session/Questionnaire.jsx';
-import About from './home/About.jsx';
-import NewUser from './home/NewUser.jsx';
-import ForgotPassword from './home/ForgotPassword.jsx';
-import NewPassword from './home/NewPassword.jsx';
+import About from './public/About.jsx';
+import NewUser from './public/NewUser.jsx';
+import ForgotPassword from './public/ForgotPassword.jsx';
+import ResetPassword from './public/ResetPassword.jsx';
 
 let store = createStore(reducer, initialStore);
 const history = createBrowserHistory();
@@ -39,11 +39,11 @@ const layout = (
     <article className="centered-content">
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/logoff" component={Logoff} />
-        <Route path="/newuser" component={NewUser} />
-        <Route path="/forgotpassword" component={ForgotPassword} />
-        <Route path="/newpassword" component={NewPassword} />
+        <Route path="/signin" component={Signin} />
+        <Route path="/signout" component={Signout} />
+        <Route path="/register" component={NewUser} />
+        <Route path="/forgot" component={ForgotPassword} />
+        <Route path="/reset" component={ResetPassword} />
         <PrivateRoute path="/start" component={StartSession} />
         <PrivateRoute path="/join" component={StartSession} />
         <PrivateRoute path="/questionnaire" component={Questionnaire} />

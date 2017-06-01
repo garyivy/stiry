@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { post } from './../shared/api.js';
 
-class Login extends React.Component {
+class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,7 +27,7 @@ class Login extends React.Component {
 
         if(!this.hasErrors()) {
     
-            post('login', { userName: this.state.userName, password: this.state.password })
+            post('signin', { userName: this.state.userName, password: this.state.password })
                 .then( (result) => {
                     if(result && result.sessionToken) {
                         let loggedInPath = '/';
@@ -35,7 +35,7 @@ class Login extends React.Component {
                             loggedInPath = this.props.location.state.from.pathname;
                         }
                         localStorage.setItem("sessionToken", result.sessionToken );
-                        this.props.dispatch({ type: 'LOGIN_COMPLETE', userDisplayName: result.userDisplayName });
+                        this.props.dispatch({ type: 'SIGNIN_COMPLETE', userDisplayName: result.userDisplayName });
                         this.props.history.push(loggedInPath);                        
                     } else {
                         this.setState( { errors: { password: 'Invalid User Name or Password' } });
@@ -64,10 +64,10 @@ class Login extends React.Component {
         // TODO: How/if React is efficiently handling expression like this.state.errors.password && <... (some sort of JSX trick, or catch wrapper)
         return (
             <div>
-                <h1>Stiry Login</h1>
+                <h1>Stiry Sign In</h1>
                 <p>
-                    If you are a new user, <Link to="/newuser">click here to add your credentials.</Link>
-                    <br/>If you forgot your password , <Link to="/newpassword">click here to have a temporary password emailed to you.</Link>
+                    If you are a new user, <Link to="/register">click here to add your credentials.</Link>
+                    <br/>If you forgot your password , <Link to="/forgot">click here to have a temporary password emailed to you.</Link>
                 </p>
                 <form onSubmit={this.onSubmit} className="form">
                     <div className="field">
@@ -89,6 +89,6 @@ class Login extends React.Component {
     }
 }
 
-const ConnectedLogin = connect()(Login); // This ensures the dispatch comes as a prop.
+export default connect()(Signin); // This ensures the dispatch comes as a prop.
 
-export default ConnectedLogin;
+

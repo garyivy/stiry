@@ -2,12 +2,13 @@ import React from 'react';
 import { isNullOrWhitespace } from './../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { post } from './../shared/api.js';
 
-class NewPassword extends React.Component {
+class ResetPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentPassword: '',
+            resetToken: props.location.search.substr(1), // TODO: Redirect if no querystring given?
             password: '',
             passwordConfirmation: '',
             errors: {}
@@ -25,27 +26,19 @@ class NewPassword extends React.Component {
     onSubmit(e) {
         e.preventDefault();
 
-        this.hasErrors();
-        
-        let loggedInPath = '/';
-        if(this.props && this.props.location && this.props.location.state && this.props.location.state.from &&this.props.location.state.from.pathname) {
-            loggedInPath = this.props.location.state.from.pathname;
+        if(!this.hasErrors()) {
+            post('reset', {
+                resetToken: this.state.resetToken,
+                password: this.state.password
+            }).then( result => {
+                this.props.dispatch({ type: 'LOGIN_COMPLETE', userName: this.state.userName });
+                this.props.history.push('/');
+            });
         }
-   
-        /*
-        setTimeout(() => {
-            this.props.dispatch({ type: 'SHOW_PRIVATE_LINKS', userName: this.state.userName });
-            this.props.history.push(loggedInPath);
-        }, 500);
-        */
     }
 
     hasErrors() {
         let errors = {};
-
-        if(isNullOrWhitespace(this.state.currentPassword)) {
-            errors.currentPassword = 'Current Password is required.';
-        }
 
         if(isNullOrWhitespace(this.state.password)) {
             errors.password = 'New Password is required.';
@@ -68,15 +61,7 @@ class NewPassword extends React.Component {
         return (
             <div>
                 <h1>Change Password</h1>
-                <p>
-                    THIS PAGE IS UNDER CONSTRUCTION
-                </p>
                 <form onSubmit={this.onSubmit} className="form">
-                    <div className="field">
-                        <label>Current Password</label>
-                        <input type="password" name="currentPassword" value={this.state.currentPassword} onChange={this.onChange} maxLength="40"/>
-                        {this.state.errors.currentPassword && <label className="error">{this.state.errors.currentPassword}</label>}
-                    </div>
                     <div className="field">
                         <label>New Password</label>
                         <input type="password" name="password" value={this.state.password} onChange={this.onChange} maxLength="40"/>
@@ -96,6 +81,5 @@ class NewPassword extends React.Component {
     }
 }
 
-const ConnectedNewPassword = connect()(NewPassword); // This ensures the dispatch comes as a prop.
+export default connect()(ResetPassword);
 
-export default ConnectedNewPassword;

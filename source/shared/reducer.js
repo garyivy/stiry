@@ -3,9 +3,9 @@ import { isNullOrWhitespace } from './../shared/utilities.js';
 const reducer = (state = {}, action) => {
   console.log(action);
   switch(action.type) {
-    case 'LOGIN_COMPLETE':
+    case 'SIGNIN_COMPLETE':
       return Object.assign({}, state, {userDisplayName: action.userDisplayName, isAuthorizedUser: true});
-    case 'LOGOFF':
+    case 'SIGNOUT':
       return Object.assign({}, state, {userName: '', isAuthorizedUser: false});
     case 'START_SESSION':
       return Object.assign({}, state, {sessionName: action.sessionName});        

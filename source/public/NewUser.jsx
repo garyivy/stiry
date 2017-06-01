@@ -39,14 +39,16 @@ class NewUser extends React.Component {
         }
         
         post('users', newUser)
-            .then(() => {
-                let loggedInPath = '/';
-                if(this.props && this.props.location && this.props.location.state 
-                    && this.props.location.state.from && this.props.location.state.from.pathname) {
-                    loggedInPath = this.props.location.state.from.pathname;
-                }
-                this.props.dispatch({ type: 'SHOW_PRIVATE_LINKS', userName: this.state.userName });
-                this.props.history.push(loggedInPath);                
+            .then((result) => {
+                if(result && result.sessionToken) {
+                    localStorage.setItem("sessionToken", result.sessionToken );
+                    this.props.dispatch({ type: 'SIGNIN_COMPLETE', userName: this.state.userName });
+                    this.props.history.push('/');                
+                } else {
+                    // TODO: More needed here.
+                    console.log(result);
+                    this.setState({ errors: { userName: 'Unable to add new user'}});
+                }              
             });
     }
 
@@ -88,9 +90,6 @@ class NewUser extends React.Component {
         return (
             <div>
                 <h1>Enroll as a New Stiry User</h1>
-                <p>
-                    THIS PAGE IS UNDER CONSTRUCTION
-                </p>
                 <form onSubmit={this.onSubmit} className="form">
                     <div className="field">
                         <label>User Name</label>
@@ -126,6 +125,5 @@ class NewUser extends React.Component {
     }
 }
 
-const ConnectedNewUser = connect()(NewUser); // Note: connect provide dispatch as prop.
+export default connect()(NewUser); // Note: connect provide dispatch as prop.
 
-export default ConnectedNewUser;

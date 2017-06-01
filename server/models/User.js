@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const confidential = require('./../common/confidential.js');
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
@@ -20,13 +21,11 @@ const UserSchema = new Schema({
     validate: [
       {
         validator: (email) => {
-          console.log('I am validating the format of the email address: ' + email);
           // eslint-disable-next-line max-len
           const emailRegex = /^[-a-z0-9%S_+]+(\.[-a-z0-9%S_+]+)*@(?:[a-z0-9-]{1,63}\.){1,125}[a-z]{2,63}$/i;
-          var isValid =  emailRegex.test(email);
-          console.log(isValid);
+          var isValid = emailRegex.test(email);
           return isValid;
-        }, 
+        },
         msg: '{VALUE} is not a valid email address.'
       }
     ]
@@ -51,7 +50,7 @@ UserSchema.set('toJSON', {
     delete obj._id;
     delete obj.__v;
     delete obj.password;
-    return obj;
+    return obj; // TODO: When might I use this?
   },
 });
 
@@ -59,8 +58,6 @@ UserSchema.set('toJSON', {
 UserSchema
   .path('email')
   .validate((email, respond) => {
-    console.log('I am validating the existance of the email address: ' + email);
-
     UserModel.findOne({ email })
       .then((user) => {
         respond(user ? false : true);
@@ -68,7 +65,7 @@ UserSchema
       .catch(() => {
         respond(false);
       });
-  }, 'Email already in use.');
+  }, 'Email already in use.'); // TODO: Provide client side lookup before submission.
 
 // Validate username is not taken
 UserSchema
@@ -87,22 +84,21 @@ UserSchema
 UserSchema
   .path('password')
   .validate(function (password) {
-    return password.length >= 6 && password.match(/\d+/g);
-  }, 'Password be at least 6 characters long and contain 1 number.');
-
+    return password.length >= 8;
+  }, 'Password be at least 8 characters long.');  // TODO: Be consistent with front-end (currently at 6 max).
 //
 UserSchema
   .pre('save', function (done) {
-    // Encrypt password before saving the document
-    if (this.isModified('password')) {
-      this._hashPassword(this.password, 12, (err, hash) => {
-        this.password = hash;
-        done();
-      });
-    } else {
+    if (!this.isModified('password')) {
       done();
+      return;
     }
-    // eslint-enable no-invalid-this
+
+    // Encrypt password before saving.
+    bcrypt.hash(this.password, confidential.BCRYPT_SALT_ROUNDS).then((hash) => {
+      this.password = hash;
+      done();
+    });
   });
 
 /**
@@ -120,29 +116,35 @@ UserSchema.methods = {
   },
 
   /**
-   * Generates a JSON Web token used for route authentication
+   * Generates a JSON Web token used for "session" authentication expected in headers of private REST calls
    * @public
    * @return {String} signed JSON web token
    */
-  generateToken() {
-    return jwt.sign({ _id: this._id }, 'afraid-of-a-little-bunny', {
+  generateSessionToken() {
+    return jwt.sign({ _id: this._id }, confidential.JWT_SESSION_TOKEN_SECRET, {
       expiresIn: 3600,
     });
   },
 
   /**
-   * Create password hash
-   * @private
-   * @param {String} password
-   * @param {Number} saltRounds
-   * @param {Function} callback
-   * @return {Boolean} passwords match
+   * Generates a JSON Web token used for password reset
+   * @public
+   * @return {String} signed JSON web token
    */
-  _hashPassword(password, saltRounds = 12, callback) {
-    return bcrypt.hash(password, saltRounds, callback);
+  generatePasswordResetToken() {
+    return jwt.sign({ _id: this._id }, confidential.JWT_PASSWORD_RESET_AUTHENTICATION_SECRET, {
+      expiresIn: 300,
+    });
   },
+
+  getDisplayName() {
+    return this.firstName && this.lastName
+      ? this.firstName + ' ' + this.lastName // TODO: Future Use?
+      : this.userName;
+  }
 };
 
+// Note: When listing this as a dependency via require, inconsistent casing can result in a mongoose "Cannot overwrite" error.
+// https://stackoverflow.com/questions/19051041/cannot-overwrite-model-once-compiled-mongoose 
 const UserModel = mongoose.model('User', UserSchema);
-
 module.exports = UserModel;
