@@ -28,9 +28,7 @@ class ForgotPassword extends React.Component {
             post('forgot', {
                 email: this.state.email
             }).then( result => {
-                this.setState({ resetLink: result.resetLink })
-                //this.props.dispatch({ type: 'LOGIN_COMPLETE', userName: this.state.userName });
-                //this.props.history.push('/');
+                this.setState({ resetLink: result.resetLink }) // TODO: Remove showing the password reset link :) 
             });
         }
     }

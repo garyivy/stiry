@@ -30,9 +30,7 @@ import NewUser from './public/NewUser.jsx';
 import ForgotPassword from './public/ForgotPassword.jsx';
 import ResetPassword from './public/ResetPassword.jsx';
 
-
 let store = createStore(combinedReducer, {}, applyMiddleware(thunk) );
-// store.dispatch({ type: 'INITIALIZE'}); TODO: Remove since redux dispatches @@redux/INIT
 const history = createBrowserHistory();
 
 // TODO: /questionnaire should redirect to /start if no collaborationToken

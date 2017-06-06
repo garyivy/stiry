@@ -22,7 +22,7 @@ api.route('/reset').post(authenticatePasswordResetToken, user.onResetPassword);
 
 api.route('/start').post(authenticate, collaboration.onStartCollaboration);
 api.route('/join').post(authenticate, collaboration.onJoinCollaboration);
-api.route('/questionnaires').post(authenticate, onPlaceholder);
+api.route('/questionnaires').post(authenticate, collaboration.onSubmitQuestionnaire);
 api.route('/questionnaires').get(authenticate, onPlaceholder);
 
 api.route('/collaborations').get(collaboration.onGetCollaborations);

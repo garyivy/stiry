@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-const StepIndicator = ({totalSteps, currentQuestionIndex}) => {
-    console.log('Rendering StepIndicator');
+export const StepIndicatorPresentation = ({totalSteps, currentQuestionIndex}) => {
     let steps = [];
     for(let i = 0; i < totalSteps; i++){
         
@@ -11,7 +10,7 @@ const StepIndicator = ({totalSteps, currentQuestionIndex}) => {
             className = 'active';
         }
         steps.push(
-            <a className={className}>Question {i + 1}</a>
+            <a className={className} key={i}>Question {i + 1}</a>
         );
     }
     return <div className="step-indicator">{steps}</div>;
@@ -20,11 +19,11 @@ const StepIndicator = ({totalSteps, currentQuestionIndex}) => {
 const mapStateToProps = (state) => {
     let questionnaire = state.questionnaire || {};
     return {
-        totalSteps: questionnaire.questions.length,
+        totalSteps: questionnaire.answers.length,
         currentQuestionIndex: questionnaire.currentQuestionIndex
     }
 }
 
-const ConnectedStepIndicator = connect(mapStateToProps, undefined)(StepIndicator);
+const StepIndicator = connect(mapStateToProps, undefined)(StepIndicatorPresentation);
 
-export default ConnectedStepIndicator;
+export default StepIndicator;

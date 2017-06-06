@@ -1,6 +1,7 @@
 import React from 'react';
 import { isNullOrWhitespace } from './../shared/utilities.js';
 import { connect } from 'react-redux';
+import { signinComplete } from './../actions/actionCreators.js'
 import { Link } from 'react-router-dom';
 import { post } from './../shared/api.js';
 
@@ -9,10 +10,10 @@ class NewUser extends React.Component {
         super(props);
         this.state = {
             userName: '',
-            email: '1',
-            emailConfirmation: '1',
-            password: '123456',
-            passwordConfirmation: '123456',
+            email: '',
+            emailConfirmation: '',
+            password: '',
+            passwordConfirmation: '',
             errors: {}
         };
 
@@ -42,7 +43,7 @@ class NewUser extends React.Component {
             .then((result) => {
                 if(result && result.sessionToken) {
                     localStorage.setItem("sessionToken", result.sessionToken );
-                    this.props.dispatch({ type: 'SIGNIN_COMPLETE', userName: this.state.userName });
+                    this.props.dispatch(signinComplete(this.state.userName));
                     this.props.history.push('/');                
                 } else {
                     // TODO: More needed here.

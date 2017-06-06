@@ -1,6 +1,5 @@
 // This reqpresents a collaboration where a group of users can start/join and submit their questionnaires.
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const confidential = require('./../common/confidential.js');
 
@@ -28,5 +27,5 @@ CollaborationSchema.methods = {
   }
 };
 
-const CollaborationModel = mongoose.model('Colloboration', CollaborationSchema);
+const CollaborationModel = mongoose.model('Collaboration', CollaborationSchema);
 module.exports = CollaborationModel;

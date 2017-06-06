@@ -13,8 +13,8 @@ export const QuestionPresentation = ({questionText, initialAnswer, onAnswerChang
 const mapStateToProps = (state) => {
     let questionnaire = state.questionnaire || {};
     return {
-        questionText: questionnaire.questions[questionnaire.currentQuestionIndex].prompt,
-        initialAnswer: questionnaire.questions[questionnaire.currentQuestionIndex].answer,
+        questionText: questionnaire.answers[questionnaire.currentQuestionIndex].prompt,
+        initialAnswer: questionnaire.answers[questionnaire.currentQuestionIndex].answer,
         error: questionnaire.error
     }
 };

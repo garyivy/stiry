@@ -4,13 +4,11 @@ import { gotoPreviousQuestion, gotoNextQuestion, submitQuestionnaire } from './.
 import Question from './Question.jsx';
 import StepIndicator from './StepIndicator.jsx';
 
-const QuestionnairePresentation = ({
+export const QuestionnairePresentation = ({
     shouldShowPreviousButton,   onPreviousButtonClick, 
     shouldShowNextButton,       onNextButtonClick, 
     shouldShowSubmitButton,     onSubmitButtonClick, 
-    collaborationName,          collaborationToken}) => { 
-    console.log('Rendering Questionnaire');
-    return (
+    collaborationName,          collaborationToken}) => (
     <div className="questionnaire-container">
         <h1>The Stiry Questionnaire</h1>
         <h2>Session Name: {collaborationName}</h2>
@@ -23,39 +21,26 @@ const QuestionnairePresentation = ({
         </div>
     </div>
 );
-}
+
 const mapStateToProps = (state) => {
     let questionnaire = state.questionnaire || {};
     return {
-        shouldShowPreviousButton: questionnaire.currentQuestionIndex > 0,
-        shouldShowNextButton: questionnaire.
-        currentQuestionIndex < questionnaire.questions.length - 1,
-        shouldShowSubmitButton: questionnaire.currentQuestionIndex == questionnaire.questions.length - 1,
-        collaborationName: questionnaire.collaborationName
+        shouldShowPreviousButton:   questionnaire.currentQuestionIndex > 0,
+        shouldShowNextButton:       questionnaire.currentQuestionIndex < questionnaire.answers.length - 1,
+        shouldShowSubmitButton:     questionnaire.currentQuestionIndex == questionnaire.answers.length - 1,
+        collaborationName:          questionnaire.collaborationName
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onPreviousButtonClick:  (event) => dispatch(gotoPreviousQuestion()),
-        onNextButtonClick:      (event) => dispatch(gotoNextQuestion()),
-        onSubmitButtonClick:    (event) => dispatch(submitQuestionnaire())
+        onPreviousButtonClick:  () => dispatch(gotoPreviousQuestion()),
+        onNextButtonClick:      () => dispatch(gotoNextQuestion()),
+        onSubmitButtonClick:    () => dispatch(submitQuestionnaire())
     }
 }
 
-class QuestionnaireContainer extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <QuestionnairePresentation {...this.props}  />
-        );
-    }
-}
-
-const Questionnaire = connect(mapStateToProps, mapDispatchToProps)(QuestionnaireContainer);
+const Questionnaire = connect(mapStateToProps, mapDispatchToProps)(QuestionnairePresentation);
 
 export default Questionnaire;
 

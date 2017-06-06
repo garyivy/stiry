@@ -8,6 +8,9 @@ const showNormal = () =>    document.documentElement.style.cursor = 'auto';
 
 // TODO: Refactor common stuff
 
+let _dispatch = (action) => {};
+export const provideDispatch = (dispatch) => { _dispatch = dispatch };
+
 export const get = (url) => {
     let isComplete = false;
     setTimeout(() => {
@@ -27,7 +30,7 @@ export const post = (url, data) => {
     }, showBusyThreshold);
 
     return axios
-        .post(apiPath + url, data, { headers: {'authorization': localStorage.getItem('sessionToken') }})
+        .post(apiPath + url, data, { headers: {'authorization': localStorage.getItem('sessionToken') }}) // TODO: Switch to standard BEARER syntax
         .then((response) => { isComplete == true; showNormal(); return response.data })
         .catch((error) => { isComplete == true; showNormal(); console.error(error); });
 }

@@ -5,7 +5,7 @@ import { startedCollaboration } from './../actions/actionCreators.js';
 import { Link } from 'react-router-dom';
 import { post } from './../shared/api.js';
 
-const StartSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
+export const StartSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
     <div>
         <h1>Start a Stiry Session</h1>
         <p>
@@ -24,7 +24,7 @@ const StartSessionPresentation = ({ sessionName, onChange, onSubmit, error }) =>
     </div>
 );
 
-class StartSessionContainer extends React.Component {
+export class StartSessionContainer extends React.Component {
     constructor(props) {
         super(props);
 

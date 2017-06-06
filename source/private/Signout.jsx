@@ -35,7 +35,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onRequestSignout: () => dispatch({ type: 'SIGNOUT'})
+        onRequestSignout: () => dispatch(signout())
     }
 }
 

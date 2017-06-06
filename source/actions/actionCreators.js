@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes.js';
+import { post } from './../shared/api.js';
 
 export const signinComplete = userDisplayName => 
     ({ type: actionTypes.SIGNIN_COMPLETE, userDisplayName });
@@ -20,9 +21,9 @@ export const gotoNextQuestion = () =>
 
 export const submitQuestionnaire = () => {
     return (dispatch, getState) => {
-        let state = getState();
-        console.log('submitQuestionnaire state:');
-        console.log(state);
+        post('questionnaires', getState().questionnaire).then((result) => {
+            console.log(result);
+        });
     }
 }
 
