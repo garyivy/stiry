@@ -18,9 +18,10 @@ const StepIndicator = ({totalSteps, currentQuestionIndex}) => {
 }
 
 const mapStateToProps = (state) => {
+    let questionnaire = state.questionnaire || {};
     return {
-        totalSteps: state.questions.length,
-        currentQuestionIndex: state.currentQuestionIndex
+        totalSteps: questionnaire.questions.length,
+        currentQuestionIndex: questionnaire.currentQuestionIndex
     }
 }
 

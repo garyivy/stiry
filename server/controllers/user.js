@@ -46,8 +46,8 @@ module.exports.onForgotPassword = (request, response) => {
 
             // TODO: Send token via email instead of response :)
             return user
-                ? response.json({ resetToken: token })
-                : response.json({ resetToken: null });
+                ? response.json({ resetLink: '/reset?' + token })
+                : response.json({ resetLink: null });
         });
 }
 

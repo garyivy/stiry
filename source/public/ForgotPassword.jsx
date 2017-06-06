@@ -28,7 +28,7 @@ class ForgotPassword extends React.Component {
             post('forgot', {
                 email: this.state.email
             }).then( result => {
-                console.log(result);
+                this.setState({ resetLink: result.resetLink })
                 //this.props.dispatch({ type: 'LOGIN_COMPLETE', userName: this.state.userName });
                 //this.props.history.push('/');
             });
@@ -52,6 +52,9 @@ class ForgotPassword extends React.Component {
             <div>
                 <h1>Forgot Password</h1>
                 <p>
+                    THIS PAGE IS UNDER CONSTRUCTION
+                </p>
+                <p>
                     Use this page to have a "password reset" email sent to you.
                     When the email arrives, click on the link.
                 </p>
@@ -61,6 +64,7 @@ class ForgotPassword extends React.Component {
                         <input name="email" value={this.state.email} onChange={this.onChange} maxLength="40" />
                          {this.state.errors.email && <label className="error">{this.state.errors.email}</label>}
                     </div>
+                    {this.state.resetLink &&<a href={this.state.resetLink}>Click to choose a new password</a>}
                     <div className="button-container">
                         <button type="submit" className="primary" onClick={this.onSubmit}>Send Request</button>
                     </div>

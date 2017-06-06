@@ -8,13 +8,13 @@ const PrivateRouteUnconnected = ({ component: Component, ...rest }) => {
       <Route {...rest} render={ props => (
         isAuthorizedUser() 
           ? (<Component {...props}/>) 
-          : (<Redirect to={{ pathname: '/login', state: { from: props.location }}}/>)
+          : (<Redirect to={{ pathname: '/signin', state: { from: props.location }}}/>)
       )}/>
     );
 }
 
 const mapStateToProps = (state) => {
-    return { isAuthorizedUser: state.isAuthorizedUser }
+    return { isAuthorizedUser: state.user.isAuthorizedUser }
 }
 
 const PrivateRoute = connect(mapStateToProps, undefined)(PrivateRouteUnconnected);

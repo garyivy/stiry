@@ -1,16 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { gotoPreviousQuestion, gotoNextQuestion, submitQuestionnaire } from './../actions/actionCreators.js';
 import Question from './Question.jsx';
 import StepIndicator from './StepIndicator.jsx';
 
 const QuestionnairePresentation = ({
     shouldShowPreviousButton,   onPreviousButtonClick, 
     shouldShowNextButton,       onNextButtonClick, 
-    shouldShowSubmitButton,     onSubmitButtonClick}) => { 
+    shouldShowSubmitButton,     onSubmitButtonClick, 
+    collaborationName,          collaborationToken}) => { 
     console.log('Rendering Questionnaire');
     return (
     <div className="questionnaire-container">
         <h1>The Stiry Questionnaire</h1>
+        <h2>Session Name: {collaborationName}</h2>
         <StepIndicator/>
         <Question/>
         <div className="button-container">
@@ -22,18 +25,21 @@ const QuestionnairePresentation = ({
 );
 }
 const mapStateToProps = (state) => {
+    let questionnaire = state.questionnaire || {};
     return {
-        shouldShowPreviousButton: state.currentQuestionIndex > 0,
-        shouldShowNextButton: state.currentQuestionIndex < state.questions.length - 1,
-        shouldShowSubmitButton: state.currentQuestionIndex == state.questions.length - 1,
+        shouldShowPreviousButton: questionnaire.currentQuestionIndex > 0,
+        shouldShowNextButton: questionnaire.
+        currentQuestionIndex < questionnaire.questions.length - 1,
+        shouldShowSubmitButton: questionnaire.currentQuestionIndex == questionnaire.questions.length - 1,
+        collaborationName: questionnaire.collaborationName
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onPreviousButtonClick:  (event) => dispatch({ type:'GOTO_PREVIOUS_QUESTION' }),
-        onNextButtonClick:      (event) => dispatch({ type:'GOTO_NEXT_QUESTION' }),
-        onSubmitButtonClick:    (event) => dispatch({ type:'SUBMIT_ANSWERS' }),
+        onPreviousButtonClick:  (event) => dispatch(gotoPreviousQuestion()),
+        onNextButtonClick:      (event) => dispatch(gotoNextQuestion()),
+        onSubmitButtonClick:    (event) => dispatch(submitQuestionnaire())
     }
 }
 
@@ -44,12 +50,12 @@ class QuestionnaireContainer extends React.Component {
 
     render() {
         return (
-            <QuestionnairePresentation  />
+            <QuestionnairePresentation {...this.props}  />
         );
     }
 }
 
-const Questionnaire = connect(mapStateToProps, mapDispatchToProps)(QuestionnairePresentation);
+const Questionnaire = connect(mapStateToProps, mapDispatchToProps)(QuestionnaireContainer);
 
 export default Questionnaire;
 

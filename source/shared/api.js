@@ -15,7 +15,7 @@ export const get = (url) => {
     }, showBusyThreshold);
 
     return axios
-        .get(apiPath + url, { 'Content-Type': 'application/json', headers: {'authorization': localStorage.getItem("sessionToken") }})
+        .get(apiPath + url, { 'Content-Type': 'application/json', headers: {'authorization': localStorage.getItem('sessionToken') }})
         .then((response) => { isComplete == true; showNormal(); return response.data })
         .catch((error) => { isComplete == true; showNormal(); console.error(error); });
 }
@@ -27,7 +27,7 @@ export const post = (url, data) => {
     }, showBusyThreshold);
 
     return axios
-        .post(apiPath + url, data, { headers: {'authorization': localStorage.getItem("sessionToken") }})
+        .post(apiPath + url, data, { headers: {'authorization': localStorage.getItem('sessionToken') }})
         .then((response) => { isComplete == true; showNormal(); return response.data })
         .catch((error) => { isComplete == true; showNormal(); console.error(error); });
 }

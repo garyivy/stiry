@@ -1,17 +1,17 @@
 import React from 'react';
 import { isNullOrWhitespace } from './../shared/utilities.js';
 import { connect } from 'react-redux';
-import { startedCollaboration } from './../actions/actionCreators.js';
 import { Link } from 'react-router-dom';
 import { post } from './../shared/api.js';
 
-const StartSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
+const JoinSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
     <div>
-        <h1>Start a Stiry Session</h1>
+        <h1>Join a Stiry Session</h1>
         <p>
-            A session (collaboration) name is needed to group participants together.
-            One person starts a session here.  The remaining partipants will need this name to join the session by
-            &nbsp;<Link to="/joinsession">clicking here</Link> or choosing "Join Session" from the site menu.
+            If you are interested in joining a session (collaboration) that someone else in your group has already started, enter the session name they provided.
+            
+            If you are interested in starting a session for others to join,
+            &nbsp;<Link to="/startsession">click here</Link> or choose "Start Session" from the site menu.
         </p>
         <div className="field">
             <label>Session Name</label>
@@ -24,7 +24,7 @@ const StartSessionPresentation = ({ sessionName, onChange, onSubmit, error }) =>
     </div>
 );
 
-class StartSessionContainer extends React.Component {
+class JoinSessionContainer extends React.Component {
     constructor(props) {
         super(props);
 
@@ -46,9 +46,13 @@ class StartSessionContainer extends React.Component {
             this.setState({ error: 'Session name is required.' });
         } else {
             this.setState({ error: null });
-            post('start', { collaborationName: this.state.sessionName }).then(( result ) => {
+            post('join', { collaborationName: this.state.sessionName }).then(( result ) => {
                 if(result && result.collaborationToken) {
-                    this.props.dispatch(startedCollaboration(this.state.sessionName, result.collaborationToken));
+                    this.props.dispatch({ 
+                        type: 'JOINED_COLLABORATION', 
+                        collaborationName: this.state.sessionName, 
+                        collaborationToken: result.collaborationToken 
+                    });
                     this.props.history.push('/questionnaire');                    
                 } else {
                     // TODO: What should we tell user?
@@ -59,7 +63,7 @@ class StartSessionContainer extends React.Component {
     }
     render() {
         return (
-            <StartSessionPresentation 
+            <JoinSessionPresentation 
                 sessionName={this.state.sessionName} 
                 onChange={this.onChange} 
                 onSubmit={this.onSubmit}
@@ -68,7 +72,7 @@ class StartSessionContainer extends React.Component {
     }
 }
 
-const StartSession = connect()(StartSessionContainer); // Connect so dispatch is added to properties
+const JoinSession = connect()(JoinSessionContainer); // Connect so dispatch is added to properties
 
-export default StartSession;
+export default JoinSession;
 

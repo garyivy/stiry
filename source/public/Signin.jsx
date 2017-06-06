@@ -3,6 +3,7 @@ import { isNullOrWhitespace } from './../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { post } from './../shared/api.js';
+import { signinComplete } from './../actions/actionCreators.js'
 
 class Signin extends React.Component {
     constructor(props) {
@@ -34,8 +35,8 @@ class Signin extends React.Component {
                         if(this.props && this.props.location && this.props.location.state && this.props.location.state.from &&this.props.location.state.from.pathname) {
                             loggedInPath = this.props.location.state.from.pathname;
                         }
-                        localStorage.setItem("sessionToken", result.sessionToken );
-                        this.props.dispatch({ type: 'SIGNIN_COMPLETE', userDisplayName: result.userDisplayName });
+                        localStorage.setItem('sessionToken', result.sessionToken );
+                        this.props.dispatch(signinComplete(result.userDisplayName));
                         this.props.history.push(loggedInPath);                        
                     } else {
                         this.setState( { errors: { password: 'Invalid User Name or Password' } });

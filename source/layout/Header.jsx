@@ -9,7 +9,7 @@ const HeaderPresentation = ({isAuthorizedUser}) => (
 );
 
 const mapStateToProps = (state) => {
-    return { isAuthorizedUser: state.isAuthorizedUser };
+    return { isAuthorizedUser: state.user.isAuthorizedUser };
 }
 
 const Header = connect(mapStateToProps, undefined)(HeaderPresentation);
