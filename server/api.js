@@ -22,10 +22,12 @@ api.route('/reset').post(authenticatePasswordResetToken, user.onResetPassword);
 
 api.route('/start').post(authenticate, collaboration.onStartCollaboration);
 api.route('/join').post(authenticate, collaboration.onJoinCollaboration);
+api.route('/collaborationStatus/:collaborationToken').get(authenticate, collaboration.onGetStatus);
 api.route('/questionnaires').post(authenticate, collaboration.onSubmitQuestionnaire);
 api.route('/questionnaires').get(authenticate, onPlaceholder);
 
 api.route('/collaborations').get(collaboration.onGetCollaborations);
+api.route('/answers').get(collaboration.onGetAnswers);
 api.route('/users').get(user.onGetUsers);
 api.route('/test').get(requestLogger, authenticate, (request, response) => { 
     response.json({ message: 'authenticated' });})

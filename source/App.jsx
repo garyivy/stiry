@@ -8,7 +8,7 @@ import {
   Redirect,
   withRouter  
 } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import history from './shared/history';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -25,17 +25,20 @@ import Signout from './private/Signout.jsx';
 import StartSession from './session/StartSession.jsx';
 import JoinSession from './session/JoinSession.jsx';
 import Questionnaire from './session/Questionnaire.jsx';
+import Wait from './session/Wait.jsx';
+import Scrambled from './session/Scrambled.jsx';
 import About from './public/About.jsx';
 import NewUser from './public/NewUser.jsx';
 import ForgotPassword from './public/ForgotPassword.jsx';
 import ResetPassword from './public/ResetPassword.jsx';
+import Redirector from './public/Redirector.jsx';
 
 let store = createStore(combinedReducer, {}, applyMiddleware(thunk) );
-const history = createBrowserHistory();
 
 // TODO: /questionnaire should redirect to /start if no collaborationToken
 const layout = (
   <div>
+    <Redirector/>
     <Header/>
     <Menu/>
     <article className="centered-content">
@@ -49,6 +52,8 @@ const layout = (
         <PrivateRoute path="/start" component={StartSession} />
         <PrivateRoute path="/join" component={JoinSession} />
         <PrivateRoute path="/questionnaire" component={Questionnaire} />
+        <PrivateRoute path="/wait" component={Wait} />
+        <Route path="/scrambled" component={Scrambled} />
         <Route path="/about" component={About} />
       </Switch>
     </article>

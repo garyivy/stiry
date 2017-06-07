@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
     let questionnaire = state.questionnaire || {};
     return {
         questionText: questionnaire.answers[questionnaire.currentQuestionIndex].prompt,
-        initialAnswer: questionnaire.answers[questionnaire.currentQuestionIndex].answer,
+        initialAnswer: questionnaire.answers[questionnaire.currentQuestionIndex].text,
         error: questionnaire.error
     }
 };

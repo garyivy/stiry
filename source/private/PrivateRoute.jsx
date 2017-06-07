@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+// TODO: Refactor based on localStorage, dispatch to update isAuthorizedUser if needed.
 const PrivateRouteUnconnected = ({ component: Component, ...rest }) => { 
     const isAuthorizedUser = () => rest.isAuthorizedUser; // TODO: Could I simply check props.isAuthorizedUser in the Route render?
     return (

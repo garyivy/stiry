@@ -11,6 +11,12 @@ module.exports.onGetCollaborations = (request, response) => {
         .then((collaborations) => response.json(collaborations));
 }
 
+// TODO: Remove this or restrict to admin users
+module.exports.onGetAnswers = (request, response) => {
+    Answer.find().exec()
+        .then((answers) => response.json(answers));
+}
+
 module.exports.onStartCollaboration = (request, response) => {
     let collaboration = new Collaboration({
         name: request.body.collaborationName || 'test',
@@ -57,8 +63,10 @@ module.exports.onSubmitQuestionnaire = (request, response) => {
         (error, decoded) => {
             if (error) {
                 return response.status(statusCodes.UNAUTHORIZED_401)
-                    .json({ message: 'Invalid collaboration token.' });
+                    .json({ message: 'Invalid collaboration token.' }); // TODO: What is real value of using token instead of ID here? expiration?
             }
+
+            let errorCount = 0;
 
             request.body.answers.map(answer => {
                 let newAnswer = new Answer({
@@ -68,7 +76,33 @@ module.exports.onSubmitQuestionnaire = (request, response) => {
                     prompt: answer.prompt,
                     text: answer.text
                 })
-                newAnswer.save();
+                newAnswer.save((error) => {
+                    if(error) {
+                        console.log(error);
+                        errorCount++;
+                    }
+                });
+            });
+
+            return errorCount == 0
+                ? response.json({ message: 'Questionnaire saved.'})
+                : response.status(statusCodes.INTERNAL_SERVER_ERROR_500)
+                        .json({ message: 'Error while saving collaboration'});
+        });
+}
+
+module.exports.onGetStatus = (request, response) => {
+    console.log(request);
+    let token = request.params.collaborationToken;
+    let decoded = jwt.verify(token, confidential.JWT_COLLABORATION_TOKEN_SECRET,
+        (error, decoded) => {
+            if (error) {
+                return response.status(statusCodes.UNAUTHORIZED_401)
+                    .json({ message: 'Invalid collaboration token.' }); // TODO: What is real value of using token instead of ID here? expiration?
+            }
+
+            Collaboration.findOne({ _id: decoded._id}).exec().then((collaboration) => {
+                response.json(collaboration);
             });
         });
 }
