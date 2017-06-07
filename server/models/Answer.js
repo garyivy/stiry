@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const AnswerSchema = new Schema({
   collaborationId: String,
-  userId: String,
+  user: {type: Schema.Types.ObjectId, ref: 'User'},
+  scrambledUser: {type: Schema.Types.ObjectId, ref: 'User'},  
   questionId: Number,
   prompt: String,
-  text: String,
-  name: String,
+  text: String
   },{
     timestamps: true,
   });

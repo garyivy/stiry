@@ -7,8 +7,8 @@ const Schema = mongoose.Schema;
 const CollaborationSchema = new Schema({
   name: String,
   status: String,
-  startingUserId: String,
-  userIds: [String]
+  startingUser: {type: Schema.Types.ObjectId, ref: 'User'},
+  users: [{type: Schema.Types.ObjectId, ref: 'User'}],
   },{
     timestamps: true,
   });
