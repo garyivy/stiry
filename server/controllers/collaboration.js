@@ -17,6 +17,13 @@ module.exports.onGetAnswers = (request, response) => {
         .then((answers) => response.json(answers));
 }
 
+let mockUsers = [];
+User.findOne({ userName: 'g1' }).exec().then(u => mockUsers.push(u));
+User.findOne({ userName: 'g2' }).exec().then(u => mockUsers.push(u));
+User.findOne({ userName: 'g3' }).exec().then(u => mockUsers.push(u));
+User.findOne({ userName: 'g4' }).exec().then(u => mockUsers.push(u));
+User.findOne({ userName: 'g5' }).exec().then(u => mockUsers.push(u));
+
 module.exports.onStartCollaboration = (request, response) => {
     let collaboration = new Collaboration({
         name: request.body.collaborationName || 'test',
@@ -24,6 +31,8 @@ module.exports.onStartCollaboration = (request, response) => {
         startingUser: request.userId, // Note: provided by authenticate middleware
         users: [request.userId]
     });
+
+    mockUsers.forEach(u => { console.log(u); collaboration.users.push(u._id); });
 
     collaboration.save((error) => {
         return error
@@ -107,16 +116,53 @@ module.exports.onGetStatusSimple = (request, response) => {
         });
 }
 
+const scramble = (collaboration, usersWithAnswers) => {
+    // Note: Sorting of user by _id and answers by questionId assumed at this point
+    let l = usersWithAnswers.length;
+    for(let q = 0; q < 6; q++){
+        for(let u = 0; u < l; u++) {
+            let s = (q + u + 1) % l;
+            let scrambledUser = usersWithAnswers[s]._id;
+            usersWithAnswers[u].answer[q].scrambledUser = scrambledUser;
+            usersWithAnswers[u].answer[q].save();
+        }
+    }
+}
+
 const getCollaboration = (id, callback) => {
     // TODO: Refactor
-    Collaboration.findOne({ _id: id }).populate('users').exec().then((collaboration) => {
-        Answer.find({ collaborationId: id }).populate('user').exec().then((answers) => {
+    Collaboration.findOne({ _id: id }).sort({ user: 1}).populate('users').exec().then((collaboration) => {
+        Answer.find({ collaborationId: id }).sort({ questionId: 1, user: 1}).populate('user').exec().then((answers) => {
             let usersWithAnswers = [];
             collaboration.users.forEach((u) => {
                 let userAnswers = answers.filter(a => a.user._id.toString() == u._id.toString());
                 usersWithAnswers.push({ userName: u.userName, answers: userAnswers });
             });
 
+            // TODO: Remove
+            console.log('taking count');
+            let incompleteSurveyCount = usersWithAnswers.filter(u => u.answers.length < 6).length;
+            console.log(incompleteSurveyCount);
+            if (incompleteSurveyCount ) {
+                mockUsers.forEach(u => {
+                    for (let i = 1; i < 7; i++) {
+                        let answer = new Answer({
+                            collaborationId: id,
+                            user: u._id,
+                            questionId: i,
+                            prompt: i + '?',
+                            text: u.userName + i
+                        });
+                        console.log('saving mock answer');
+                        answer.save((error) => console.log(error));
+                    }
+
+                });
+            } else {
+                if(usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answer[0].scrambledUser) {
+                    scramble(collaboration, usersWithAnswers);
+                }
+            }
             callback(collaboration, usersWithAnswers);
         })
     })
@@ -131,16 +177,17 @@ module.exports.onGetStatus = (request, response) => {
                     .json({ message: 'Invalid collaboration token.' }); // TODO: What is real value of using token instead of ID here? expiration?
             }
 
-            getCollaboration( decoded._id, (collaboration, usersWithAnswers) => {
-                try
-                {
-                let incompleteSurveyCount = usersWithAnswers.filter(u => u.answers.length < 6).length;
-                let userStatuses = usersWithAnswers.map(u => { return { userName: u.userName, answersRemaining: 6 - u.answers.length}});
-                let result = { incompleteSurveyCount, userStatuses };
-                return response.json(result);
+            getCollaboration(decoded._id, (collaboration, usersWithAnswers) => {
+                try {
+                    let incompleteSurveyCount = usersWithAnswers.filter(u => u.answers.length < 6).length;
+                    let userStatuses = usersWithAnswers.map(u => { return { userName: u.userName, answersRemaining: 6 - u.answers.length } });
+                    let isScrambled = usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answer[0].scrambledUser;
+                    let result = { incompleteSurveyCount, userStatuses, isScrambled };
+
+                    return response.json(result);
 
                 }
-                catch(e) {
+                catch (e) {
                     console.log(e);
                 }
             });
