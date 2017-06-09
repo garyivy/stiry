@@ -31,8 +31,8 @@ export const post = (url, data) => {
 
     return axios
         .post(apiPath + url, data, { headers: {'authorization': localStorage.getItem('sessionToken') }}) // TODO: Switch to standard BEARER syntax
-        .then((response) => { isComplete == true; showNormal(); return response.data })
-        .catch((error) => { isComplete == true; showNormal(); console.error(error); });
+        .then((response) => { console.log('RESPONSE'); console.log(response); isComplete == true; showNormal(); return response.data })
+        .catch((error) => { console.log('ERROR'); isComplete == true; showNormal(); console.error(error); });
 }
 
 export const put = (url, data) => {

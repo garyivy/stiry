@@ -1,9 +1,8 @@
 import React from 'react';
 import { isNullOrWhitespace } from './../shared/utilities.js';
 import { connect } from 'react-redux';
-import { signinComplete } from './../actions/actionCreators.js'
+import { resetPassword } from './../actions/actionCreators.js'
 import { Link } from 'react-router-dom';
-import { post } from './../shared/api.js';
 
 class ResetPassword extends React.Component {
     constructor(props) {
@@ -28,16 +27,7 @@ class ResetPassword extends React.Component {
         e.preventDefault();
 
         if (!this.hasErrors()) {
-            post('reset', {
-                resetToken: this.state.resetToken,
-                password: this.state.password
-            }).then(result => {
-                if (result && result.sessionToken) {
-                    localStorage.setItem('sessionToken', result.sessionToken);
-                    this.props.dispatch(signinComplete(result.userDisplayName));
-                    this.props.history.push('/');
-                }
-            });
+            this.props.submitCredentials(this.state.resetToken, this.state.password);
         }
     }
 
@@ -59,6 +49,14 @@ class ResetPassword extends React.Component {
         this.setState({ errors: errors });
 
         return Object.keys(errors).length > 0;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // Note: repurposing the client side password error to also show signin error message from server.
+        // TODO: Move the signinError on form.
+        if(nextProps.signinError != this.state.errors.password) {
+            this.setState({ errors: { password: nextProps.signinError }});
+        }
     }
 
     render() {
@@ -86,5 +84,19 @@ class ResetPassword extends React.Component {
     }
 }
 
-export default connect()(ResetPassword);
+
+const mapStateToProps = (state) => {
+    return {
+        signinError: state.user.error
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        submitCredentials: (resetToken, password) => 
+            dispatch(resetPassword(resetToken, password))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);
 

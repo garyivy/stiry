@@ -2,8 +2,7 @@ import React from 'react';
 import { isNullOrWhitespace } from './../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { post } from './../shared/api.js';
-import { signinComplete } from './../actions/actionCreators.js'
+import { signin } from './../actions/actionCreators.js'
 
 class Signin extends React.Component {
     constructor(props) {
@@ -26,23 +25,16 @@ class Signin extends React.Component {
     onSubmit(event) {
         event.preventDefault();
 
-        if(!this.hasErrors()) {
-    
-            post('signin', { userName: this.state.userName, password: this.state.password })
-                .then( (result) => {
-                    if(result && result.sessionToken) {
-                        let loggedInPath = '/';
-                        if(this.props && this.props.location && this.props.location.state && this.props.location.state.from &&this.props.location.state.from.pathname) {
-                            loggedInPath = this.props.location.state.from.pathname;
-                        }
-                        localStorage.setItem('sessionToken', result.sessionToken );
-                        this.props.dispatch(signinComplete(result.userDisplayName));
-                        this.props.history.push(loggedInPath);                        
-                    } else {
-                        this.setState( { errors: { password: 'Invalid User Name or Password' } });
-                    }
-                })
+        if(this.hasErrors()) {
+            return;
         }
+
+        let loggedInPath = '/';
+        if(this.props && this.props.location && this.props.location.state && this.props.location.state.from &&this.props.location.state.from.pathname) {
+            loggedInPath = this.props.location.state.from.pathname;
+        }
+
+        this.props.submitCredentials(this.state.userName, this.state.password, loggedInPath);
     }
 
     hasErrors() {
@@ -61,8 +53,15 @@ class Signin extends React.Component {
         return Object.keys(errors).length > 0;
     }
 
+    componentWillReceiveProps(nextProps) {
+        // Note: repurposing the client side password error to also show signin error message from server.
+        // TODO: Move the signinError on form.
+        if(nextProps.signinError != this.state.errors.password) {
+            this.setState({ errors: { password: nextProps.signinError }});
+        }
+    }
+
     render() {
-        // TODO: How/if React is efficiently handling expression like this.state.errors.password && <... (some sort of JSX trick, or catch wrapper)
         return (
             <div>
                 <h1>Stiry Sign In</h1>
@@ -90,6 +89,19 @@ class Signin extends React.Component {
     }
 }
 
-export default connect()(Signin); // This ensures the dispatch comes as a prop.
+const mapStateToProps = (state) => {
+    return {
+        signinError: state.user.error
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        submitCredentials: (userName, password, redirectUrl) => 
+            dispatch(signin(userName, password, redirectUrl))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);
 
 

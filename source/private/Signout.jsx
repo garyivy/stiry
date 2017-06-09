@@ -29,7 +29,7 @@ const Signout = ({ isSignedOut, onRequestSignout }) => {
 
 const mapStateToProps = (state) => {
     return {
-        isSignedOut: !state.isAuthorizedUser,
+        isSignedOut: !state.user.isAuthorizedUser,
     }
 }
 
@@ -39,6 +39,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const ConnectedSignout = connect(mapStateToProps, mapDispatchToProps)(Signout); 
+export default connect(mapStateToProps, mapDispatchToProps)(Signout); 
 
-export default ConnectedSignout;
+

@@ -13,6 +13,8 @@ const fakeAuthenticate = (request, response, next) => {
     next();
 }
 
+//api.use(requestLogger);
+
 api.route('/register').post(user.onRegisterNewUser);
 api.route('/users').post(user.onRegisterNewUser);
 api.route('/signin').post(authenticateSignin, user.onSignin);

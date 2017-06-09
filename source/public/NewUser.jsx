@@ -1,9 +1,8 @@
 import React from 'react';
 import { isNullOrWhitespace } from './../shared/utilities.js';
 import { connect } from 'react-redux';
-import { signinComplete } from './../actions/actionCreators.js'
+import { registerUser }from './../actions/actionCreators.js'
 import { Link } from 'react-router-dom';
-import { post } from './../shared/api.js';
 
 class NewUser extends React.Component {
     constructor(props) {
@@ -29,28 +28,9 @@ class NewUser extends React.Component {
     onSubmit(event) {
         event.preventDefault();
 
-        if(this.hasErrors()) {
-            return ;
+        if(!this.hasErrors()) {
+            this.props.submitCredentials(this.state.userName, this.state.email, this.state.password);
         }
-
-        const newUser = { 
-            userName: this.state.userName, 
-            email: this.state.email,
-            password: this.state.password 
-        }
-        
-        post('users', newUser)
-            .then((result) => {
-                if(result && result.sessionToken) {
-                    localStorage.setItem("sessionToken", result.sessionToken );
-                    this.props.dispatch(signinComplete(this.state.userName));
-                    this.props.history.push('/');                
-                } else {
-                    // TODO: More needed here.
-                    console.log(result);
-                    this.setState({ errors: { userName: 'Unable to add new user'}});
-                }              
-            });
     }
 
     hasErrors() {
@@ -85,6 +65,14 @@ class NewUser extends React.Component {
         this.setState({ errors: errors });
 
         return Object.keys(errors).length > 0;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // Note: repurposing the client side password error to also show signin error message from server.
+        // TODO: Move the signinError on form.
+        if(nextProps.signinError != this.state.errors.password) {
+            this.setState({ errors: { password: nextProps.signinError }});
+        }
     }
 
     render() {
@@ -126,5 +114,18 @@ class NewUser extends React.Component {
     }
 }
 
-export default connect()(NewUser); // Note: connect provide dispatch as prop.
+const mapStateToProps = (state) => {
+    return {
+        signinError: state.user.error
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        submitCredentials: (userName, email, password) => 
+            dispatch(registerUser(userName, email, password))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewUser);
 

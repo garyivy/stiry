@@ -2,7 +2,7 @@ import React from 'react';
 import { isNullOrWhitespace } from './../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { post } from './../shared/api.js';
+import { forgotPassword } from './../actions/actionCreators.js'
 
 class ForgotPassword extends React.Component {
     constructor(props) {
@@ -24,21 +24,17 @@ class ForgotPassword extends React.Component {
     onSubmit(event) {
         event.preventDefault();
 
-          if(!this.hasErrors()) {
-            post('forgot', {
-                email: this.state.email
-            }).then( result => {
-                this.setState({ resetLink: result.resetLink }) // TODO: Remove showing the password reset link :) 
-            });
+        if (!this.hasErrors()) {
+            this.props.requestPasswordReset(this.state.email);
         }
     }
 
     hasErrors() {
         let errors = {};
 
-        if(isNullOrWhitespace(this.state.email)) {
-            errors.password = 'Email is required.';
-        } 
+        if (isNullOrWhitespace(this.state.email)) {
+            errors.email = 'Email is required.';
+        }
 
         this.setState({ errors: errors });
 
@@ -60,9 +56,9 @@ class ForgotPassword extends React.Component {
                     <div className="field">
                         <label>Email</label>
                         <input name="email" value={this.state.email} onChange={this.onChange} maxLength="40" />
-                         {this.state.errors.email && <label className="error">{this.state.errors.email}</label>}
+                        {this.state.errors.email && <label className="error">{this.state.errors.email}</label>}
                     </div>
-                    {this.state.resetLink &&<a href={this.state.resetLink}>Click to choose a new password</a>}
+                    {this.props.resetLink && <a href={this.props.resetLink}>Click to choose a new password</a>}
                     <div className="button-container">
                         <button type="submit" className="primary" onClick={this.onSubmit}>Send Request</button>
                     </div>
@@ -72,5 +68,18 @@ class ForgotPassword extends React.Component {
     }
 }
 
-export default connect()(ForgotPassword); // TODO: Should connect be used here?
+const mapStateToProps = (state) => {
+    return {
+        resetLink: state.user.resetLink // TODO: Send email with link instead showing on page :)
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        requestPasswordReset: (email) =>
+            dispatch(forgotPassword(email))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
 

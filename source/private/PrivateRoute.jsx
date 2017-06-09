@@ -15,7 +15,7 @@ const PrivateRouteUnconnected = ({ component: Component, ...rest }) => {
 }
 
 const mapStateToProps = (state) => {
-    return { isAuthorizedUser: state.user.isAuthorizedUser }
+    return { isAuthorizedUser: state.user.isAuthorized }
 }
 
 const PrivateRoute = connect(mapStateToProps, undefined)(PrivateRouteUnconnected);

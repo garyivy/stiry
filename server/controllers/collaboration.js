@@ -81,7 +81,7 @@ module.exports.onSubmitQuestionnaire = (request, response) => {
                 let newAnswer = new Answer({
                     collaborationId: decoded._id,
                     user: request.userId,
-                    scrambledUser: request.userId, // Unscrambled at this point
+                    scrambledUser: null,
                     questionId: answer.id, // TODO: Rename for consistency?
                     prompt: answer.prompt,
                     text: answer.text
@@ -119,12 +119,14 @@ module.exports.onGetStatusSimple = (request, response) => {
 const scramble = (collaboration, usersWithAnswers) => {
     // Note: Sorting of user by _id and answers by questionId assumed at this point
     let l = usersWithAnswers.length;
+    console.log('length = ' + l);
     for(let q = 0; q < 6; q++){
         for(let u = 0; u < l; u++) {
             let s = (q + u + 1) % l;
             let scrambledUser = usersWithAnswers[s]._id;
-            usersWithAnswers[u].answer[q].scrambledUser = scrambledUser;
-            usersWithAnswers[u].answer[q].save();
+            console.log('scrambledUser = ' + s);
+            usersWithAnswers[u].answers[q].scrambledUser = scrambledUser;
+            usersWithAnswers[u].answers[q].save();
         }
     }
 }
@@ -159,7 +161,8 @@ const getCollaboration = (id, callback) => {
 
                 });
             } else {
-                if(usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answer[0].scrambledUser) {
+                console.log( usersWithAnswers[0]);
+                if(usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answers[0].scrambledUser) {
                     scramble(collaboration, usersWithAnswers);
                 }
             }
@@ -181,7 +184,7 @@ module.exports.onGetStatus = (request, response) => {
                 try {
                     let incompleteSurveyCount = usersWithAnswers.filter(u => u.answers.length < 6).length;
                     let userStatuses = usersWithAnswers.map(u => { return { userName: u.userName, answersRemaining: 6 - u.answers.length } });
-                    let isScrambled = usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answer[0].scrambledUser;
+                    let isScrambled = usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answers[0].scrambledUser;
                     let result = { incompleteSurveyCount, userStatuses, isScrambled };
 
                     return response.json(result);

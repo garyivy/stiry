@@ -12,6 +12,9 @@ module.exports = (request, response, next) => {
 
     return user && user.authenticate(request.body.password)
       ? next()
-      : response.statusCode(statusCodes.UNAUTHORIZED_401);
+      : response.status(statusCodes.UNAUTHORIZED_401).json({ message: 'Invalid signin.' })
+  }).catch((error) => {
+    console.log(error);
+    return response.status(statusCodes.UNAUTHORIZED_401).json({ message: 'Invalid signin.' })
   });
 }
