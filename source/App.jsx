@@ -32,7 +32,6 @@ import NewUser from './public/NewUser.jsx';
 import ForgotPassword from './public/ForgotPassword.jsx';
 import ResetPassword from './public/ResetPassword.jsx';
 import Redirector from './public/Redirector.jsx';
-//import { thunk } from './../thunk.js'
 
 let store = createStore(combinedReducer, {}, applyMiddleware(thunk) );
 

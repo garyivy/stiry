@@ -2,15 +2,18 @@ import * as actionTypes from './actionTypes.js';
 import { requestRedirect, receivedCollaborationStatus } from './syncActionCreators.js';
 import { get, post } from './../shared/api.js';
 
+import axios from 'axios';
+const apiPath = 'api/';
+
 // Note: Thunk middleware (injected during createStore) provides dispatch and getState
 // whenever an action creator has a function signature.
 // This allows us to, in part, to dispatch an action after an asynchronous call completes.
 
 const apiHelper = (dispatch, promise) => {
     dispatch({ type: actionTypes.API_CALL_STARTED });
-    promise
-        .then(() => dispatch({ type: actionTypes.API_CALL_FINISHED }))
-        .catch((error) => {
+    promise.then(() => { console.log('111111111111111'); dispatch({ type: actionTypes.API_CALL_FINISHED })});
+        promise.catch((error) => {
+            console.log('ERROR CAUGHT IN apiHelper');
             console.log(error);
             dispatch({ type: actionTypes.API_CALL_FINISHED });
         });
@@ -23,9 +26,33 @@ const apiHelper = (dispatch, promise) => {
 // error property will be set to an string/object and payload will be null.
 // In this way, error will still provide a truthy check.
 
+const apiCallBuilder = (method, url, shouldIncludeAuthoriationHeader) => {
+    return (dispatch, data = null) => {
+        dispatch({ type: actionTypes.API_CALL_STARTED });
+        axios.call({
+            url: method === 'get' && data ? url + '/' + data : url,
+            method: method,  
+            data: method === 'get' ? null : data,
+            headers: shouldIncludeAuthoriationHeader
+                ? {'authorization': localStorage.getItem('sessionToken') }
+                : null,
+            validateStatus: () => true    
+        }).then((response) => {
+            dispatch({ type: actionTypes.API_CALL_FINISHED });
+        }).catch((error) => {
+            dispatch({ type: actionTypes.API_CALL_FINISHED });
+            
+        })
+    }
+}
+
 const handleSigninResult = (dispatch, promise, redirectPath, errorMessage) => {
     apiHelper(dispatch, promise);
-    promise.then((result) => {
+    
+    promise.then((response) => {
+        console.log('DDDDDDDDDDDDDDDDDDDDDDdd');
+        console.log(response);
+        let result = response.data;
         if (result && result.sessionToken) {
             localStorage.setItem('sessionToken', result.sessionToken);
             dispatch({
@@ -44,26 +71,30 @@ const handleSigninResult = (dispatch, promise, redirectPath, errorMessage) => {
                 error: errorMessage
             });
         }
-    });
+    });//.catch((e) => { console.log('gggggggggggggg');});
+}
+
+const buildAuthorizationHeader = () => {
+ return { headers: {'authorization': localStorage.getItem('sessionToken') }}
 }
 
 export const signin = (userName, password, redirectPath = '/') => {
     return (dispatch, getState) => {
-        let promise = post('signin', { userName, password });
+        let promise = axios.post(apiPath + 'signin', { userName, password });        
         handleSigninResult(dispatch, promise, redirectPath, 'Invalid User Name or Password.');
     };
 }
 
 export const registerUser = (userName, email, password) => {
     return (dispatch, getState) => {
-        let promise = post('users', { userName, email, password });
+        let promise = axios.post(apiPath + 'users', { userName, email, password }, { validateStatus: () => true });
         handleSigninResult(dispatch, promise, '/', 'Unable to register user.');
     };
 }
 
 export const resetPassword = (resetToken, password) => {
     return (dispatch, getState) => {
-        let promise = post('reset', { resetToken, password });
+        let promise = post('reset', { resetToken, password }, { validateStatus: () => true });
         handleSigninResult(dispatch, promise, '/', 'Unable to reset password.');
     };
 }
