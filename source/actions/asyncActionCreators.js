@@ -2,21 +2,22 @@ import * as actionTypes from './actionTypes.js';
 import { requestRedirect, receivedCollaborationStatus } from './syncActionCreators.js';
 import { get, post } from './../shared/api.js';
 
-import axios from 'axios';
+import { apiCallCreator } from './apiCallCreator.js';
 const apiPath = 'api/';
 
+const signinPost = apiCallCreator('post', 'signin', false);
 // Note: Thunk middleware (injected during createStore) provides dispatch and getState
 // whenever an action creator has a function signature.
 // This allows us to, in part, to dispatch an action after an asynchronous call completes.
 
 const apiHelper = (dispatch, promise) => {
     dispatch({ type: actionTypes.API_CALL_STARTED });
-    promise.then(() => { console.log('111111111111111'); dispatch({ type: actionTypes.API_CALL_FINISHED })});
-        promise.catch((error) => {
-            console.log('ERROR CAUGHT IN apiHelper');
-            console.log(error);
-            dispatch({ type: actionTypes.API_CALL_FINISHED });
-        });
+    promise.then(() => { console.log('111111111111111'); dispatch({ type: actionTypes.API_CALL_FINISHED }) });
+    promise.catch((error) => {
+        console.log('ERROR CAUGHT IN apiHelper');
+        console.log(error);
+        dispatch({ type: actionTypes.API_CALL_FINISHED });
+    });
     return promise;
 }
 
@@ -26,29 +27,10 @@ const apiHelper = (dispatch, promise) => {
 // error property will be set to an string/object and payload will be null.
 // In this way, error will still provide a truthy check.
 
-const apiCallBuilder = (method, url, shouldIncludeAuthoriationHeader) => {
-    return (dispatch, data = null) => {
-        dispatch({ type: actionTypes.API_CALL_STARTED });
-        axios.call({
-            url: method === 'get' && data ? url + '/' + data : url,
-            method: method,  
-            data: method === 'get' ? null : data,
-            headers: shouldIncludeAuthoriationHeader
-                ? {'authorization': localStorage.getItem('sessionToken') }
-                : null,
-            validateStatus: () => true    
-        }).then((response) => {
-            dispatch({ type: actionTypes.API_CALL_FINISHED });
-        }).catch((error) => {
-            dispatch({ type: actionTypes.API_CALL_FINISHED });
-            
-        })
-    }
-}
 
 const handleSigninResult = (dispatch, promise, redirectPath, errorMessage) => {
     apiHelper(dispatch, promise);
-    
+
     promise.then((response) => {
         console.log('DDDDDDDDDDDDDDDDDDDDDDdd');
         console.log(response);
@@ -75,13 +57,34 @@ const handleSigninResult = (dispatch, promise, redirectPath, errorMessage) => {
 }
 
 const buildAuthorizationHeader = () => {
- return { headers: {'authorization': localStorage.getItem('sessionToken') }}
+    return { headers: { 'authorization': localStorage.getItem('sessionToken') } }
 }
 
 export const signin = (userName, password, redirectPath = '/') => {
     return (dispatch, getState) => {
-        let promise = axios.post(apiPath + 'signin', { userName, password });        
-        handleSigninResult(dispatch, promise, redirectPath, 'Invalid User Name or Password.');
+        let errorMessage = 'Invalid User Name or Password.';
+        let promise = signinPost(dispatch, { userName, password });
+        promise.then(result => {
+            if (result.payload && result.payload.sessionToken) {
+                dispatch({
+                    type: actionTypes.SIGNIN,
+                    payload: {
+                        displayName: result.payload.displayName,
+                        sessionToken: result.payload.sessionToken,
+                        isAuthorized: true
+                    }
+                });
+                dispatch(requestRedirect(redirectPath));
+            } else {
+                dispatch({
+                    type: actionTypes.SIGNIN,
+                    error: errorMessage
+                });
+            }
+        });
+        
+        //let promise = axios.post(apiPath + 'signin', { userName, password });
+        //handleSigninResult(dispatch, promise, redirectPath, 'Invalid User Name or Password.');
     };
 }
 
@@ -106,7 +109,7 @@ export const forgotPassword = (email) => {
         apiHelper(dispatch, promise);
         promise.then((result) => {
             //  TODO: Have server email the resetLink and show a message instead :)
-            dispatch({ type: actionTypes.FORGOT_PASSWORD, payload: { resetLink: result.resetLink }});
+            dispatch({ type: actionTypes.FORGOT_PASSWORD, payload: { resetLink: result.resetLink } });
         });
     };
 }
