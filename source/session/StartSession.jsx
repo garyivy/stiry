@@ -1,9 +1,8 @@
 import React from 'react';
 import { isNullOrWhitespace } from './../shared/utilities.js';
 import { connect } from 'react-redux';
-import { startedCollaboration } from './../actions/actionCreators.js';
+import { startCollaboration } from './../actions/actionCreators.js';
 import { Link } from 'react-router-dom';
-import { post } from './../shared/api.js';
 
 export const StartSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
     <div>
@@ -46,15 +45,7 @@ export class StartSessionContainer extends React.Component {
             this.setState({ error: 'Session name is required.' });
         } else {
             this.setState({ error: null });
-            post('start', { collaborationName: this.state.sessionName }).then(( result ) => {
-                if(result && result.collaborationToken) {
-                    this.props.dispatch(startedCollaboration(this.state.sessionName, result.collaborationToken));
-                    this.props.history.push('/questionnaire');                    
-                } else {
-                    // TODO: What should we tell user?
-                    console.log(result);
-                }
-            });
+            this.props.startCollaboration(this.state.sessionName);
         }
     }
     render() {
@@ -68,7 +59,20 @@ export class StartSessionContainer extends React.Component {
     }
 }
 
-const StartSession = connect()(StartSessionContainer); // Connect so dispatch is added to properties
+const mapStateToProps = (state) => {
+    return {
+        error: state.questionnaire.error 
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        startCollaboration:  (collaborationName) => 
+            dispatch(startCollaboration(collaborationName))
+    }
+}
+
+const StartSession = connect(mapStateToProps, mapDispatchToProps)(StartSessionContainer); 
 
 export default StartSession;
 

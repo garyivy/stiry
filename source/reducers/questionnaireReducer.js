@@ -3,7 +3,7 @@ import * as actionTypes from './../actions/actionTypes.js';
 
 const initialState = {
     collaborationName: null,
-    collaborationToken: null,    
+    collaborationToken: null,
     currentQuestionIndex: 0,
     answers: [
         { id: 1, prompt: 'Who are you?', text: '' },
@@ -16,28 +16,27 @@ const initialState = {
     error: null
 };
 
-const questionnaireReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case actionTypes.STARTED_COLLABORATION:
-            return { ...state, ...action.payload };
-        case actionTypes.JOINED_COLLABORATION:
-            return { ...state, ...action.payload };
+const questionnaireReducer = (state = initialState, {type, payload, error}) => {
+    switch (type) {
+        case actionTypes.START_COLLABORATION:
+        case actionTypes.JOIN_COLLABORATION:
+            return { ...initialState, ...payload }; // payload provides collaborationName/Token
         case actionTypes.RECORD_ANSWER:
             var answers = state.answers
                 .map(q => q.id === state.answers[state.currentQuestionIndex].id
-                    ? { id: q.id, prompt: q.prompt, text: action.answer }
+                    ? { id: q.id, prompt: q.prompt, text: payload.answer }
                     : q);
             return { ...state, answers };
         case actionTypes.GOTO_PREVIOUS_QUESTION:
             if (state.currentQuestionIndex > 0) {
-                return Object.assign({}, state, { currentQuestionIndex: state.currentQuestionIndex - 1 });
+                return { ...state, currentQuestionIndex: state.currentQuestionIndex - 1 }
             }
         case actionTypes.GOTO_NEXT_QUESTION:
             if (isNullOrWhitespace(state.answers[state.currentQuestionIndex].text)) {
-                return Object.assign({}, state, { error: 'An answer is required before moving on to the next step.' });
+                return { ...state, error: 'An answer is required before moving on to the next step.' };
             }
             if (state.currentQuestionIndex < state.answers.length - 1) {
-                return Object.assign({}, state, { currentQuestionIndex: state.currentQuestionIndex + 1, error: null });
+                return { ...state, currentQuestionIndex: state.currentQuestionIndex + 1, error: null }
             }
         default:
             return state;

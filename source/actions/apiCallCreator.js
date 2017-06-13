@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const apiPath = 'api/';
 
-export const apiCallCreator = (method, url, shouldIncludeAuthoriationHeader) => {
+export const apiCallCreator = (method, url, shouldIncludeAuthoriationHeader = true) => {
     return (dispatch, data = null) => {
         dispatch({ type: actionTypes.API_CALL_STARTED });
 
@@ -21,7 +21,6 @@ export const apiCallCreator = (method, url, shouldIncludeAuthoriationHeader) => 
             validateStatus: () => true
         }
 
-        console.log(config);
         const promise = new Promise((resolve, reject) => {
             axios(config).then((response) => {
                 dispatch({ type: actionTypes.API_CALL_FINISHED });
@@ -39,6 +38,7 @@ export const apiCallCreator = (method, url, shouldIncludeAuthoriationHeader) => 
                 }
 
                 if(response.status == 200) {
+                    // TODO: Ensure the express server replaces a soon-to-be stale sessionToken
                     response.data 
                         && response.data.sessionToken 
                         && response.data.sessionToken
@@ -50,9 +50,10 @@ export const apiCallCreator = (method, url, shouldIncludeAuthoriationHeader) => 
 
                 resolve({ error: 'Unable to process request at this time.'});
             }).catch((error) => {
+                dispatch({ type: actionTypes.API_CALL_FINISHED });
+
                 console.error(error);
                 resolve({ error: 'Unable to process request at this time.'});
-                dispatch({ type: actionTypes.API_CALL_FINISHED });
             });
         });
 

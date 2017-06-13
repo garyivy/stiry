@@ -4,11 +4,18 @@ import { connect } from 'react-redux';
 import { resetPassword } from './../actions/actionCreators.js'
 import { Link } from 'react-router-dom';
 
-class ResetPassword extends React.Component {
+export class ResetPassword extends React.Component {
     constructor(props) {
         super(props);
+
+        let resetToken = '';
+        if(props.location && props.location.search && props.location.search.length > 1) {
+            // Note: Token should be in querystring (?tokenHere);
+            resetToken = props.location.search.substr(1); 
+        }
+
         this.state = {
-            resetToken: props.location.search.substr(1), // TODO: Redirect if no querystring given?
+            resetToken: resetToken,
             password: '',
             passwordConfirmation: '',
             errors: {}
@@ -20,14 +27,14 @@ class ResetPassword extends React.Component {
     }
 
     onChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({ [event.target.name]: event.target.value, errors: {} });
     }
 
-    onSubmit(e) {
-        e.preventDefault();
+    onSubmit(event) {
+        event.preventDefault();
 
         if (!this.hasErrors()) {
-            this.props.submitCredentials(this.state.resetToken, this.state.password);
+            this.props.resetPassword(this.state.resetToken, this.state.password);
         }
     }
 
@@ -52,10 +59,8 @@ class ResetPassword extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // Note: repurposing the client side password error to also show signin error message from server.
-        // TODO: Move the signinError on form.
-        if(nextProps.signinError != this.state.errors.password) {
-            this.setState({ errors: { password: nextProps.signinError }});
+        if(nextProps.signinError != this.state.errors.signinError) {
+            this.setState({ errors: { signinError: nextProps.signinError }});
         }
     }
 
@@ -74,6 +79,7 @@ class ResetPassword extends React.Component {
                         <label>New Password (Re-enter)</label>
                         <input type="password" name="passwordConfirmation" value={this.state.passwordConfirmation} onChange={this.onChange} maxLength="40" />
                         {this.state.errors.passwordConfirmation && <label className="error">{this.state.errors.passwordConfirmation}</label>}
+                        {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}                        
                     </div>
                     <div className="button-container">
                         <button type="submit" className="primary">Submit</button>
@@ -93,7 +99,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        submitCredentials: (resetToken, password) => 
+        resetPassword: (resetToken, password) => 
             dispatch(resetPassword(resetToken, password))
     }
 };

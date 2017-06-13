@@ -4,13 +4,15 @@ import questionnaireReducer from './questionnaireReducer.js';
 import scrambledReducer from './scrambledReducer.js';
 import redirectReducer from './redirectReducer.js';
 import apiStatusReducer from './apiStatusReducer.js';
+import { reducer as formReducer } from 'redux-form';
 
 const combinedReducer = combineReducers({
     user:           userReducer, 
     questionnaire:  questionnaireReducer,
     scrambled:      scrambledReducer,
     redirectUrl:    redirectReducer,
-    apiStatus:      apiStatusReducer
+    apiStatus:      apiStatusReducer,
+    form:           formReducer
 });
 
 export default combinedReducer;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { forgotPassword } from './../actions/actionCreators.js'
 
-class ForgotPassword extends React.Component {
+export class ForgotPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

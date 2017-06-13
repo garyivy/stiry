@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { signin } from './../actions/actionCreators.js'
 
-class Signin extends React.Component {
+// TODO: Consider exporting/naming strategy that best support unit testing.
+export class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,34 +20,34 @@ class Signin extends React.Component {
     }
 
     onChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({ [event.target.name]: event.target.value, errors: {} });
     }
 
     onSubmit(event) {
         event.preventDefault();
 
-        if(this.hasErrors()) {
+        if (this.hasErrors()) {
             return;
         }
 
         let loggedInPath = '/';
-        if(this.props && this.props.location && this.props.location.state && this.props.location.state.from &&this.props.location.state.from.pathname) {
+        if (this.props && this.props.location && this.props.location.state && this.props.location.state.from && this.props.location.state.from.pathname) {
             loggedInPath = this.props.location.state.from.pathname;
         }
 
-        this.props.submitCredentials(this.state.userName, this.state.password, loggedInPath);
+        this.props.signin(this.state.userName, this.state.password, loggedInPath);
     }
 
     hasErrors() {
         let errors = {};
 
-        if(isNullOrWhitespace(this.state.userName)) {
+        if (isNullOrWhitespace(this.state.userName)) {
             errors.userName = 'User Name (or Email) is required.';
         }
 
-        if(isNullOrWhitespace(this.state.password)) {
+        if (isNullOrWhitespace(this.state.password)) {
             errors.password = 'Password is required.';
-        } 
+        }
 
         this.setState({ errors: errors });
 
@@ -54,10 +55,8 @@ class Signin extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // Note: repurposing the client side password error to also show signin error message from server.
-        // TODO: Move the signinError on form.
-        if(nextProps.signinError != this.state.errors.password) {
-            this.setState({ errors: { password: nextProps.signinError }});
+        if (nextProps.signinError != this.state.errors.signinError) {
+            this.setState({ errors: { signinError: nextProps.signinError } });
         }
     }
 
@@ -67,18 +66,19 @@ class Signin extends React.Component {
                 <h1>Stiry Sign In</h1>
                 <p>
                     If you are a new user, <Link to="/register">click here to add your credentials.</Link>
-                    <br/>If you forgot your password , <Link to="/forgot">click here to have a temporary password emailed to you.</Link>
+                    <br />If you forgot your password , <Link to="/forgot">click here to have a temporary password emailed to you.</Link>
                 </p>
                 <form onSubmit={this.onSubmit} className="form">
                     <div className="field">
                         <label>User Name (or Email)</label>
-                        <input name="userName" value={this.state.userName} onChange={this.onChange} maxLength="20"/>
+                        <input name="userName" value={this.state.userName} onChange={this.onChange} maxLength="20" />
                         {this.state.errors.userName && <label className="error">{this.state.errors.userName}</label>}
                     </div>
                     <div className="field">
                         <label>Password</label>
-                        <input type="password" name="password"  value={this.state.password} onChange={this.onChange} maxLength="40"/>
+                        <input type="password" name="password" value={this.state.password} onChange={this.onChange} maxLength="40" />
                         {this.state.errors.password && <label className="error">{this.state.errors.password}</label>}
+                        {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}
                     </div>
                     <div className="button-container">
                         <button type="submit" className="primary">Login</button>
@@ -90,6 +90,7 @@ class Signin extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log('Signin mapStateToProps called'); // TODO: Remove
     return {
         signinError: state.user.error
     };
@@ -97,7 +98,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        submitCredentials: (userName, password, redirectUrl) => 
+        signin: (userName, password, redirectUrl) =>
             dispatch(signin(userName, password, redirectUrl))
     };
 };

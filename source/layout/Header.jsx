@@ -12,7 +12,6 @@ const HeaderPresentation = ({isAuthorizedUser, isBusy}) => (
 );
 
 const mapStateToProps = (state) => {
-    console.log('Request count =' + state.apiStatus.countRequestsInProgress);
     return { 
         isAuthorizedUser: state.user.isAuthorizedUser,
         isBusy: state.apiStatus.countRequestsInProgress > 0

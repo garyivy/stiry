@@ -6,7 +6,6 @@ export const signinComplete = userDisplayName =>
 export const signinError = message => 
     ({ type: actionTypes.SIGNIN_COMPLETE, message });
 
-
 export const startedCollaboration = (collaborationName, collaborationToken) =>
     ({ type: actionTypes.STARTED_COLLABORATION, payload: { collaborationName, collaborationToken }});
 

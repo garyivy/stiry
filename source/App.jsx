@@ -11,7 +11,8 @@ import {
 import history from './shared/history';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
+import thunk from './actions/thunk.js';
+
 import combinedReducer from './reducers/combinedReducer.js';
 
 import './style/app.scss';

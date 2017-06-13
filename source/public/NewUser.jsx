@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { registerUser }from './../actions/actionCreators.js'
 import { Link } from 'react-router-dom';
 
-class NewUser extends React.Component {
+export class NewUser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,14 +22,14 @@ class NewUser extends React.Component {
     }
 
     onChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({ [event.target.name]: event.target.value, errors: {} });
     }
 
     onSubmit(event) {
         event.preventDefault();
 
         if(!this.hasErrors()) {
-            this.props.submitCredentials(this.state.userName, this.state.email, this.state.password);
+            this.props.registerUser(this.state.userName, this.state.email, this.state.password);
         }
     }
 
@@ -52,8 +52,8 @@ class NewUser extends React.Component {
 
         if(isNullOrWhitespace(this.state.password)) {
             errors.password = 'Password is required.';
-        } else if(this.state.password.length < 6) {
-            errors.password = 'Password must be at least 6 characters long.';            
+        } else if(this.state.password.length < 8) {
+            errors.password = 'Password must be at least 8 characters long.';            
         }
 
         if(isNullOrWhitespace(this.state.passwordConfirmation)) {
@@ -68,10 +68,8 @@ class NewUser extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // Note: repurposing the client side password error to also show signin error message from server.
-        // TODO: Move the signinError on form.
-        if(nextProps.signinError != this.state.errors.password) {
-            this.setState({ errors: { password: nextProps.signinError }});
+        if(nextProps.signinError != this.state.errors.signinError) {
+            this.setState({ errors: { signinError: nextProps.signinError }});
         }
     }
 
@@ -84,6 +82,7 @@ class NewUser extends React.Component {
                         <label>User Name</label>
                         <input name="userName" value={this.state.userName} onChange={this.onChange} maxLength="20"/>
                         {this.state.errors.userName && <label className="error">{this.state.errors.userName}</label>}
+                        {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}
                     </div>
                     <div className="field">
                         <label>Email</label>
@@ -122,7 +121,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        submitCredentials: (userName, email, password) => 
+        registerUser: (userName, email, password) => 
             dispatch(registerUser(userName, email, password))
     };
 };
