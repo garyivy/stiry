@@ -1,15 +1,15 @@
-import * as actionTypes from './actionTypes.js';
-import { requestRedirect } from './syncActionCreators.js';
 import axios from 'axios';
+import { apiStarted, apiFinished } from './apiStatusActionCreators.js';
+import { signout } from './authenticationActionCreators.js';
 
 const apiPath = 'api/';
 
-export const apiCallCreator = (method, url, shouldIncludeAuthoriationHeader = true) => {
+export const createApiCall = (method, url, shouldIncludeAuthorizationHeader = true) => {
     return (dispatch, data = null) => {
-        dispatch({ type: actionTypes.API_CALL_STARTED });
+        dispatch(apiStarted());
 
         let headers = { 'Content-type': 'application/json' };
-        if(shouldIncludeAuthoriationHeader) {
+        if(shouldIncludeAuthorizationHeader) {
             headers.authorization = localStorage.getItem('sessionToken');
         }
 
@@ -21,15 +21,12 @@ export const apiCallCreator = (method, url, shouldIncludeAuthoriationHeader = tr
             validateStatus: () => true
         }
 
-        console.log(config);
-
         const promise = new Promise((resolve, reject) => {
             axios(config).then((response) => {
-                dispatch({ type: actionTypes.API_CALL_FINISHED });
+                dispatch(apiFinished());
 
-                if(shouldIncludeAuthoriationHeader && response.status == 401) {
-                    dispatch({ type: actionTypes.SIGNOUT});
-                    dispatch(requestRedirect('/'));
+                if(shouldIncludeAuthorizationHeader && response.status == 401) {
+                    dispatch(signout());
                     resolve({});
                     return;
                 }
@@ -52,7 +49,7 @@ export const apiCallCreator = (method, url, shouldIncludeAuthoriationHeader = tr
 
                 resolve({ error: 'Unable to process request at this time.'});
             }).catch((error) => {
-                dispatch({ type: actionTypes.API_CALL_FINISHED });
+                dispatch(apiFinished());
 
                 console.error(error);
                 resolve({ error: 'Unable to process request at this time.'});
