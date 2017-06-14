@@ -1,8 +1,8 @@
 import React from 'react';
-import { isNullOrWhitespace } from './../shared/utilities.js';
+import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { signin } from './../actions/actionCreators.js'
+import { signin } from './../../actions/actionCreators.js'
 
 // TODO: Consider exporting/naming strategy that best support unit testing.
 export class Signin extends React.Component {

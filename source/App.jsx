@@ -8,7 +8,8 @@ import {
   Redirect,
   withRouter  
 } from 'react-router-dom';
-import history from './shared/history';
+import { createBrowserHistory } from 'history';
+const history = createBrowserHistory();
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from './actions/thunk.js';
@@ -17,22 +18,22 @@ import combinedReducer from './reducers/combinedReducer.js';
 
 import './style/app.scss';
 
-import PrivateRoute from './private/PrivateRoute.jsx';
-import Header from './layout/Header.jsx';
-import Menu from './layout/Menu.jsx';
-import Home from './public/Home.jsx';
-import Signin from './public/Signin.jsx';
-import Signout from './private/Signout.jsx';
-import StartSession from './session/StartSession.jsx';
-import JoinSession from './session/JoinSession.jsx';
-import Questionnaire from './session/Questionnaire.jsx';
-import Wait from './session/Wait.jsx';
-import Scrambled from './session/Scrambled.jsx';
-import About from './public/About.jsx';
-import NewUser from './public/NewUser.jsx';
-import ForgotPassword from './public/ForgotPassword.jsx';
-import ResetPassword from './public/ResetPassword.jsx';
-import Redirector from './public/Redirector.jsx';
+import PrivateRoute from './components/authentication/PrivateRoute.jsx';
+import Header from './components/layout/Header.jsx';
+import Menu from './components/layout/Menu.jsx';
+import Home from './components/public/Home.jsx';
+import Signin from './components/authentication/Signin.jsx';
+import Signout from './components/authentication/Signout.jsx';
+import StartSession from './components/collaboration/StartSession.jsx';
+import JoinSession from './components/collaboration/JoinSession.jsx';
+import Questionnaire from './components/collaboration/Questionnaire.jsx';
+import Wait from './components/collaboration/Wait.jsx';
+import Scrambled from './components/collaboration/Scrambled.jsx';
+import About from './components/public/About.jsx';
+import NewUser from './components/authentication/NewUser.jsx';
+import ForgotPassword from './components/authentication/ForgotPassword.jsx';
+import ResetPassword from './components/authentication/ResetPassword.jsx';
+import Redirector from './components/layout/Redirector.jsx';
 
 let store = createStore(combinedReducer, {}, applyMiddleware(thunk) );
 

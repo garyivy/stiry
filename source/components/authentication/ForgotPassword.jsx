@@ -1,8 +1,8 @@
 import React from 'react';
-import { isNullOrWhitespace } from './../shared/utilities.js';
+import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { forgotPassword } from './../actions/actionCreators.js'
+import { forgotPassword } from './../../actions/actionCreators.js'
 
 export class ForgotPassword extends React.Component {
     constructor(props) {

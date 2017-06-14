@@ -1,7 +1,7 @@
 import React from 'react';
-import { isNullOrWhitespace } from './../shared/utilities.js';
+import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
-import { registerUser }from './../actions/actionCreators.js'
+import { registerUser }from './../../actions/actionCreators.js'
 import { Link } from 'react-router-dom';
 
 export class NewUser extends React.Component {

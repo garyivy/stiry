@@ -1,16 +1,16 @@
 import React from 'react';
-import { isNullOrWhitespace } from './../shared/utilities.js';
+import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
-import { startCollaboration } from './../actions/actionCreators.js';
+import { startCollaboration } from './../../actions/actionCreators.js';
 import { Link } from 'react-router-dom';
 
 export const StartSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
     <div>
-        <h1>Start a Stiry Session</h1>
+        <h1>Start a Stiry Collaboration</h1>
         <p>
-            A session (collaboration) name is needed to group participants together.
-            One person starts a session here.  The remaining partipants will need this name to join the session by
-            &nbsp;<Link to="/joinsession">clicking here</Link> or choosing "Join Session" from the site menu.
+            A collaboration name is needed to group participants together.
+            One person starts a collaboration here.  The remaining partipants will need this name to join the collaboration by
+            &nbsp;<Link to="/joinsession">clicking here</Link> or choosing "Join Collaboration" from the site menu.
         </p>
         <div className="field">
             <label>Session Name</label>
@@ -37,7 +37,7 @@ export class StartSessionContainer extends React.Component {
     }
 
     onChange(event) {
-        this.setState({ sessionName: event.target.value });
+        this.setState({ sessionName: event.target.value, error: null });
     }
 
     onSubmit() {
@@ -61,7 +61,7 @@ export class StartSessionContainer extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        error: state.questionnaire.error 
+        error: state.collaboration.error 
     }
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { gotoPreviousQuestion, gotoNextQuestion, submitQuestionnaire } from './../actions/actionCreators.js';
+import { gotoPreviousQuestion, gotoNextQuestion, submitQuestionnaire } from './../../actions/actionCreators.js';
 import Question from './Question.jsx';
 import StepIndicator from './StepIndicator.jsx';
 
@@ -23,7 +23,7 @@ export const ScrambledPresentation = ({status, answers, collaborationName}) => (
 );
 
 const mapStateToProps = (state) => {
-    let scrambled = state.scrambled || {};
+    let scrambled = state.collaboration;
     return {
         status:     scrambled.status,
         answers:    scrambled.answers,

@@ -1,9 +1,8 @@
 import React from 'react';
-import { isNullOrWhitespace } from './../shared/utilities.js';
+import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
-import { joinedCollaboration } from './../actions/actionCreators.js';
+import { joinedCollaboration } from './../../actions/actionCreators.js';
 import { Link } from 'react-router-dom';
-import { post } from './../shared/api.js';
 
 export const JoinSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
     <div>
@@ -47,6 +46,7 @@ export class JoinSessionContainer extends React.Component {
             this.setState({ error: 'Session name is required.' });
         } else {
             this.setState({ error: null });
+            /*
             post('join', { collaborationName: this.state.sessionName }).then(( result ) => {
                 if(result && result.collaborationToken) {
                     this.props.dispatch(joinedCollaboration(this.state.sessionName, result.collaborationToken));
@@ -56,6 +56,7 @@ export class JoinSessionContainer extends React.Component {
                     console.log(result);
                 }
             });
+        */
         }
     }
     render() {

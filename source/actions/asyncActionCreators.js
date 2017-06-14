@@ -15,21 +15,21 @@ import { apiCallCreator } from './apiCallCreator.js'
 export const signin = (userName, password, redirectPath = '/') => {
     return (dispatch, getState) => {
         let promise = signinPost(dispatch, { userName, password });
-        handleSigninResult(dispatch, promise, redirectPath, 'Invalid User Name or Password.')
+        handleAuthenticationResult(dispatch, promise, redirectPath, 'Invalid User Name or Password.')
     };
 }
 
 export const registerUser = (userName, email, password) => {
     return (dispatch, getState) => {
         let promise = registerUserPost(dispatch, { userName, email, password });
-        handleSigninResult(dispatch, promise, '/', 'Unable to register user.');
+        handleAuthenticationResult(dispatch, promise, '/', 'Unable to register user.');
     };
 }
 
 export const resetPassword = (resetToken, password) => {
     return (dispatch, getState) => {
         let promise = resetPasswordPost(dispatch, { resetToken, password });
-        handleSigninResult(dispatch, promise, '/', 'Unable to reset password.');
+        handleAuthenticationResult(dispatch, promise, '/', 'Unable to reset password.');
     };
 }
 
@@ -43,7 +43,7 @@ export const forgotPassword = (email) => {
 export const startCollaboration = collaborationName => {
     return dispatch => {
         startCollaborationPost(dispatch, { collaborationName }).then(result => {
-            result.payload.collaborationToken && requestRedirect('/questionnaire');
+            result.payload.collaborationToken && dispatch(requestRedirect('/questionnaire'));
             dispatch({ type: actionTypes.START_COLLABORATION, ...result });
         })   
     }
@@ -52,7 +52,7 @@ export const startCollaboration = collaborationName => {
 export const joinCollaboration = collaborationName => {
     return dispatch => {
         joinCollaborationPost(dispatch, { collaborationName }).then(result => {
-            result.payload.collaborationToken && requestRedirect('/questionnaire');
+            result.payload.collaborationToken && dispatch(requestRedirect('/questionnaire'));
             dispatch({ type: actionTypes.JOIN_COLLABORATION, ...result });
         })   
     }
@@ -60,20 +60,21 @@ export const joinCollaboration = collaborationName => {
 
 export const submitQuestionnaire = () => {
     return (dispatch, getState) => {
-        let questionnaire = getState().questionnaire;
-        submitQuestionnairePost(dispatch, questionnaire).then(result => {
-            if (result && result.message == 'Questionnaire saved.') {
+        let collaboration = getState().collaboration;
+        submitQuestionnairePost(dispatch, collaboration).then(result => {
+            console.log(result);
+            if (result.payload.message == 'Questionnaire saved.') {
                 dispatch(requestRedirect('/wait'));
             }
         });
     }
 }
 
-export const requestCollaborationStatus = () => {
+export const getCollaborationStatus = () => {
     return (dispatch, getState) => {
-        let collaborationToken = getState().questionnaire.collaborationToken;
+        let collaborationToken = getState().collaboration.collaborationToken;
         collaborationStatusGet(dispatch, collaborationToken).then(result => {
-            dispatch(receivedCollaborationStatus(result.payload));
+            dispatch({ type: actionTypes.GET_COLLABORATION_STATUS, ...result });
         })
     }
 }
@@ -88,7 +89,7 @@ const joinCollaborationPost = apiCallCreator('post', 'join');
 const submitQuestionnairePost = apiCallCreator('post', 'questionnaires');
 const collaborationStatusGet = apiCallCreator('get', 'collaborationStatus');
 
-const handleSigninResult = (dispatch, promise, redirectPath, errorMessage) => {
+const handleAuthenticationResult = (dispatch, promise, redirectPath, errorMessage) => {
     promise.then(result => {
         if (result.payload && result.payload.sessionToken) {
             dispatch({

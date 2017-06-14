@@ -21,6 +21,8 @@ export const apiCallCreator = (method, url, shouldIncludeAuthoriationHeader = tr
             validateStatus: () => true
         }
 
+        console.log(config);
+
         const promise = new Promise((resolve, reject) => {
             axios(config).then((response) => {
                 dispatch({ type: actionTypes.API_CALL_FINISHED });
@@ -44,7 +46,7 @@ export const apiCallCreator = (method, url, shouldIncludeAuthoriationHeader = tr
                         && response.data.sessionToken
                         && localStorage.setItem('sessionToken', response.data.sessionToken);
                     
-                    resolve({ payload: response.data });
+                    resolve({ payload: response.data.payload || response.data }); // TODO: Decide on uniform response structure
                     return;
                 }
 

@@ -17,10 +17,10 @@ export const StepIndicatorPresentation = ({totalSteps, currentQuestionIndex}) =>
 }
 
 const mapStateToProps = (state) => {
-    let questionnaire = state.questionnaire || {};
+    let { answers, currentQuestionIndex } = state.collaboration;
     return {
-        totalSteps: questionnaire.answers.length,
-        currentQuestionIndex: questionnaire.currentQuestionIndex
+        totalSteps:             answers.length,
+        currentQuestionIndex:   currentQuestionIndex
     }
 }
 
