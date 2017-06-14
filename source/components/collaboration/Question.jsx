@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { recordAnswer } from './../../actions/actionCreators.js';
+import { recordAnswer } from './../../actions/collaborationActionCreators.js';
 
 export const QuestionPresentation = ({questionText, initialAnswer, onAnswerChange, error}) => ( 
     <div className="question-container">
@@ -10,8 +10,8 @@ export const QuestionPresentation = ({questionText, initialAnswer, onAnswerChang
     </div>
 );
 
-const mapStateToProps = (state) => {
-    let { answers, currentQuestionIndex, error } = state.collaboration;
+const mapStateToProps = ({collaboration}) => {
+    let { answers, currentQuestionIndex, error } = collaboration;
     return {
         questionText:   answers[currentQuestionIndex].prompt,
         initialAnswer:  answers[currentQuestionIndex].text,

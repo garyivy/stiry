@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { resetRedirect } from './../../actions/actionCreators.js';
+import { resetRedirect } from './../../actions/redirectUrlActionCreators.js';
 
 // HACK: This component renders a <Redirect /> based on a dispatched REQUEST_REDIRECT action.
 // TODO: Revisit once react-router-redux version 5 is out of beta.
@@ -30,11 +30,7 @@ class Redirector extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        redirectUrl: state.redirectUrl
-    }
-}
+const mapStateToProps = ({redirectUrl}) => redirectUrl;
 
 const mapDispatchToProps = (dispatch) => {
     return {

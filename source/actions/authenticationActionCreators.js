@@ -1,6 +1,6 @@
 import { SIGNIN, SIGNOUT } from './actionTypes.js'
 import { requestRedirect } from './redirectUrlActionCreators.js';
-import { createApiCall } from './apiCallCreator.js'
+import { createApiCall } from './createApiCall.js'
 
 const signinPost = createApiCall('post', 'signin', false);
 const registerUserPost = createApiCall('post', 'users', false);

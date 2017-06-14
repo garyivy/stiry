@@ -2,7 +2,7 @@ import React from 'react';
 import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { signin } from './../../actions/actionCreators.js'
+import { signin } from './../../actions/authenticationActionCreators.js'
 
 // TODO: Consider exporting/naming strategy that best support unit testing.
 export class Signin extends React.Component {
@@ -89,10 +89,10 @@ export class Signin extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({authentication}) => {
     console.log('Signin mapStateToProps called'); // TODO: Remove
     return {
-        signinError: state.user.error
+        signinError: authentication.error
     };
 };
 

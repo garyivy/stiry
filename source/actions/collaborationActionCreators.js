@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes.js';
-import { requestRedirect } from './syncActionCreators.js';
+import { requestRedirect } from './redirectUrlActionCreators.js';
 import { createApiCall } from './createApiCall.js'
 
 // Note: Thunk middleware (injected during createStore) provides dispatch and getState

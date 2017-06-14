@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getCollaborationStatus } from './../../actions/actionCreators.js';
+import { getCollaborationStatus } from './../../actions/collaborationActionCreators.js';
 
 class Wait extends React.Component {
     constructor(props) {
@@ -43,8 +43,7 @@ class Wait extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    let collaboration = state.collaboration;
+const mapStateToProps = ({collaboration}) => {
     return {
         incompleteSurveyCount: collaboration.incompleteSurveyCount,
         isScrambled: collaboration.isScrambled

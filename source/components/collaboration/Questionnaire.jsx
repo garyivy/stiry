@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { gotoPreviousQuestion, gotoNextQuestion, submitQuestionnaire } from './../../actions/actionCreators.js';
+import { gotoPreviousQuestion, gotoNextQuestion, submitQuestionnaire } from './../../actions/authenticationActionCreators.js';
 import Question from './Question.jsx';
 import { QuestionPresentation } from './Question.jsx';
 import StepIndicator from './StepIndicator.jsx';
@@ -23,14 +23,14 @@ export const QuestionnairePresentation = ({
     </div>
 );
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({collaboration}) => {
     let { shouldShowPreviousButton, 
         shouldShowNextButton, 
         shouldShowSubmitButton, 
         collaborationName 
-    } = state.collaboration;    
+    } = collaboration;    
 
-    // TODO: Note why ...state.collaboration would be inefficient here (shallow compare would result in unnecessary renders).
+    // TODO: Note why ...collaboration would be inefficient here (shallow compare would result in unnecessary renders).
     return { 
         shouldShowPreviousButton, 
         shouldShowNextButton, 

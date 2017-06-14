@@ -1,7 +1,7 @@
 import React from 'react';
 import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
-import { resetPassword } from './../../actions/actionCreators.js'
+import { resetPassword } from './../../actions/authenticationActionCreators.js'
 import { Link } from 'react-router-dom';
 
 export class ResetPassword extends React.Component {
@@ -91,9 +91,9 @@ export class ResetPassword extends React.Component {
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({authentication}) => {
     return {
-        signinError: state.user.error
+        signinError: authentication.error
     }
 };
 

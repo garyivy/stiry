@@ -1,7 +1,7 @@
 import React from 'react';
 import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
-import { joinedCollaboration } from './../../actions/actionCreators.js';
+import { joinedCollaboration } from './../../actions/collaborationActionCreators.js';
 import { Link } from 'react-router-dom';
 
 export const JoinSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (

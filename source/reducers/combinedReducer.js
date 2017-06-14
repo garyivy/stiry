@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import userReducer from './userReducer.js';
+import authenticationReducer from './authenticationReducer.js';
 import collaborationReducer from './collaborationReducer.js';
 import redirectReducer from './redirectReducer.js';
 import apiStatusReducer from './apiStatusReducer.js';
 import { reducer as formReducer } from 'redux-form';
 
 const combinedReducer = combineReducers({
-    user:           userReducer, 
+    authentication: authenticationReducer, 
     collaboration:  collaborationReducer,
     redirectUrl:    redirectReducer,
     apiStatus:      apiStatusReducer,

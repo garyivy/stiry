@@ -26,9 +26,9 @@ const Signout = ({ isSignedOut, onRequestSignout }) => {
     )
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({authentication}) => {
     return {
-        isSignedOut: !state.user.isAuthorizedUser,
+        isSignedOut: !authentication.isAuthorizedUser,
     }
 }
 

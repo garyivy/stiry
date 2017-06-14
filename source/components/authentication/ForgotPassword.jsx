@@ -2,7 +2,7 @@ import React from 'react';
 import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { forgotPassword } from './../../actions/actionCreators.js'
+import { forgotPassword } from './../../actions/authenticationActionCreators.js'
 
 export class ForgotPassword extends React.Component {
     constructor(props) {
@@ -68,9 +68,9 @@ export class ForgotPassword extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({authentication}) => {
     return {
-        resetLink: state.user.resetLink // TODO: Send email with link instead showing on page :)
+        resetLink: authentication.resetLink // TODO: Send email with link instead showing on page :)
     }
 };
 

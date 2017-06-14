@@ -1,7 +1,7 @@
 import React from 'react';
 import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
-import { startCollaboration } from './../../actions/actionCreators.js';
+import { startCollaboration } from './../../actions/collaborationActionCreators.js';
 import { Link } from 'react-router-dom';
 
 export const StartSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
@@ -59,9 +59,9 @@ export class StartSessionContainer extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({collaboration}) => {
     return {
-        error: state.collaboration.error 
+        error: collaboration.error 
     }
 }
 
