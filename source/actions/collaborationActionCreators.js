@@ -2,10 +2,6 @@ import * as actionTypes from './actionTypes.js';
 import { requestRedirect } from './redirectUrlActionCreators.js';
 import { createApiCall } from './createApiCall.js'
 
-// Note: Thunk middleware (injected during createStore) provides dispatch and getState
-// whenever an action creator has a function signature.
-// This allows us to, in part, to dispatch an action after an asynchronous call completes.
-
 // Note: action property names are following FLux Standard Action recommendation.
 // However, we are deviating from how it recommends the error boolean property and 
 // overloading the payload with an Error.  Instead, when there are error(s), the
@@ -21,10 +17,15 @@ export const gotoPreviousQuestion = () =>
 export const gotoNextQuestion = () => 
     ({ type: actionTypes.GOTO_NEXT_QUESTION});
 
+// Note: Thunk middleware (injected during createStore) provides dispatch and getState
+// whenever an action creator has a function signature.
+// This allows us to, in part, to dispatch an action after an asynchronous call completes.
+
 const startCollaborationPost = createApiCall('post', 'start');
 const joinCollaborationPost = createApiCall('post', 'join');
 const submitQuestionnairePost = createApiCall('post', 'questionnaires');
 const collaborationStatusGet = createApiCall('get', 'collaborationStatus');
+const scrambledGet = createApiCall('get', 'scrambled');
 
 export const startCollaboration = collaborationName => {
     return dispatch => {
@@ -61,6 +62,16 @@ export const getCollaborationStatus = () => {
         let collaborationToken = getState().collaboration.collaborationToken;
         collaborationStatusGet(dispatch, collaborationToken).then(result => {
             dispatch({ type: actionTypes.GET_COLLABORATION_STATUS, ...result });
+        })
+    }
+}
+
+export const getScrambledResult = () => {
+    return (dispatch, getState) => {
+        let collaborationToken = getState().collaboration.collaborationToken;
+        scrambledGet(dispatch, collaborationToken).then(result => {
+            console.log(result);
+            dispatch({ type: actionTypes.GET_SCRAMBLED_RESULT, ...result });
         })
     }
 }

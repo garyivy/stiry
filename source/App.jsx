@@ -1,24 +1,19 @@
 import React from 'react';
 import { render } from 'react-dom';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch,
-  Redirect,
-  withRouter  
-} from 'react-router-dom';
+
+// Routing
+import { BrowserRouter, Route,  Link,  Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-const history = createBrowserHistory();
-import { Provider } from 'react-redux';
+import PrivateRoute from './components/authentication/PrivateRoute.jsx';
+import CollaborationRoute from './components/collaboration/CollaborationRoute.jsx';
+
+// Redux
 import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import combinedReducer from './reducers/combinedReducer.js';
 import thunk from './actions/thunk.js';
 
-import combinedReducer from './reducers/combinedReducer.js';
-
-import './style/app.scss';
-
-import PrivateRoute from './components/authentication/PrivateRoute.jsx';
+// Components
 import Header from './components/layout/Header.jsx';
 import Menu from './components/layout/Menu.jsx';
 import Home from './components/public/Home.jsx';
@@ -35,9 +30,11 @@ import ForgotPassword from './components/authentication/ForgotPassword.jsx';
 import ResetPassword from './components/authentication/ResetPassword.jsx';
 import Redirector from './components/layout/Redirector.jsx';
 
-let store = createStore(combinedReducer, {}, applyMiddleware(thunk) );
+// Style
+import './style/app.scss';
 
-// TODO: /questionnaire should redirect to /start if no collaborationToken
+
+// Layout
 const layout = (
   <div>
     <Redirector/>
@@ -53,8 +50,8 @@ const layout = (
         <Route path="/reset" component={ResetPassword} />
         <PrivateRoute path="/start" component={StartSession} />
         <PrivateRoute path="/join" component={JoinSession} />
-        <PrivateRoute path="/questionnaire" component={Questionnaire} />
-        <PrivateRoute path="/wait" component={Wait} />
+        <CollaborationRoute path="/questionnaire" component={Questionnaire} />
+        <CollaborationRoute path="/wait" component={Wait} />
         <Route path="/scrambled" component={Scrambled} />
         <Route path="/about" component={About} />
       </Switch>
@@ -62,6 +59,11 @@ const layout = (
   </div>
 );
 
+// Stiching it together
+let store = createStore(combinedReducer, {}, applyMiddleware(thunk) );
+const history = createBrowserHistory();
 render(
-  <Provider store={store}><Router history={history}>{layout}</Router></Provider>,
-    document.getElementById('app'));
+  <Provider store={store}>
+    <BrowserRouter history={history}>{layout}</BrowserRouter>
+  </Provider>,
+  document.getElementById('app'));

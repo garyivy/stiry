@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const PrivateRouteUnconnected = ({ component: Component, ...rest }) => { 
+const PrivateRoute = ({ component: Component, ...rest }) => { 
     const isAuthorizedUser = () => rest.isAuthorizedUser; // TODO: Could I simply check props.isAuthorizedUser in the Route render?
     return (
       <Route {...rest} render={ props => (
@@ -19,6 +19,6 @@ const mapStateToProps = ({authentication}) => {
     }
 }
 
-const PrivateRoute = connect(mapStateToProps, undefined)(PrivateRouteUnconnected);
+const ConnectedPrivateRoute = connect(mapStateToProps, undefined)(PrivateRoute);
 
-export default PrivateRoute;
+export default ConnectedPrivateRoute;

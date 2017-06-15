@@ -43,16 +43,16 @@ export const createApiCall = (method, url, shouldIncludeAuthorizationHeader = tr
                         && response.data.sessionToken
                         && localStorage.setItem('sessionToken', response.data.sessionToken);
                     
-                    resolve({ payload: response.data.payload || response.data }); // TODO: Decide on uniform response structure
+                    resolve({ payload: response.data.payload || response.data, error: null }); // TODO: Decide on uniform response structure
                     return;
                 }
 
-                resolve({ error: 'Unable to process request at this time.'});
+                resolve({ error: 'Unable to process request at this time.', payload: null });
             }).catch((error) => {
                 dispatch(apiFinished());
 
                 console.error(error);
-                resolve({ error: 'Unable to process request at this time.'});
+                resolve({ error: 'Unable to process request at this time.', payload: null });
             });
         });
 

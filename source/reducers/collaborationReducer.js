@@ -17,12 +17,12 @@ const initialState = {
 
     currentQuestionIndex: 0,
     answers: [
-        { id: 1, prompt: 'Who are you?', text: '' },
-        { id: 2, prompt: 'Where did you go?', text: '' },
-        { id: 3, prompt: 'How did you get there?', text: '' },
-        { id: 4, prompt: 'Who did you meet?', text: '' },
-        { id: 5, prompt: 'What did they say to you?', text: '' },
-        { id: 6, prompt: 'What did you say to them?', text: '' }
+        { id: 1, prompt: 'Who are you?', text: '1' }, // TODO: Remove hard code
+        { id: 2, prompt: 'Where did you go?', text: '2' },
+        { id: 3, prompt: 'How did you get there?', text: '3' },
+        { id: 4, prompt: 'Who did you meet?', text: '4' },
+        { id: 5, prompt: 'What did they say to you?', text: '5' },
+        { id: 6, prompt: 'What did you say to them?', text: '6' }
     ],
 
     error: null
@@ -35,10 +35,10 @@ const collaborationReducer = (state = initialState, { type, payload, error }) =>
             return { ...initialState, ...payload }; // payload provides collaborationName/Token
 
         case actionTypes.GET_COLLABORATION_STATUS:
-            return { ...state, ...payload }; // TODO: Note ...payload does here.
+            return { ...state, ...payload }; // TODO: Note ...payload provides here.
 
         case actionTypes.GET_SCRAMBLED_RESULT:
-            return { ...state, answers: payload.scrambled };
+            return { ...state, answers: payload[0].answers };
 
         case actionTypes.RECORD_ANSWER:
             var answers = state.answers

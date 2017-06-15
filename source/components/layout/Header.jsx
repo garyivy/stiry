@@ -13,7 +13,7 @@ const HeaderPresentation = ({isAuthorizedUser, isBusy}) => (
 
 const mapStateToProps = (state) => {
     return { 
-        isAuthorizedUser: state.user.isAuthorizedUser,
+        isAuthorizedUser: state.authentication.isAuthorizedUser,
         isBusy: state.apiStatus.countRequestsInProgress > 0
     };
 }

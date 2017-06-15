@@ -1,4 +1,4 @@
-import { SIGNIN, SIGNOUT } from './actionTypes.js'
+import { SIGNIN, SIGNOUT, FORGOT_PASSWORD } from './actionTypes.js'
 import { requestRedirect } from './redirectUrlActionCreators.js';
 import { createApiCall } from './createApiCall.js'
 
@@ -38,19 +38,17 @@ export const resetPassword = (resetToken, password) => {
 export const forgotPassword = (email) => {
     return (dispatch, getState) => {
         forgotPasswordPost(dispatch, { email }).then(result =>
-            dispatch({ type: actionTypes.FORGOT_PASSWORD, ...result }))
+            dispatch({ type: FORGOT_PASSWORD, ...result }))
     }
 }
 
 const handleAuthenticationResult = (dispatch, promise, redirectPath, errorMessage) => {
-    promise.then(result => {
-        let { payload } = result.payload;
-
-        if (payload && payload.sessionToken) {
+    promise.then(({payload}) => {
+        if (payload && payload.userDisplayName) {
             dispatch({
                 type: SIGNIN,
                 payload: {
-                    displayName: payload.displayName,
+                    displayName: payload.userDisplayName,
                     isAuthorized: true
                 }
             });

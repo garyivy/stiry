@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { gotoPreviousQuestion, gotoNextQuestion, submitQuestionnaire } from './../../actions/authenticationActionCreators.js';
+import { gotoPreviousQuestion, gotoNextQuestion, submitQuestionnaire } from './../../actions/collaborationActionCreators.js';
 import Question from './Question.jsx';
 import { QuestionPresentation } from './Question.jsx';
 import StepIndicator from './StepIndicator.jsx';

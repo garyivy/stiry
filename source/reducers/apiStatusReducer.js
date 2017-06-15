@@ -7,7 +7,7 @@ const initialState = {
 const apiStatusReducer = (state = initialState, {type}) => {
     switch (type) {
         case actionTypes.API_CALL_STARTED:
-            return { countRequestsInProgress: state.countRequestsInProgress + 1};
+            return { countRequestsInProgress: state.countRequestsInProgress + 1 };
 
         case actionTypes.API_CALL_FINISHED:
             return {

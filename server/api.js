@@ -4,6 +4,7 @@ const authenticateSignin = require('./middleware/authenticateSignin.js');
 const requestLogger = require('./middleware/requestLogger.js');
 const user = require('./controllers/user.js');
 const collaboration = require('./controllers/collaboration.js');
+const ensureCollaborationToken = require('./middleware/ensureCollaborationToken.js');
 const express = require('express');
 const api = express.Router();
 
@@ -24,9 +25,9 @@ api.route('/reset').post(authenticatePasswordResetToken, user.onResetPassword);
 
 api.route('/start').post(authenticate, collaboration.onStartCollaboration);
 api.route('/join').post(authenticate, collaboration.onJoinCollaboration);
-api.route('/collaborationStatus/:collaborationToken').get(authenticate, collaboration.onGetStatus);
-api.route('/questionnaires').post(authenticate, collaboration.onSubmitQuestionnaire);
-api.route('/questionnaires').get(authenticate, onPlaceholder);
+api.route('/collaborationStatus/:collaborationToken').get(authenticate, ensureCollaborationToken, collaboration.onGetStatus);
+api.route('/questionnaires').post(authenticate, ensureCollaborationToken, collaboration.onSubmitQuestionnaire);
+api.route('/scrambled/:collaborationToken').get(authenticate, ensureCollaborationToken, collaboration.onGetScrambled);
 
 api.route('/collaborations').get(collaboration.onGetCollaborations);
 api.route('/answers').get(collaboration.onGetAnswers);

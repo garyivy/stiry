@@ -3,14 +3,15 @@ import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { signin } from './../../actions/authenticationActionCreators.js'
+import PrimaryButton from './../../shared/PrimaryButton.jsx';
 
 // TODO: Consider exporting/naming strategy that best support unit testing.
 export class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: '',
-            password: '',
+            userName: 'garyivy@gmail.com', // TODO: Remove hard code
+            password: 'qwer1234',
             errors: {}
         };
 
@@ -81,7 +82,7 @@ export class Signin extends React.Component {
                         {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}
                     </div>
                     <div className="button-container">
-                        <button type="submit" className="primary">Login</button>
+                        <PrimaryButton>Login</PrimaryButton>
                     </div>
                 </form>
             </div>

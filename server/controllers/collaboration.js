@@ -67,64 +67,48 @@ module.exports.onJoinCollaboration = (request, response) => {
 }
 
 module.exports.onSubmitQuestionnaire = (request, response) => {
-    let token = request.body.collaborationToken;
-    let decoded = jwt.verify(token, confidential.JWT_COLLABORATION_TOKEN_SECRET,
-        (error, decoded) => {
+    let errorCount = 0;
+
+    request.body.answers.map(answer => {
+        let newAnswer = new Answer({
+            collaborationId: request.collaborationId,
+            user: request.userId,
+            scrambledUser: null,
+            questionId: answer.id, // TODO: Rename for consistency?
+            prompt: answer.prompt,
+            text: answer.text
+        })
+        newAnswer.save((error) => {
             if (error) {
-                return response.status(statusCodes.UNAUTHORIZED_401)
-                    .json({ message: 'Invalid collaboration token.' }); // TODO: What is real value of using token instead of ID here? expiration?
+                console.log(error);
+                errorCount++;
             }
-
-            let errorCount = 0;
-
-            request.body.answers.map(answer => {
-                let newAnswer = new Answer({
-                    collaborationId: decoded._id,
-                    user: request.userId,
-                    scrambledUser: null,
-                    questionId: answer.id, // TODO: Rename for consistency?
-                    prompt: answer.prompt,
-                    text: answer.text
-                })
-                newAnswer.save((error) => {
-                    if (error) {
-                        console.log(error);
-                        errorCount++;
-                    }
-                });
-            });
-
-            return errorCount == 0
-                ? response.json({ message: 'Questionnaire saved.' })
-                : response.status(statusCodes.INTERNAL_SERVER_ERROR_500)
-                    .json({ message: 'Error while saving collaboration' });
         });
+    });
+
+    return errorCount == 0
+        ? response.json({ message: 'Questionnaire saved.' })
+        : response.status(statusCodes.INTERNAL_SERVER_ERROR_500)
+            .json({ message: 'Error while saving collaboration' });        
 }
 
 module.exports.onGetStatusSimple = (request, response) => {
-    let token = request.params.collaborationToken;
-    let decoded = jwt.verify(token, confidential.JWT_COLLABORATION_TOKEN_SECRET,
-        (error, decoded) => {
-            if (error) {
-                return response.status(statusCodes.UNAUTHORIZED_401)
-                    .json({ message: 'Invalid collaboration token.' }); // TODO: What is real value of using token instead of ID here? expiration?
-            }
-
-            Collaboration.findOne({ _id: decoded._id }).populate('users').exec().then((collaboration) => {
-                response.json(collaboration);
-            });
-        });
+    Collaboration.findOne({ _id: request.collaborationId }).populate('users').exec().then((collaboration) => {
+        response.json(collaboration);
+    });
 }
 
 const scramble = (collaboration, usersWithAnswers) => {
     // Note: Sorting of user by _id and answers by questionId assumed at this point
     let l = usersWithAnswers.length;
+    console.log(usersWithAnswers);
     console.log('length = ' + l);
-    for(let q = 0; q < 6; q++){
-        for(let u = 0; u < l; u++) {
+    for (let q = 0; q < 6; q++) {
+        for (let u = 0; u < l; u++) {
             let s = (q + u + 1) % l;
-            let scrambledUser = usersWithAnswers[s]._id;
+            let scrambledUser = usersWithAnswers[s].userId;
             console.log('scrambledUser = ' + s);
+            console.log('scrambledUser = ' + scrambledUser);
             usersWithAnswers[u].answers[q].scrambledUser = scrambledUser;
             usersWithAnswers[u].answers[q].save();
         }
@@ -133,24 +117,25 @@ const scramble = (collaboration, usersWithAnswers) => {
 
 const getCollaboration = (id, callback) => {
     // TODO: Refactor
-    Collaboration.findOne({ _id: id }).sort({ user: 1}).populate('users').exec().then((collaboration) => {
-        Answer.find({ collaborationId: id }).sort({ questionId: 1, user: 1}).populate('user').exec().then((answers) => {
+    Collaboration.findOne({ _id: id }).sort({ user: 1 }).populate('users').exec().then((collaboration) => {
+        Answer.find({ collaborationId: id }).sort({ questionId: 1, user: 1 }).populate('user').exec().then((answers) => {
             let usersWithAnswers = [];
             collaboration.users.forEach((u) => {
                 let userAnswers = answers.filter(a => a.user._id.toString() == u._id.toString());
-                usersWithAnswers.push({ userName: u.userName, answers: userAnswers });
+                usersWithAnswers.push({ userName: u.userName, userId: u._id, answers: userAnswers });
             });
 
             // TODO: Remove
             console.log('taking count');
             let incompleteSurveyCount = usersWithAnswers.filter(u => u.answers.length < 6).length;
             console.log(incompleteSurveyCount);
-            if (incompleteSurveyCount ) {
+            if (incompleteSurveyCount) {
                 mockUsers.forEach(u => {
                     for (let i = 1; i < 7; i++) {
                         let answer = new Answer({
                             collaborationId: id,
                             user: u._id,
+                            scrambledUser: null,
                             questionId: i,
                             prompt: i + '?',
                             text: u.userName + i
@@ -161,8 +146,8 @@ const getCollaboration = (id, callback) => {
 
                 });
             } else {
-                console.log( usersWithAnswers[0]);
-                if(usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answers[0].scrambledUser) {
+                if (usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answers[0].scrambledUser) {
+                    console.log('SCRAMBLING');
                     scramble(collaboration, usersWithAnswers);
                 }
             }
@@ -171,28 +156,62 @@ const getCollaboration = (id, callback) => {
     })
 }
 
-module.exports.onGetStatus = (request, response) => {
-    let token = request.params.collaborationToken;
-    let decoded = jwt.verify(token, confidential.JWT_COLLABORATION_TOKEN_SECRET,
-        (error, decoded) => {
-            if (error) {
-                return response.status(statusCodes.UNAUTHORIZED_401)
-                    .json({ message: 'Invalid collaboration token.' }); // TODO: What is real value of using token instead of ID here? expiration?
+
+const getScramble = (id, callback) => {
+    // TODO: Refactor
+    Collaboration.findOne({ _id: id }).populate('users').exec().then((collaboration) => {
+        Answer.find({ collaborationId: id }).populate('scrambledUser').sort({ questionId: 1 }).exec().then((answers) => {
+            //console.log(answers);
+            try {
+                let usersWithAnswers = [];
+                collaboration.users.forEach((u) => {
+                    let userAnswers = answers.filter(a => {
+                        
+                        console.log('user');
+                        console.log(u);
+                        console.log('answer');
+                        console.log(a);
+                        
+                        return a.scrambledUser._id.toString() == u._id.toString()
+                    });
+                    usersWithAnswers.push({ userName: u.userName, userId: u._id, answers: userAnswers });
+                });
+
+                callback(collaboration, usersWithAnswers);
+
+            } catch (e) {
+                console.log(e);
             }
+        })
+    })
+}
 
-            getCollaboration(decoded._id, (collaboration, usersWithAnswers) => {
-                try {
-                    let incompleteSurveyCount = usersWithAnswers.filter(u => u.answers.length < 6).length;
-                    let userStatuses = usersWithAnswers.map(u => { return { userName: u.userName, answersRemaining: 6 - u.answers.length } });
-                    let isScrambled = usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answers[0].scrambledUser;
-                    let result = { incompleteSurveyCount, userStatuses, isScrambled };
 
-                    return response.json(result);
+module.exports.onGetStatus = (request, response) => {
+    getCollaboration(request.collaborationId, (collaboration, usersWithAnswers) => {
+        try {
+            let incompleteSurveyCount = usersWithAnswers.filter(u => u.answers.length < 6).length;
+            let userStatuses = usersWithAnswers.map(u => { return { userName: u.userName, answersRemaining: 6 - u.answers.length } });
+            let isScrambled = usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answers[0].scrambledUser;
+            let result = { incompleteSurveyCount, userStatuses, isScrambled };
 
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            });
-        });
+            return response.json(result);
+
+        }
+        catch (e) {
+            console.log(e);
+        }
+    });
+}
+
+
+module.exports.onGetScrambled = (request, response) => {
+    getScramble(request.collaborationId, (collaboration, usersWithAnswers) => {
+        try {
+            return response.json({ payload: usersWithAnswers });
+        }
+        catch (e) {
+            console.log(e);
+        }
+    });
 }

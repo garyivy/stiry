@@ -13,9 +13,9 @@ const MenuPresentation = ({isAuthorizedUser}) => (
     </nav>
 );
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({authentication}) => {
     console.log('Calling mapStateToProps for Menu'); // TODO: Remove    
-    return { isAuthorizedUser: state.user.isAuthorized };
+    return { isAuthorizedUser: authentication.isAuthorized };
 }
 
 const Menu = connect(mapStateToProps, undefined)(MenuPresentation);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getCollaborationStatus } from './../../actions/collaborationActionCreators.js';
+import { getCollaborationStatus, getScrambledResult} from './../../actions/collaborationActionCreators.js';
 
 class Wait extends React.Component {
     constructor(props) {
@@ -8,6 +8,7 @@ class Wait extends React.Component {
     }
 
     componentWillMount() {
+        return;
         console.log('starting timer');
         this.timer = setInterval(() => {
             if(this.props.isScrambled && this.props.incompleteSurveyCount == 0) {
@@ -15,6 +16,7 @@ class Wait extends React.Component {
                 if(this.timer) {
                     clearInterval(this.timer);
                     this.timer = null;
+                    this.props.onGetScrambled();
                 }
             } else {
                 this.props.onCheckStatus()
@@ -23,6 +25,7 @@ class Wait extends React.Component {
     }
 
     componentWillUnmount() {
+        return;
         console.log('stopping timer');
         if(this.timer) {
             clearInterval(this.timer);
@@ -31,6 +34,7 @@ class Wait extends React.Component {
     }
 
     render() {
+        var s = this.props.scrambled && JSON.stringify(this.props.scrambled);
         return (
             <div>
                 <h1>Waiting For Result</h1>
@@ -38,6 +42,10 @@ class Wait extends React.Component {
                 <div className="button-container">
                     <button type="button" className="primary" onClick={this.props.onCheckStatus}>Check Status</button>
                 </div>
+                <div className="button-container">
+                    <button type="button" className="primary" onClick={this.props.onGetScrambled}>Get Scrambled</button>
+                </div>
+                { s && <div>{s}</div>}
             </div>
         )
     }
@@ -46,13 +54,15 @@ class Wait extends React.Component {
 const mapStateToProps = ({collaboration}) => {
     return {
         incompleteSurveyCount: collaboration.incompleteSurveyCount,
-        isScrambled: collaboration.isScrambled
+        isScrambled: collaboration.isScrambled,
+        scrambled: collaboration.answers
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onCheckStatus: () => dispatch(getCollaborationStatus())
+        onCheckStatus: () => dispatch(getCollaborationStatus()),
+        onGetScrambled: () => dispatch(getScrambledResult())
     };
 }
 

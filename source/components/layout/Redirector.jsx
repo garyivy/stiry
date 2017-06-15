@@ -30,7 +30,9 @@ class Redirector extends React.Component {
     }
 }
 
-const mapStateToProps = ({redirectUrl}) => redirectUrl;
+const mapStateToProps = ({redirectUrl}) => {
+    return { redirectUrl }
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
