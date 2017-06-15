@@ -3,23 +3,33 @@ import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { startCollaboration } from './../../actions/collaborationActionCreators.js';
 import { Link } from 'react-router-dom';
+import PrimaryButton from './../../shared/PrimaryButton.jsx';
 
-export const StartSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
+// TODO: Refactor using css/component
+const inputStyle = { display: 'inline-block' };
+const buttonDivStyle = { paddingTop: '2px', marginLeft: '8px', display: 'inline-block' };
+const buttonStyle = { marginTop: '0' };
+
+export const StartSessionPresentation = ({ collaborationName, onChange, onSubmit, error }) => (
     <div>
         <h1>Start a Stiry Collaboration</h1>
         <p>
             A collaboration name is needed to group participants together.
             One person starts a collaboration here.  The remaining partipants will need this name to join the collaboration by
-            &nbsp;<Link to="/joinsession">clicking here</Link> or choosing "Join Collaboration" from the site menu.
+            &nbsp;<Link to="/joinsession">clicking here</Link> or choosing "Join&nbsp;Collaboration" from the site menu.
         </p>
-        <div className="field">
-            <label>Session Name</label>
-            <input type="text" name="sessionName" value={sessionName} onChange={onChange} />
-            {error && <label className="error">{error}</label>}
-        </div>
-        <div className="button-container">
-            <button className="primary" onClick={onSubmit}>Submit</button>
-        </div>
+        <form onSubmit={onSubmit}>
+            <div className="field">
+                <label>Collaboration Name</label>
+                <div>
+                    <input type="text" name="collaborationName" style={inputStyle} value={collaborationName} onChange={onChange} />
+                    <div style={buttonDivStyle}>
+                        <PrimaryButton style={buttonStyle}>Submit</PrimaryButton>
+                    </div>
+                </div>
+                {error && <label className="error">{error}</label>}
+            </div>
+        </form>
     </div>
 );
 
@@ -28,7 +38,7 @@ export class StartSessionContainer extends React.Component {
         super(props);
 
         this.state = {
-            sessionName: '',
+            collaborationName: '',
             error: null
         }
 
@@ -37,42 +47,45 @@ export class StartSessionContainer extends React.Component {
     }
 
     onChange(event) {
-        this.setState({ sessionName: event.target.value, error: null });
+        this.setState({ collaborationName: event.target.value, error: null });
     }
 
-    onSubmit() {
-        if(isNullOrWhitespace(this.state.sessionName)) {
-            this.setState({ error: 'Session name is required.' });
+    onSubmit(event) {
+        event.preventDefault();
+
+        if (isNullOrWhitespace(this.state.collaborationName)) {
+            this.setState({ error: 'Collaboration Namename is required.' });
         } else {
             this.setState({ error: null });
-            this.props.startCollaboration(this.state.sessionName);
+            this.props.startCollaboration(this.state.collaborationName);
         }
     }
+
     render() {
         return (
-            <StartSessionPresentation 
-                sessionName={this.state.sessionName} 
-                onChange={this.onChange} 
+            <StartSessionPresentation
+                collaborationName={this.state.collaborationName}
+                onChange={this.onChange}
                 onSubmit={this.onSubmit}
                 error={this.state.error} />
         );
     }
 }
 
-const mapStateToProps = ({collaboration}) => {
+const mapStateToProps = ({ collaboration }) => {
     return {
-        error: collaboration.error 
+        error: collaboration.error
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        startCollaboration:  (collaborationName) => 
+        startCollaboration: (collaborationName) =>
             dispatch(startCollaboration(collaborationName))
     }
 }
 
-const StartSession = connect(mapStateToProps, mapDispatchToProps)(StartSessionContainer); 
+const StartSession = connect(mapStateToProps, mapDispatchToProps)(StartSessionContainer);
 
 export default StartSession;
 

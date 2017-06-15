@@ -1,49 +1,65 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { gotoPreviousQuestion, gotoNextQuestion, submitQuestionnaire } from './../../actions/collaborationActionCreators.js';
+
 import Question from './Question.jsx';
-import { QuestionPresentation } from './Question.jsx';
 import StepIndicator from './StepIndicator.jsx';
+import PrimaryButton from './../../shared/PrimaryButton.jsx';
+
+import {
+    gotoPreviousQuestion,
+    gotoNextQuestion,
+    submitQuestionnaire
+} from './../../actions/collaborationActionCreators.js';
 
 export const QuestionnairePresentation = ({
-    shouldShowPreviousButton,   onPreviousButtonClick, 
-    shouldShowNextButton,       onNextButtonClick, 
-    shouldShowSubmitButton,     onSubmitButtonClick, 
-    collaborationName,          collaborationToken}) => (
-    <div className="questionnaire-container">
-        <h1>The Stiry Questionnaire</h1>
-        <h2>Session Name: {collaborationName}</h2>
-        <StepIndicator/>
-        <Question/>
-        <div className="button-container">
-            {shouldShowPreviousButton   && <button onClick={onPreviousButtonClick}>Previous Question</button>}
-            {shouldShowNextButton       && <button className="primary" onClick={onNextButtonClick}>Next Question</button>}
-            {shouldShowSubmitButton     && <button className="primary" onClick={onSubmitButtonClick}>Submit</button>}
+    collaborationName, shouldShowPreviousButton, onPreviousButtonClick,
+    shouldShowSubmitButton, onNextButtonClick, onSubmitButtonClick }) => {
+
+    const previousButton = shouldShowPreviousButton
+        ? <button onClick={onPreviousButtonClick}>Previous Question</button>
+        : null;
+
+    const nextButton = shouldShowSubmitButton
+        ? <PrimaryButton>Submit</PrimaryButton>
+        : <PrimaryButton>Next Question</PrimaryButton>;
+
+    const onSubmit = event => {
+        event.preventDefault();
+        shouldShowSubmitButton
+            ? onSubmitButtonClick()
+            : onNextButtonClick();
+    }
+
+    return (
+        <div className="questionnaire-container">
+            <h1>The Stiry Questionnaire</h1>
+            <h2>Collaboration Name: {collaborationName}</h2>
+            <StepIndicator />
+            <form className="width-100" onSubmit={onSubmit}>
+                <Question />
+                <div className="button-container">
+                    {previousButton}
+                    {nextButton}
+                </div>
+            </form>
         </div>
-    </div>
-);
+    )
+}
 
-const mapStateToProps = ({collaboration}) => {
-    let { shouldShowPreviousButton, 
-        shouldShowNextButton, 
-        shouldShowSubmitButton, 
-        collaborationName 
-    } = collaboration;    
-
-    // TODO: Note why ...collaboration would be inefficient here (shallow compare would result in unnecessary renders).
-    return { 
-        shouldShowPreviousButton, 
-        shouldShowNextButton, 
-        shouldShowSubmitButton, 
-        collaborationName 
+const mapStateToProps = ({ collaboration }) => {
+    // Note: ...collaboration would be handy here but redux's shallow comparison would result in unnecessary renders
+    return {
+        shouldShowPreviousButton: collaboration.shouldShowPreviousButton,
+        shouldShowSubmitButton: collaboration.shouldShowSubmitButton,
+        collaborationName: collaboration.collaborationName
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onPreviousButtonClick:  () => dispatch(gotoPreviousQuestion()),
-        onNextButtonClick:      () => dispatch(gotoNextQuestion()),
-        onSubmitButtonClick:    () => dispatch(submitQuestionnaire())
+        onPreviousButtonClick: () => dispatch(gotoPreviousQuestion()),
+        onNextButtonClick: () => dispatch(gotoNextQuestion()),
+        onSubmitButtonClick: () => dispatch(submitQuestionnaire())
     }
 }
 

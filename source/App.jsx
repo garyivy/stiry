@@ -52,14 +52,14 @@ const layout = (
         <PrivateRoute path="/join" component={JoinSession} />
         <CollaborationRoute path="/questionnaire" component={Questionnaire} />
         <CollaborationRoute path="/wait" component={Wait} />
-        <Route path="/scrambled" component={Scrambled} />
+        <CollaborationRoute path="/scrambled" component={Scrambled} />
         <Route path="/about" component={About} />
       </Switch>
     </article>
   </div>
 );
 
-// Stiching it together
+// Stitching it together
 let store = createStore(combinedReducer, {}, applyMiddleware(thunk) );
 const history = createBrowserHistory();
 render(

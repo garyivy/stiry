@@ -1,26 +1,35 @@
 import React from 'react';
 import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
-import { joinedCollaboration } from './../../actions/collaborationActionCreators.js';
+import { joinCollaboration } from './../../actions/collaborationActionCreators.js';
 import { Link } from 'react-router-dom';
+import PrimaryButton from './../../shared/PrimaryButton.jsx';
 
-export const JoinSessionPresentation = ({ sessionName, onChange, onSubmit, error }) => (
+// TODO: Refactor using css/component
+const inputStyle = { display: 'inline-block' };
+const buttonDivStyle = { paddingTop: '2px', marginLeft: '8px', display: 'inline-block' };
+const buttonStyle = { marginTop: '0' };
+
+export const JoinSessionPresentation = ({ collaborationName, onChange, onSubmit, error }) => (
     <div>
-        <h1>Join a Stiry Session</h1>
-        <p>
-            If you are interested in joining a session (collaboration) that someone else in your group has already started, enter the session name they provided.
-            
-            If you are interested in starting a session for others to join,
-            &nbsp;<Link to="/startsession">click here</Link> or choose "Start Session" from the site menu.
+        <h1>Join a Stiry Collaboration</h1>
+        <p>If you are interested in joining a "Collaboration" that someone else in your group has already started, 
+            enter the session name they provided.
+            If you are interested in starting one for others to join,
+            &nbsp;<Link to="/startsession">click here</Link> or choose "Start&nbsp;Session" from the site menu.
         </p>
-        <div className="field">
-            <label>Session Name</label>
-            <input type="text" name="sessionName" value={sessionName} onChange={onChange} />
-            {error && <label className="error">{error}</label>}
-        </div>
-        <div className="button-container">
-            <button className="primary" onClick={onSubmit}>Submit</button>
-        </div>
+        <form onSubmit={onSubmit}>
+            <div className="field">
+                <label>Collaboration Name</label>
+                <div>
+                    <input type="text" name="collaborationName" style={inputStyle} value={collaborationName} onChange={onChange} />
+                    <div style={buttonDivStyle}>
+                        <PrimaryButton style={buttonStyle}>Submit</PrimaryButton>
+                    </div>
+                </div>
+                {error && <label className="error">{error}</label>}
+            </div>
+        </form>
     </div>
 );
 
@@ -29,7 +38,7 @@ export class JoinSessionContainer extends React.Component {
         super(props);
 
         this.state = {
-            sessionName: '',
+            collaborationName: '',
             error: null
         }
 
@@ -38,39 +47,45 @@ export class JoinSessionContainer extends React.Component {
     }
 
     onChange(event) {
-        this.setState({ sessionName: event.target.value });
+        this.setState({ collaborationName: event.target.value, error: null });
     }
 
-    onSubmit() {
-        if(isNullOrWhitespace(this.state.sessionName)) {
-            this.setState({ error: 'Session name is required.' });
+    onSubmit(event) {
+        event.preventDefault();
+        
+        if (isNullOrWhitespace(this.state.collaborationName)) {
+            this.setState({ error: 'Collaboration Name is required.' });
         } else {
             this.setState({ error: null });
-            /*
-            post('join', { collaborationName: this.state.sessionName }).then(( result ) => {
-                if(result && result.collaborationToken) {
-                    this.props.dispatch(joinedCollaboration(this.state.sessionName, result.collaborationToken));
-                    this.props.history.push('/questionnaire');                    
-                } else {
-                    // TODO: What should we tell user?
-                    console.log(result);
-                }
-            });
-        */
+            this.props.joinCollaboration(this.state.collaborationName);
         }
     }
+
     render() {
         return (
-            <JoinSessionPresentation 
-                sessionName={this.state.sessionName} 
-                onChange={this.onChange} 
+            <JoinSessionPresentation
+                collaborationName={this.state.collaborationName}
+                onChange={this.onChange}
                 onSubmit={this.onSubmit}
                 error={this.state.error} />
         );
     }
 }
 
-const JoinSession = connect()(JoinSessionContainer); // Connect so dispatch is added to properties
+const mapStateToProps = ({ collaboration }) => {
+    return {
+        error: collaboration.error
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        joinCollaboration: (collaborationName) =>
+            dispatch(joinCollaboration(collaborationName))
+    }
+}
+
+const JoinSession = connect(mapStateToProps, mapDispatchToProps)(JoinSessionContainer);
 
 export default JoinSession;
 
