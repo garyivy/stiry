@@ -101,15 +101,16 @@ module.exports.onGetStatusSimple = (request, response) => {
 const scramble = (collaboration, usersWithAnswers) => {
     // Note: Sorting of user by _id and answers by questionId assumed at this point
     let l = usersWithAnswers.length;
-    console.log(usersWithAnswers);
-    console.log('length = ' + l);
+    //console.log(usersWithAnswers);
+    //  console.log('length = ' + l);
     for (let q = 0; q < 6; q++) {
         for (let u = 0; u < l; u++) {
             let s = (q + u + 1) % l;
             let scrambledUser = usersWithAnswers[s].userId;
-            console.log('scrambledUser = ' + s);
-            console.log('scrambledUser = ' + scrambledUser);
+            //console.log('scrambledUser = ' + s);
+            //console.log('scrambledUser = ' + scrambledUser);
             usersWithAnswers[u].answers[q].scrambledUser = scrambledUser;
+            //console.log(usersWithAnswers[u].answers[q]);
             usersWithAnswers[u].answers[q].save();
         }
     }
@@ -118,6 +119,8 @@ const scramble = (collaboration, usersWithAnswers) => {
 const getCollaboration = (id, callback) => {
     // TODO: Refactor
     Collaboration.findOne({ _id: id }).sort({ user: 1 }).populate('users').exec().then((collaboration) => {
+        console.log('found collab');    
+
         Answer.find({ collaborationId: id }).sort({ questionId: 1, user: 1 }).populate('user').exec().then((answers) => {
             let usersWithAnswers = [];
             collaboration.users.forEach((u) => {
@@ -148,6 +151,7 @@ const getCollaboration = (id, callback) => {
             } else {
                 if (usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answers[0].scrambledUser) {
                     console.log('SCRAMBLING');
+                    console.log(usersWithAnswers[0]);
                     scramble(collaboration, usersWithAnswers);
                 }
             }
@@ -166,12 +170,12 @@ const getScramble = (id, callback) => {
                 let usersWithAnswers = [];
                 collaboration.users.forEach((u) => {
                     let userAnswers = answers.filter(a => {
-                        
+                        /*
                         console.log('user');
                         console.log(u);
                         console.log('answer');
                         console.log(a);
-                        
+                        */
                         return a.scrambledUser._id.toString() == u._id.toString()
                     });
                     usersWithAnswers.push({ userName: u.userName, userId: u._id, answers: userAnswers });
