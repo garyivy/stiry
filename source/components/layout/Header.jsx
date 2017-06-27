@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom';
 
 const HeaderPresentation = ({isAuthorizedUser, isBusy}) => (
     <div className="top-header">
-        <div>St<i>i</i>ry</div>
-        {
-            isBusy && <span>BUSY</span>
-        }
+        <div>St<i>i</i>rytime
+        {isBusy && <i className="fa fa-spinner fa-spin busy"></i>}
+        </div>
     </div>
 );
 

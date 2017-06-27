@@ -6,6 +6,7 @@ const confidential = require('./../common/confidential.js');
 const Schema = mongoose.Schema;
 const CollaborationSchema = new Schema({
   name: String,
+  upperCaseName: String,
   status: String,
   startingUser: {type: Schema.Types.ObjectId, ref: 'User'},
   users: [{type: Schema.Types.ObjectId, ref: 'User'}],

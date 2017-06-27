@@ -29,6 +29,7 @@ User.findOne({ userName: 'g5' }).exec().then(u => mockUsers.push(u));
 module.exports.onStartCollaboration = (request, response) => {
     let collaboration = new Collaboration({
         name: request.body.collaborationName,
+        upperCaseName: request.body.collaborationName.toUpperCase(),
         status: 'starting',
         startingUser: request.userId, // Note: provided by authenticate middleware
         users: [request.userId]
@@ -49,9 +50,10 @@ module.exports.onStartCollaboration = (request, response) => {
 
 module.exports.onJoinCollaboration = (request, response) => {
     Collaboration.findOne({
-        name: request.body.collaborationName 
+        upperCaseName: request.body.collaborationName.toUpperCase() 
     }).exec().then((collaboration) => {
         if (!collaboration) {
+            // Valid response (200), no token returned because name not found.
             return response.json({ collaborationToken: null });
         }
 

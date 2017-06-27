@@ -1,6 +1,7 @@
 @import 'colors';
 $fa-font-path: "./../../node_modules/font-awesome/fonts";
 @import './../../node_modules/font-awesome/scss/font-awesome.scss';
+@import 'step-indicator';
 $default-color: black;
 $base-font-family: Calibri;
 body {
@@ -68,6 +69,11 @@ h2 {
     }
 }
 
+i.busy {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: .8em;
+}
 form {
     width: 400px;
 }
@@ -146,8 +152,8 @@ button {
 	form {
 		width: 100%;
 	}
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     label {
         font-size: 1.2em;
         display: block;
@@ -160,66 +166,3 @@ button {
     }
 }
 
-$arrow-size: 20px;
-.step-indicator a {
-    padding: 10px 0px 10px;
-    position: relative;
-    display: inline-block;
-    text-decoration: none;
-    min-width: 16.45%;
-    margin-left: 0.25%;
-    text-align: center;
-    text-decoration: none;
-    font-size: 1.05em;
-    font-weight: 400;
-    color: $secondary-color;
-    background: #dfecd3;
-    cursor: default;
-}
-
-.step-indicator a.active {
-    color: #dfecd3;
-    background: $secondary-color;
-}
-
-.step-indicator a:hover {
-    text-decoration: none;
-}
-
-.step-indicator a:first-child {
-    margin-left: 0;
-}
-
-.step-indicator:not(.left-arrow) a:before {
-    width: 0;
-    height: 0;
-    border-top: $arrow-size inset transparent;
-    border-bottom: $arrow-size inset transparent;
-    border-left: $arrow-size solid #FFFFFF;
-    position: absolute;
-    content: "";
-    top: 0;
-    left: 0;
-}
-
-.step-indicator:not(.left-arrow) a:after {
-    width: 0;
-    height: 0;
-    border-top: $arrow-size inset transparent;
-    border-bottom: $arrow-size inset transparent;
-    border-left: $arrow-size solid #dfecd3;
-    position: absolute;
-    content: "";
-    top: 0;
-    right: -20px;
-    z-index: 2;
-}
-
-.step-indicator:not(.left-arrow) a.active:after {
-    border-left: $arrow-size solid $secondary-color;
-}
-
-.step-indicator a:first-child:before,
-.step-indicator a:last-child:after {
-    border: none;
-}

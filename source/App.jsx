@@ -29,6 +29,7 @@ import NewUser from './components/authentication/NewUser.jsx';
 import ForgotPassword from './components/authentication/ForgotPassword.jsx';
 import ResetPassword from './components/authentication/ResetPassword.jsx';
 import Redirector from './components/layout/Redirector.jsx';
+import Resizer from './components/layout/Resizer.jsx';
 
 // Style
 import './style/app.scss';
@@ -37,6 +38,7 @@ import './style/app.scss';
 // Layout
 const layout = (
   <div>
+    <Resizer/>
     <Redirector/>
     <Header/>
     <Menu/>

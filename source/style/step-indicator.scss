@@ -1,0 +1,73 @@
+$arrow-size: 20px;
+.step-indicator a {
+    padding: 10px 0px 10px 10px ;
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    min-width: 15%;
+    margin-left: 0.25%;
+    text-align: center;
+    text-decoration: none;
+    font-size: .95em;
+    font-weight: 400;
+    color: $secondary-color;
+    background: #dfecd3;
+    cursor: default;
+}
+
+@media only screen and (max-device-width: 800px) {
+    .step-indicator a {
+        min-width: 20px;
+    }	
+}
+
+.step-indicator {
+    max-width: 720px;
+}
+.step-indicator a.active {
+    color: #dfecd3;
+    background: $secondary-color;
+}
+
+.step-indicator a:hover {
+    text-decoration: none;
+}
+
+.step-indicator a:first-child {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.step-indicator:not(.left-arrow) a:before {
+    width: 0;
+    height: 0;
+    border-top: $arrow-size inset transparent;
+    border-bottom: $arrow-size inset transparent;
+    border-left: $arrow-size solid #FFFFFF;
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+}
+
+.step-indicator:not(.left-arrow) a:after {
+    width: 0;
+    height: 0;
+    border-top: $arrow-size inset transparent;
+    border-bottom: $arrow-size inset transparent;
+    border-left: $arrow-size solid #dfecd3;
+    position: absolute;
+    content: "";
+    top: 0;
+    right: -20px;
+    z-index: 2;
+}
+
+.step-indicator:not(.left-arrow) a.active:after {
+    border-left: $arrow-size solid $secondary-color;
+}
+
+.step-indicator a:first-child:before,
+.step-indicator a:last-child:after {
+    border: none;
+}
