@@ -77,8 +77,8 @@ export const getScrambledResult = () => {
     return (dispatch, getState) => {
         let collaborationToken = getState().collaboration.collaborationToken;
         scrambledGet(dispatch, collaborationToken).then(result => {
-            console.log(result);
             dispatch({ type: GET_SCRAMBLED_RESULT, ...result });
+            dispatch(requestRedirect('/scrambled'));
         })
     }
 }

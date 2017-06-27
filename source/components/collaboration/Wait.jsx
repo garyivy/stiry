@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getCollaborationStatus, getScrambledResult} from './../../actions/collaborationActionCreators.js';
+import { getCollaborationStatus, getScrambledResult } from './../../actions/collaborationActionCreators.js';
 
 class Wait extends React.Component {
     constructor(props) {
@@ -8,61 +8,75 @@ class Wait extends React.Component {
     }
 
     componentWillMount() {
-        return;
-        console.log('starting timer');
-        this.timer = setInterval(() => {
-            if(this.props.isScrambled && this.props.incompleteSurveyCount == 0) {
-                console.log('scramble complete');
-                if(this.timer) {
-                    clearInterval(this.timer);
-                    this.timer = null;
-                    this.props.onGetScrambled();
-                }
-            } else {
-                this.props.onCheckStatus()
-            }
+        this.timer = setTimeout(() => {
+            this.timer = null;
+            this.props.onCheckStatus();
         }, 2000);
     }
 
     componentWillUnmount() {
-        return;
-        console.log('stopping timer');
-        if(this.timer) {
-            clearInterval(this.timer);
+        if (this.timer) {
+            clearTimeout(this.timer);
             this.timer = null;
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.timer) {
+            clearTimeout(this.timer);
+            this.timer = null;
+        }
+        
+        if(this.wasGetScrambledCalled) {
+            // Sanity check, redirect should prevent this from being needed
+            return;
+        }
+        
+        if (nextProps.incompleteSurveyCount > 0) {
+            this.timer = setTimeout(() => {
+                this.timer = null;
+                this.props.onCheckStatus();
+            }, 2000);
+        } else {
+            this.wasGetScrambledCalled = true;
+            this.props.onShowScrambled();
+        }
+    }
+
     render() {
-        var s = this.props.scrambled && JSON.stringify(this.props.scrambled);
+        var h1 = this.props.isScrambled && this.props.scrambled
+            ? <h1>The Result</h1>
+            : <h1>Waiting For Result</h1>;
+
+        var result = null;
+        if(this.props.isScrambled && this.props.scrambled) {
+            result = this.props.scrambled.map(s => 
+            <tr>
+                <td>{s.prompt}</td>
+                <td>{s.text}</td>
+            </tr>)
+        }
+
         return (
             <div>
                 <h1>Waiting For Result</h1>
-                {this.props.incompleteSurveyCount}
-                <div className="button-container">
-                    <button type="button" className="primary" onClick={this.props.onCheckStatus}>Check Status</button>
-                </div>
-                <div className="button-container">
-                    <button type="button" className="primary" onClick={this.props.onGetScrambled}>Get Scrambled</button>
-                </div>
-                { s && <div>{s}</div>}
+                <span>Number of surveys still waiting to be completed:&nbsp;{this.props.incompleteSurveyCount}</span>
             </div>
         )
     }
 }
 
-const mapStateToProps = ({collaboration}) => {
+const mapStateToProps = ({ collaboration }) => {
     return {
         incompleteSurveyCount: collaboration.incompleteSurveyCount,
-        isScrambled: collaboration.isScrambled,
-        scrambled: collaboration.answers
+        userStatuses: collaboration.userStatuses,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         onCheckStatus: () => dispatch(getCollaborationStatus()),
-        onGetScrambled: () => dispatch(getScrambledResult())
+        onShowScrambled: () => dispatch(getScrambledResult())
     };
 }
 

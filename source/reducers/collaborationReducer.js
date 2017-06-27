@@ -38,7 +38,7 @@ const collaborationReducer = (state = initialState, { type, payload, error }) =>
             return { ...state, ...payload }; // TODO: Note ...payload provides here.
 
         case actionTypes.GET_SCRAMBLED_RESULT:
-            return { ...state, answers: payload[0].answers };
+            return { ...state, answers: payload };
 
         case actionTypes.RECORD_ANSWER:
             var answers = state.answers
