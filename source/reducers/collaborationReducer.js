@@ -1,5 +1,14 @@
 import { isNullOrWhitespace } from './../shared/utilities.js';
-import * as actionTypes from './../actions/actionTypes.js';
+
+import {
+    START_COLLABORATION,
+    JOIN_COLLABORATION,
+    RECORD_ANSWER,
+    GOTO_NEXT_QUESTION,
+    GOTO_PREVIOUS_QUESTION,
+    GET_COLLABORATION_STATUS,
+    GET_SCRAMBLED_RESULT
+} from './../actions/actionTypes.js';
 
 const initialState = {
     collaborationName: null,
@@ -30,58 +39,54 @@ const initialState = {
 
 const collaborationReducer = (state = initialState, { type, payload, error }) => {
     switch (type) {
-        case actionTypes.START_COLLABORATION:
-        case actionTypes.JOIN_COLLABORATION:
+        case START_COLLABORATION:
+        case JOIN_COLLABORATION:
             return { ...initialState, ...payload }; // payload provides collaborationName/Token
 
-        case actionTypes.GET_COLLABORATION_STATUS:
-            return { ...state, ...payload }; // TODO: Note ...payload provides here.
-
-        case actionTypes.GET_SCRAMBLED_RESULT:
-            return { ...state, answers: payload };
-
-        case actionTypes.RECORD_ANSWER:
+        case RECORD_ANSWER:
             var answers = state.answers
                 .map(q => q.id === state.answers[state.currentQuestionIndex].id
                     ? { id: q.id, prompt: q.prompt, text: payload.answer }
                     : q);
             return { ...state, answers };
 
-        case actionTypes.GOTO_PREVIOUS_QUESTION:
-            if (state.currentQuestionIndex > 0) {
-                let currentQuestionIndex = state.currentQuestionIndex - 1;
-                return {
-                    ...state,
-                    currentQuestionIndex,
-                    shouldShowPreviousButton: currentQuestionIndex > 0,
-                    shouldShowNextButton: currentQuestionIndex < state.answers.length - 1,
-                    shouldShowSubmitButton: currentQuestionIndex == state.answers.length - 1
-                }
-            } else {
-                return state;
-            }
+        case GOTO_PREVIOUS_QUESTION:
+            return state.currentQuestionIndex < state.answers.length - 1
+                ? buildStateForGoto(state, type)
+                : state;
 
-        case actionTypes.GOTO_NEXT_QUESTION:
+        case GOTO_NEXT_QUESTION:
             if (isNullOrWhitespace(state.answers[state.currentQuestionIndex].text)) {
                 return { ...state, error: 'An answer is required before moving on to the next step.' };
             }
 
-            if (state.currentQuestionIndex < state.answers.length - 1) {
-                let currentQuestionIndex = state.currentQuestionIndex + 1;
-                return {
-                    ...state,
-                    currentQuestionIndex,
-                    shouldShowPreviousButton: currentQuestionIndex > 0,
-                    shouldShowNextButton: currentQuestionIndex < state.answers.length - 1,
-                    shouldShowSubmitButton: currentQuestionIndex == state.answers.length - 1,
-                    error: null
-                }
-            } else {
-                return state;
-            }
+            return state.currentQuestionIndex < state.answers.length - 1
+                ? buildStateForGoto(state, type)
+                : state;
+
+        case GET_COLLABORATION_STATUS:
+            return { ...state, ...payload }; // TODO: Note what ...payload provides here.
+
+        case GET_SCRAMBLED_RESULT:
+            return { ...state, answers: payload };
 
         default:
             return state;
+    }
+}
+
+function buildStateForGoto(state, gotoType) {
+    let increment = gotoType === GOTO_NEXT_QUESTION ? 1 : -1;
+
+    let currentQuestionIndex = state.currentQuestionIndex + increment;
+
+    return {
+        ...state,
+        currentQuestionIndex,
+        shouldShowPreviousButton: currentQuestionIndex > 0,
+        shouldShowNextButton: currentQuestionIndex < state.answers.length - 1,
+        shouldShowSubmitButton: currentQuestionIndex == state.answers.length - 1,
+        error: null
     }
 }
 

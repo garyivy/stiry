@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { signout } from './../../actions/authenticationActionCreators.js';
 
 const Signout = ({ isSignedOut, onRequestSignout }) => {
     if( !isSignedOut ) {
@@ -28,7 +29,7 @@ const Signout = ({ isSignedOut, onRequestSignout }) => {
 
 const mapStateToProps = ({authentication}) => {
     return {
-        isSignedOut: !authentication.isAuthorizedUser,
+        isSignedOut: !authentication.isAuthorized,
     }
 }
 

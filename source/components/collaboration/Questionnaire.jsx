@@ -44,7 +44,7 @@ export const QuestionnairePresentation = ({
 }
 
 const mapStateToProps = ({ collaboration }) => {
-    // Note: ...collaboration would be handy here but redux's shallow comparison would result in unnecessary renders
+    // Note: Pick only the values you need (versus a less verbose ...collaboration) because redux's shallow comparison would result in unnecessary renders
     return {
         shouldShowPreviousButton: collaboration.shouldShowPreviousButton,
         shouldShowSubmitButton: collaboration.shouldShowSubmitButton,

@@ -16,8 +16,9 @@ export const signin = (userName, password, redirectPath = '/') => {
 
 export const signout = () => {
     return (dispatch, getState) => {
+        // TODO: Perhaps refactor so the setting and removing happen in the same place.
+        localStorage.removeItem('sessionToken');
         dispatch( {type: SIGNOUT});
-        dispatch(requestRedirect('/'));
     }
 }
 

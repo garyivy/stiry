@@ -5,22 +5,7 @@ import { Link } from 'react-router-dom';
 class PrimaryButtonPresentation extends React.Component {
     constructor(props) {
         super(props);
-
-        this.handleKeyPress = this.handleKeyPress.bind(this);
-    }
-
-    handleKeyPress(event) {
-        // TODO: We will not need enter key detection
-        // console.log(event);
-
-    }
-
-    componentDidMount() {
-        //window.addEventListener("keydown", this.handleKeyPress);
-    }
-
-    componentWillUnmount() {
-        //window.addEventListener("keydown", this.handleKeyPress);
+        // TODO: Use a function instead of a class.
     }
 
     render() {
@@ -33,7 +18,6 @@ class PrimaryButtonPresentation extends React.Component {
         )
     }
 }
-
 
 const mapStateToProps = (state) => {
     return {
