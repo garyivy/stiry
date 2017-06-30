@@ -24,10 +24,10 @@ class PrimaryButtonPresentation extends React.Component {
     }
 
     render() {
-        let { onSubmit, isBusy, style, children } = this.props;
+        let { onSubmit, onClick, isBusy, style, children } = this.props;
         return (
             <button className="primary"
-                onClick={onSubmit}
+                onClick={onSubmit || onClick}
                 disabled={isBusy}
                 style={style}>{children}</button>
         )

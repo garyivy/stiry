@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --config config/webpack.config.dev.js --progress --colors --content-base . --hot --inline",
     "build": "webpack -p --config config/webpack.config.prod.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemonnpm  server/server.js"
+    "server": "nodemon server/server.js"
   },
   "author": "Gary Ivy",
   "license": "ISC",

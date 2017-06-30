@@ -20,14 +20,11 @@ export const QuestionnairePresentation = ({
         : null;
 
     const nextButton = shouldShowSubmitButton
-        ? <PrimaryButton>Submit</PrimaryButton>
-        : <PrimaryButton>Next Question</PrimaryButton>;
+        ? <PrimaryButton onClick={onSubmitButtonClick}>Submit</PrimaryButton>
+        : <PrimaryButton onClick={onNextButtonClick}>Next Question</PrimaryButton>;
 
     const onSubmit = event => {
         event.preventDefault();
-        shouldShowSubmitButton
-            ? onSubmitButtonClick()
-            : onNextButtonClick();
     }
 
     return (
@@ -35,7 +32,7 @@ export const QuestionnairePresentation = ({
             <h1>The Stiry Questionnaire</h1>
             <h2>Collaboration Name: {collaborationName}</h2>
             <StepIndicator />
-            <form className="width-100" onSubmit={onSubmit}>
+            <form onSubmit={onSubmit}>
                 <Question />
                 <div className="button-container">
                     {previousButton}

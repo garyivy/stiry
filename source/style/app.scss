@@ -1,7 +1,7 @@
 @import 'colors';
 $fa-font-path: "./../../node_modules/font-awesome/fonts";
 @import './../../node_modules/font-awesome/scss/font-awesome.scss';
-@import 'step-indicator';
+
 $default-color: black;
 $base-font-family: Calibri;
 body {
@@ -36,6 +36,12 @@ nav {
         }
         &:hover {
             background-color: $primary-color;
+        }
+    }
+    &.small-menu {
+        li {
+            display: block;
+            min-width: 200px;
         }
     }
 }
@@ -74,6 +80,7 @@ i.busy {
     margin-left: 10px;
     font-size: .8em;
 }
+
 form {
     width: 400px;
 }
@@ -129,40 +136,24 @@ button {
     cursor: pointer;
     &:hover {
         color: lighten($default-color, 5%);
-        border-color:lighten($default-color, 5%);
+        border-color: lighten($default-color, 5%);
         background-image: linear-gradient(lighten($default-color, 87%), lighten($default-color, 82%));
     }
     &.primary {
-    border: 1px solid darken($primary-color, 5%);
+        border: 1px solid darken($primary-color, 5%);
         color: white;
         background-image: linear-gradient(lighten($primary-color, 8%), $primary-color);
     }
     &.primary:hover {
-    border: 1px solid darken($primary-color, 5%);
+        border: 1px solid darken($primary-color, 5%);
         color: white;
         background-image: linear-gradient(lighten($primary-color, 20%), $primary-color);
     }
 }
 
 .width-100 {
-	width: 100%;
+    width: 100%;
 }
 
-.question-container {
-	form {
-		width: 100%;
-	}
-    padding-top: 20px;
-    padding-bottom: 20px;
-    label {
-        font-size: 1.2em;
-        display: block;
-    }
-    textarea {
-        width: 100%;
-        max-width: 800px;
-        height: 120px;
-        border: 1px solid black;
-    }
-}
-
+@import 'step-indicator';
+@import 'questionnaire';

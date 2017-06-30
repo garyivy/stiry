@@ -4,7 +4,7 @@ import * as actionTypes from './../actions/actionTypes.js';
 const initialState = {
     collaborationName: null,
     collaborationToken: null,
-    
+
     incompleteSurveyCount: 1,
     isScrambled: false,
     userStatuses: [
@@ -57,12 +57,15 @@ const collaborationReducer = (state = initialState, { type, payload, error }) =>
                     shouldShowNextButton: currentQuestionIndex < state.answers.length - 1,
                     shouldShowSubmitButton: currentQuestionIndex == state.answers.length - 1
                 }
+            } else {
+                return state;
             }
 
         case actionTypes.GOTO_NEXT_QUESTION:
             if (isNullOrWhitespace(state.answers[state.currentQuestionIndex].text)) {
                 return { ...state, error: 'An answer is required before moving on to the next step.' };
             }
+
             if (state.currentQuestionIndex < state.answers.length - 1) {
                 let currentQuestionIndex = state.currentQuestionIndex + 1;
                 return {
@@ -73,6 +76,8 @@ const collaborationReducer = (state = initialState, { type, payload, error }) =>
                     shouldShowSubmitButton: currentQuestionIndex == state.answers.length - 1,
                     error: null
                 }
+            } else {
+                return state;
             }
 
         default:

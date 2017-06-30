@@ -1,31 +1,27 @@
 $arrow-size: 20px;
+
+.step-indicator {
+    width: 100%;
+}
+
 .step-indicator a {
     padding: 10px 0px 10px 10px ;
     position: relative;
     display: inline-block;
     text-decoration: none;
-    min-width: 15%;
-    margin-left: 0.25%;
+    width: calc(16.67% - 13px); // 100% / StepCount - 3px for margin-left and -10px for half the arrow size.
+    margin-left: 3px;
     text-align: center;
     text-decoration: none;
     font-size: .95em;
     font-weight: 400;
     color: $secondary-color;
-    background: #dfecd3;
+    background: $lightgrey-color;
     cursor: default;
 }
 
-@media only screen and (max-device-width: 800px) {
-    .step-indicator a {
-        min-width: 20px;
-    }	
-}
-
-.step-indicator {
-    max-width: 720px;
-}
 .step-indicator a.active {
-    color: #dfecd3;
+    color: $lightgrey-color;
     background: $secondary-color;
 }
 
@@ -36,6 +32,7 @@ $arrow-size: 20px;
 .step-indicator a:first-child {
     margin-left: 0;
     padding-left: 0;
+    width: calc(16.67% - 3px);
 }
 
 .step-indicator:not(.left-arrow) a:before {
@@ -55,11 +52,11 @@ $arrow-size: 20px;
     height: 0;
     border-top: $arrow-size inset transparent;
     border-bottom: $arrow-size inset transparent;
-    border-left: $arrow-size solid #dfecd3;
+    border-left: $arrow-size solid $lightgrey-color;
     position: absolute;
     content: "";
     top: 0;
-    right: -20px;
+    right: -$arrow-size;
     z-index: 2;
 }
 
@@ -71,3 +68,4 @@ $arrow-size: 20px;
 .step-indicator a:last-child:after {
     border: none;
 }
+
