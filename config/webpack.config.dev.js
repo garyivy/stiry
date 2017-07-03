@@ -1,3 +1,3 @@
-var apiPath = 'http://localhost:3001';
-console.log(__dirname);
+//var apiPath = 'http://localhost:3001/api/';
+var apiPath = '../api/';
 module.exports = require('./webpack.config.common.js')(apiPath);

@@ -17,10 +17,12 @@ var config = {
         filename: 'app.js'
     },
     devServer: {
+        historyApiFallback: true,
         publicPath: '/',
         contentBase: './build',
         compress: true,
-        port: 9000
+        port: 9000,
+        proxy: { '/api': 'http://localhost:3001' }
     },
     module: {
         rules: [
@@ -39,7 +41,8 @@ var config = {
                 include: SOURCE_DIR,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
-                query: { presets: ['es2015', 'react'] }
+                query: { presets: ['es2015', 'react'], plugins: ["transform-object-rest-spread"] }
+                 
             },
             {
                 test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?.*)?$/,
@@ -74,5 +77,6 @@ var config = {
 
 module.exports = function (apiPath) {
     console.log('API path: ' + apiPath);
+    config.plugins.push(new webpack.DefinePlugin({ 'API_PATH': JSON.stringify(apiPath)}));
     return config;
 }

@@ -1,0 +1,71 @@
+$arrow-size: 20px;
+
+.step-indicator {
+    width: 100%;
+}
+
+.step-indicator a {
+    padding: 10px 0px 10px 10px ;
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    width: calc(16.67% - 13px); // 100% / StepCount - 3px for margin-left and -10px for half the arrow size.
+    margin-left: 3px;
+    text-align: center;
+    text-decoration: none;
+    font-size: .95em;
+    font-weight: 400;
+    color: $secondary-color;
+    background: $lightgrey-color;
+    cursor: default;
+}
+
+.step-indicator a.active {
+    color: $lightgrey-color;
+    background: $secondary-color;
+}
+
+.step-indicator a:hover {
+    text-decoration: none;
+}
+
+.step-indicator a:first-child {
+    margin-left: 0;
+    padding-left: 0;
+    width: calc(16.67% - 3px);
+}
+
+.step-indicator:not(.left-arrow) a:before {
+    width: 0;
+    height: 0;
+    border-top: $arrow-size inset transparent;
+    border-bottom: $arrow-size inset transparent;
+    border-left: $arrow-size solid #FFFFFF;
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+}
+
+.step-indicator:not(.left-arrow) a:after {
+    width: 0;
+    height: 0;
+    border-top: $arrow-size inset transparent;
+    border-bottom: $arrow-size inset transparent;
+    border-left: $arrow-size solid $lightgrey-color;
+    position: absolute;
+    content: "";
+    top: 0;
+    right: -$arrow-size;
+    z-index: 2;
+}
+
+.step-indicator:not(.left-arrow) a.active:after {
+    border-left: $arrow-size solid $secondary-color;
+}
+
+.step-indicator a:first-child:before,
+.step-indicator a:last-child:after {
+    border: none;
+}
+

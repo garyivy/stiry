@@ -2,6 +2,158 @@
 $fa-font-path: "./../../node_modules/font-awesome/fonts";
 @import './../../node_modules/font-awesome/scss/font-awesome.scss';
 
+$default-color: black;
+$base-font-family: Calibri;
 body {
-    background-color: $primary-color;
+    background-color: $default-background-color;
+    font-family: $base-font-family;
+    margin: 0;
+    font-size: 18px;
 }
+
+a {
+    color: $secondary-color;
+}
+
+nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: $secondary-color;
+    li {
+        height: 28px;
+        padding-top: 7px;
+        display: inline-block;
+        border-right: 1px solid $lightgrey-color;
+        a {
+            padding-left: 10px;
+            padding-right: 10px;
+            text-decoration: none;
+            color: white;
+            &:visited {
+                color: white;
+            }
+        }
+        &:hover {
+            background-color: $primary-color;
+        }
+    }
+    &.small-menu {
+        li {
+            display: block;
+            min-width: 200px;
+        }
+    }
+}
+
+h1 {
+    color: $primary-color;
+    font-size: 1.3em;
+}
+
+h2 {
+    color: $secondary-color;
+    font-size: 1.15em;
+}
+
+.centered-content {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    min-width: 430px;
+    padding: 5px;
+}
+
+.top-header {
+    font-size: 1.8em;
+    font-weight: 800;
+    padding-left: 5px;
+    background-color: $lightgrey-color;
+    color: $secondary-color;
+    i {
+        color: $primary-color;
+    }
+}
+
+i.busy {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: .8em;
+}
+
+form {
+    width: 400px;
+}
+
+.field {
+    width: 100%;
+    margin-top: 10px;
+    label {
+        display: block;
+    }
+    input,
+    textarea {
+        display: block;
+        width: 100%;
+        font-size: 1em;
+        padding: 7px;
+    }
+    div input {
+        display: inline-block;
+        width: 250px;
+        font-size: 1em;
+        padding: 7px;
+    }
+    button.primary {
+        min-width: 100px;
+    }
+}
+
+button.primary {
+    height: 36px;
+}
+
+div.button-container {
+    width: 100%;
+    text-align: center;
+}
+
+.error {
+    color: $error-color;
+}
+
+button {
+    margin: 10px;
+    margin-left: 0px;
+    background-image: linear-gradient(to bottom, lighten($default-color, 85%), lighten($default-color, 75%));
+    color: #000000;
+    height: 36px;
+    min-width: 150px;
+    font-size: 1.05em;
+    font-weight: 800;
+    border: 1px solid darken($default-color, 5%);
+    font-family: $base-font-family;
+    cursor: pointer;
+    &:hover {
+        color: lighten($default-color, 5%);
+        border-color: lighten($default-color, 5%);
+        background-image: linear-gradient(lighten($default-color, 87%), lighten($default-color, 82%));
+    }
+    &.primary {
+        border: 1px solid darken($primary-color, 5%);
+        color: white;
+        background-image: linear-gradient(lighten($primary-color, 8%), $primary-color);
+    }
+    &.primary:hover {
+        border: 1px solid darken($primary-color, 5%);
+        color: white;
+        background-image: linear-gradient(lighten($primary-color, 20%), $primary-color);
+    }
+}
+
+.width-100 {
+    width: 100%;
+}
+
+@import 'step-indicator';
+@import 'questionnaire';
