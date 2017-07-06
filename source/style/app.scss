@@ -3,7 +3,7 @@ $fa-font-path: "./../../node_modules/font-awesome/fonts";
 @import './../../node_modules/font-awesome/scss/font-awesome.scss';
 
 $default-color: black;
-$base-font-family: Calibri;
+$base-font-family: 'Open Sans', sans-serif;
 
 html {
   box-sizing: border-box;
@@ -16,7 +16,12 @@ body {
     background-color: $default-background-color;
     font-family: $base-font-family;
     margin: 0;
-    font-size: 18px;
+    font-size: 16px;
+}
+
+input, textarea, select {
+    font-family: $base-font-family;
+    font-size: 16px;
 }
 
 a {
@@ -57,13 +62,10 @@ form {
     textarea {
         display: block;
         width: 100%;
-        font-size: 1em;
         padding: 7px;
     }
     div input {
         display: inline-block;
-        width: 250px;
-        font-size: 1em;
         padding: 7px;
     }
     button.primary {
@@ -86,6 +88,7 @@ div.button-container {
 
 button {
     margin: 10px;
+    margin-top: 15px;
     margin-left: 0px;
     background-image: linear-gradient(to bottom, lighten($default-color, 85%), lighten($default-color, 75%));
     color: #000000;

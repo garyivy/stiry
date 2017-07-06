@@ -3,9 +3,8 @@ $aside-breakpoint: 800px;
 $centering-breakpoint: 960px;
 $max-display-width: 800px;
 $content-margin: 10px;
-
 header {
-    display: block; 
+    display: block;
     padding: 5px;
     font-size: 1.8em;
     font-weight: 800;
@@ -18,7 +17,7 @@ header {
 }
 
 nav {
-    display: block; 
+    display: block;
     background-color: $secondary-color;
     a {
         display: inline-block;
@@ -41,7 +40,6 @@ nav {
             margin-left: -$content-margin;
         }
     }
-
     &.small-menu {
         a {
             display: block;
@@ -55,38 +53,43 @@ nav {
 }
 
 .fixed-header {
-    position: fixed; 
-    width: 100%; 
+    position: fixed;
+    width: 100%;
     z-index: 1000;
-    top: 0px !important; /* https://stackoverflow.com/questions/9625093/margin-affects-other-fixed-elements-position */
+    top: 0px !important;
+    /* https://stackoverflow.com/questions/9625093/margin-affects-other-fixed-elements-position */
 }
 
 .main-aside-content {
     margin-top: 100px;
 }
 
+
 /*
     Centering content inside content-wrapper and limiting width of display.
 */
 
-.header-content, .nav-content, .main-aside-content {
+.header-content,
+.nav-content,
+.main-aside-content {
     display: block;
     margin-left: $content-margin;
     margin-right: $content-margin;
 }
 
 @media (min-width: $centering-breakpoint) {
-    .header-content, .nav-content, .main-aside-content {
+    .header-content,
+    .nav-content,
+    .main-aside-content {
         width: $max-display-width;
         margin-left: auto;
         margin-right: auto;
     }
-    
     nav {
         a:first-child {
             border-left: 1px solid $lightgrey-color;
             margin-left: 0;
-        }        
+        }
     }
 }
 
@@ -96,6 +99,7 @@ nav {
         margin-right: 0;
     }
 }
+
 
 /*
     Showing/hiding asides.
@@ -122,8 +126,35 @@ aside {
     }
 }
 
+.responsive-content-small {
+    display: none;
+}
+
 @media(-webkit-min-device-pixel-ratio: 2) {
-    input, textarea, button {
+    .responsive-content-small {
+        display: inline;
+    }
+    .responsive-content-regular {
+        display: none;
+    }
+    input,
+    textarea {
+        display: block;
+        width: 100%;
         font-size: 1.5em;
+    }
+    button {
+        display: block;
+        font-size: 1.2em;
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    nav {
+        a {
+            height: 50px;
+            line-height: 50px;
+        }
     }
 }

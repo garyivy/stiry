@@ -5,31 +5,31 @@ import { startCollaboration } from './../../actions/collaborationActionCreators.
 import { Link } from 'react-router-dom';
 import PrimaryButton from './../../shared/PrimaryButton.jsx';
 
-// TODO: Refactor using css/component
-const inputStyle = { display: 'inline-block' };
-const buttonDivStyle = { paddingTop: '2px', marginLeft: '8px', display: 'inline-block' };
-const buttonStyle = { marginTop: '0' };
-
 export const StartSessionPresentation = ({ collaborationName, onChange, onSubmit, error }) => (
     <div>
         <h1>Start a Stiry Collaboration</h1>
-        <p>
-            A collaboration name is needed to group participants together.
-            One person starts a collaboration here.  The remaining partipants will need this name to join the collaboration by
-            &nbsp;<Link to="/joinsession">clicking here</Link> or choosing "Join&nbsp;Collaboration" from the site menu.
-        </p>
         <form onSubmit={onSubmit}>
             <div className="field">
                 <label>Collaboration Name</label>
                 <div>
-                    <input type="text" name="collaborationName" style={inputStyle} value={collaborationName} onChange={onChange} />
-                    <div style={buttonDivStyle}>
-                        <PrimaryButton style={buttonStyle}>Submit</PrimaryButton>
+                    <input type="text" name="collaborationName" value={collaborationName} onChange={onChange} />
+                    <div>
+                        <PrimaryButton>Start</PrimaryButton>
                     </div>
                 </div>
                 {error && <label className="error">{error}</label>}
             </div>
         </form>
+        <p className="responsive-content-regular">
+            A collaboration name is needed to group participants together.
+            One person starts a collaboration here.  The remaining partipants will need this name to join the collaboration by
+            &nbsp;<Link to="/joinsession">clicking here</Link> or choosing "Join&nbsp;Collaboration" from the site menu.
+        </p>        
+        <p className="responsive-content-small">
+            Note: Stirytime groups participants using a collaboration name.
+            <br/><br/>
+            To join a session in progress, <Link to="/join">click here.</Link>
+        </p>        
     </div>
 );
 

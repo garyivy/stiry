@@ -65,10 +65,6 @@ export class Signin extends React.Component {
         return (
             <div>
                 <h1>Stiry Sign In</h1>
-                <p>
-                    If you are a new user, <Link to="/register">click here to add your credentials.</Link>
-                    <br />If you forgot your password , <Link to="/forgot">click here to have a temporary password emailed to you.</Link>
-                </p>
                 <form onSubmit={this.onSubmit} className="form">
                     <div className="field">
                         <label>User Name (or Email)</label>
@@ -85,6 +81,14 @@ export class Signin extends React.Component {
                         <PrimaryButton>Login</PrimaryButton>
                     </div>
                 </form>
+                <p className="responsive-content-regular">
+                    If you are a new user, <Link to="/register">click here</Link> to add your credentials.
+                    <br />If you forgot your password , <Link to="/forgot">click here</Link> to have a temporary password emailed to you.
+                </p>                
+                <p className="responsive-content-condensed">
+                    New user? <Link to="/register">Sign up here.</Link>
+                    <br/>Forgot password? <Link to="/forgot">Click here.</Link>
+                </p>                
             </div>
         )
     }

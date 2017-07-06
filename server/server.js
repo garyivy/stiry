@@ -39,6 +39,15 @@ app.get('/app.js', function ( request, response ) {
 app.get('/app.css', function ( request, response ) {
     response.sendFile(fileDirectory + '/app.css');
 });
+app.get('/fontawesome*', function ( request, response ) {
+    try
+    {
+        response.sendFile(fileDirectory + request.originalUrl);
+    }
+    catch( error ) {
+        response.sendStatus(404);
+    }
+});
 
 app.use(function (err, req, res, next) {
   console.error(err.stack)
