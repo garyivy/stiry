@@ -1,21 +1,11 @@
 $menu-breakpoint: 480px;
 $aside-breakpoint: 800px;
-$max-display-width: 800px;
 $centering-breakpoint: 960px;
+$max-display-width: 800px;
 $content-margin: 10px;
 
-.content-wrapper {
-    display: block;
-    margin-left: $content-margin;
-    margin-right: $content-margin;
-}
-
-aside {
-    display: none;
-}
-
 header {
-    display: block;
+    display: block; 
     padding: 5px;
     font-size: 1.8em;
     font-weight: 800;
@@ -28,6 +18,7 @@ header {
 }
 
 nav {
+    display: block; 
     background-color: $secondary-color;
     a {
         display: inline-block;
@@ -50,12 +41,42 @@ nav {
             margin-left: -$content-margin;
         }
     }
+
+    &.small-menu {
+        a {
+            display: block;
+            border: 0;
+            border-top: 1px solid $lightgrey-color;
+            &:first-child {
+                border-top: 0;
+            }
+        }
+    }
 }
 
-@media (max-width:480px) {}
+.fixed-header {
+    position: fixed; 
+    width: 100%; 
+    z-index: 1000;
+    top: 0px !important; /* https://stackoverflow.com/questions/9625093/margin-affects-other-fixed-elements-position */
+}
+
+.main-aside-content {
+    margin-top: 100px;
+}
+
+/*
+    Centering content inside content-wrapper and limiting width of display.
+*/
+
+.header-content, .nav-content, .main-aside-content {
+    display: block;
+    margin-left: $content-margin;
+    margin-right: $content-margin;
+}
 
 @media (min-width: $centering-breakpoint) {
-    .content-wrapper {
+    .header-content, .nav-content, .main-aside-content {
         width: $max-display-width;
         margin-left: auto;
         margin-right: auto;
@@ -67,6 +88,21 @@ nav {
             margin-left: 0;
         }        
     }
+}
+
+@media (max-width: $menu-breakpoint) {
+    .nav-content {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/*
+    Showing/hiding asides.
+*/
+
+aside {
+    display: none;
 }
 
 @media (min-width: $aside-breakpoint) {
@@ -83,5 +119,11 @@ nav {
         border-left: 1px dotted $primary-color;
         padding-left: 35px;
         height: 280px;
+    }
+}
+
+@media(-webkit-min-device-pixel-ratio: 2) {
+    input, textarea, button {
+        font-size: 1.5em;
     }
 }

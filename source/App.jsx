@@ -41,9 +41,11 @@ const layout = (
   <div>
     <Resizer/>
     <Redirector/>
-    <Header/>
-    <Menu/>
-    <div className="content-wrapper">
+    <div className="fixed-header">
+      <Header/>
+      <Menu/>
+    </div>
+    <div className="main-aside-content">
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/signin" component={Signin} />

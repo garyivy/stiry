@@ -4,6 +4,14 @@ $fa-font-path: "./../../node_modules/font-awesome/fonts";
 
 $default-color: black;
 $base-font-family: Calibri;
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
     background-color: $default-background-color;
     font-family: $base-font-family;
@@ -35,7 +43,8 @@ i.busy {
 }
 
 form {
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
 }
 
 .field {

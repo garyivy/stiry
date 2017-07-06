@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const HeaderPresentation = ({ isAuthorizedUser, isBusy }) => (
     <header>
-        <div className="content-wrapper">
+        <div className="header-content">
             <div>St<i>i</i>rytime
             {isBusy && <i className="fa fa-spinner fa-spin busy"></i>}
             </div>
