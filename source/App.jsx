@@ -30,6 +30,7 @@ import ForgotPassword from './components/authentication/ForgotPassword.jsx';
 import ResetPassword from './components/authentication/ResetPassword.jsx';
 import Redirector from './components/layout/Redirector.jsx';
 import Resizer from './components/layout/Resizer.jsx';
+import Aside from './components/layout/Aside.jsx';
 
 // Style
 import './style/app.scss';
@@ -42,7 +43,7 @@ const layout = (
     <Redirector/>
     <Header/>
     <Menu/>
-    <article className="centered-content">
+    <div className="content-wrapper">
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/signin" component={Signin} />
@@ -57,7 +58,7 @@ const layout = (
         <CollaborationRoute path="/scrambled" component={Scrambled} />
         <Route path="/about" component={About} />
       </Switch>
-    </article>
+    </div>
   </div>
 );
 

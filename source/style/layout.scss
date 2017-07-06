@@ -1,0 +1,87 @@
+$menu-breakpoint: 480px;
+$aside-breakpoint: 800px;
+$max-display-width: 800px;
+$centering-breakpoint: 960px;
+$content-margin: 10px;
+
+.content-wrapper {
+    display: block;
+    margin-left: $content-margin;
+    margin-right: $content-margin;
+}
+
+aside {
+    display: none;
+}
+
+header {
+    display: block;
+    padding: 5px;
+    font-size: 1.8em;
+    font-weight: 800;
+    padding-left: 5px;
+    background-color: $lightgrey-color;
+    color: $secondary-color;
+    i {
+        color: $primary-color;
+    }
+}
+
+nav {
+    background-color: $secondary-color;
+    a {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+        border-right: 1px solid $lightgrey-color;
+        color: white;
+        min-width: 100px;
+        padding-left: 5px;
+        padding-right: 5px;
+        text-decoration: none;
+        text-align: center;
+        &:visited {
+            text-decoration: none;
+        }
+        &:hover {
+            background-color: $primary-color;
+        }
+        &:first-child {
+            margin-left: -$content-margin;
+        }
+    }
+}
+
+@media (max-width:480px) {}
+
+@media (min-width: $centering-breakpoint) {
+    .content-wrapper {
+        width: $max-display-width;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    nav {
+        a:first-child {
+            border-left: 1px solid $lightgrey-color;
+            margin-left: 0;
+        }        
+    }
+}
+
+@media (min-width: $aside-breakpoint) {
+    main {
+        display: inline-block;
+        width: 65%;
+    }
+    aside {
+        display: inline-block;
+        width: 25%;
+        vertical-align: top;
+        margin-top: 35px;
+        margin-left: 35px;
+        border-left: 1px dotted $primary-color;
+        padding-left: 35px;
+        height: 280px;
+    }
+}

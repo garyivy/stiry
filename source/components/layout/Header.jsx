@@ -2,16 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-const HeaderPresentation = ({isAuthorizedUser, isBusy}) => (
-    <div className="top-header">
-        <div>St<i>i</i>rytime
-        {isBusy && <i className="fa fa-spinner fa-spin busy"></i>}
+const HeaderPresentation = ({ isAuthorizedUser, isBusy }) => (
+    <header>
+        <div className="content-wrapper">
+            <div>St<i>i</i>rytime
+            {isBusy && <i className="fa fa-spinner fa-spin busy"></i>}
+            </div>
         </div>
-    </div>
+    </header>
 );
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         isAuthorizedUser: state.authentication.isAuthorizedUser,
         isBusy: state.apiStatus.countRequestsInProgress > 0
     };

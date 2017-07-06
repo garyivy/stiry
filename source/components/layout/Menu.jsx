@@ -5,12 +5,14 @@ import { Link } from 'react-router-dom';
 const LargeMenuPresentation = ({ isAuthorizedUser }) => {
     return (
         <nav>
-            <li><Link to="/">Home</Link></li>
-            {isAuthorizedUser && <li><Link to="/start">Start Collaboration</Link></li>}
-            {isAuthorizedUser && <li><Link to="/join">Join Collaboration</Link></li>}
-            {isAuthorizedUser && <li><Link to="/signout">Sign Out</Link></li>}
-            {!isAuthorizedUser && <li><Link to="/signin">Sign In</Link></li>}
-            <li><Link to="/about">About</Link></li>
+            <div className="content-wrapper">
+                <Link to="/">Home</Link>
+                {isAuthorizedUser && <Link to="/start">Start Collaboration</Link>}
+                {isAuthorizedUser && <Link to="/join">Join Collaboration</Link>}
+                {isAuthorizedUser && <Link to="/signout">Sign Out</Link>}
+                {!isAuthorizedUser && <Link to="/signin">Sign In</Link>}
+                <Link to="/about">About</Link>
+            </div>
         </nav>
     )
 };
@@ -18,12 +20,14 @@ const LargeMenuPresentation = ({ isAuthorizedUser }) => {
 const SmallMenuPresentation = ({ isAuthorizedUser, isExpanded, onToggleMenu }) => {
     return (
         <nav className="small-menu" onClick={onToggleMenu}>
-            <li><a><i className="fa fa-bars"></i></a></li>
-            {isExpanded && isAuthorizedUser && <li><Link to="/start">Start Collaboration</Link></li>}
-            {isExpanded && isAuthorizedUser && <li><Link to="/join">Join Collaboration</Link></li>}
-            {isExpanded && isAuthorizedUser && <li><Link to="/signout">Sign Out</Link></li>}
-            {isExpanded && !isAuthorizedUser && <li><Link to="/signin">Sign In</Link></li>}
-            {isExpanded && <li><Link to="/about">About</Link></li>}
+            <div className="content-wrapper">
+                <a><i className="fa fa-bars"></i></a>
+                {isExpanded && isAuthorizedUser && <Link to="/start">Start Collaboration</Link>}
+                {isExpanded && isAuthorizedUser && <Link to="/join">Join Collaboration</Link>}
+                {isExpanded && isAuthorizedUser && <Link to="/signout">Sign Out</Link>}
+                {isExpanded && !isAuthorizedUser && <li><Link to="/signin">Sign In</Link></li>}
+                {isExpanded && <Link to="/about">About</Link>}
+            </div>
         </nav>
     )
 };
