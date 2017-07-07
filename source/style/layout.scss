@@ -1,3 +1,4 @@
+$phone-breakpoint: 400px;
 $menu-breakpoint: 480px;
 $aside-breakpoint: 800px;
 $centering-breakpoint: 960px;
@@ -9,21 +10,23 @@ header {
     font-size: 1.8em;
     font-weight: 800;
     padding-left: 5px;
-    background-color: $lightgrey-color;
-    color: $secondary-color;
+    background-color: $header-background-color;
+    color: $clickable-color;
     i {
-        color: $primary-color;
+        color:  $clickable-color-hover;
+        display: inline-block;
+        margin-right: 3px;
     }
 }
 
 nav {
     display: block;
-    background-color: $secondary-color;
+    background-color: $clickable-color;
     a {
         display: inline-block;
-        height: 40px;
-        line-height: 40px;
-        border-right: 1px solid $lightgrey-color;
+        height: 50px;
+        line-height: 50px;
+        border-right: 1px solid $menu-separator-color;
         color: white;
         min-width: 100px;
         padding-left: 5px;
@@ -34,7 +37,7 @@ nav {
             text-decoration: none;
         }
         &:hover {
-            background-color: $primary-color;
+            background-color: $clickable-color-hover;
         }
         &:first-child {
             margin-left: -$content-margin;
@@ -44,9 +47,15 @@ nav {
         a {
             display: block;
             border: 0;
-            border-top: 1px solid $lightgrey-color;
+            border-top: 1px solid $menu-separator-color;
             &:first-child {
                 border-top: 0;
+            }
+
+            i {
+                font-size: 2em;
+                display: inline-block;
+                margin-top: 5px;
             }
         }
     }
@@ -87,7 +96,7 @@ nav {
     }
     nav {
         a:first-child {
-            border-left: 1px solid $lightgrey-color;
+            border-left: 1px solid $menu-separator-color;
             margin-left: 0;
         }
     }
@@ -120,7 +129,7 @@ aside {
         vertical-align: top;
         margin-top: 35px;
         margin-left: 35px;
-        border-left: 1px dotted $primary-color;
+        border-left: 1px dotted $header-background-color;
         padding-left: 35px;
         height: 280px;
     }
@@ -130,7 +139,8 @@ aside {
     display: none;
 }
 
-@media(-webkit-min-device-pixel-ratio: 2) {
+
+@media(max-width: $phone-breakpoint) {
     .responsive-content-small {
         display: inline;
     }
@@ -149,12 +159,5 @@ aside {
         width: 60%;
         margin-left: auto;
         margin-right: auto;
-    }
-
-    nav {
-        a {
-            height: 50px;
-            line-height: 50px;
-        }
     }
 }
