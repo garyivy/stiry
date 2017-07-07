@@ -1,8 +1,10 @@
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const api = require('./api.js'); 
 const app = express(); 
+
 
 // Setup REST API
 const dbName = 'stiryDB';
@@ -18,9 +20,22 @@ const connectionString = 'mongodb://localhost:27017/' + dbName;
 //const connectionString = 'mongodb://admin:Admjuynhyy@cluster0-shard-00-00-wo3z4.mongodb.net:27017,cluster0-shard-00-01-wo3z4.mongodb.net:27017,cluster0-shard-00-02-wo3z4.mongodb.net:27017/Stirytime?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
 mongoose.connect(connectionString, options, function(error, db){
     if(error) {
+        fs.appendFile('diagnostic.log', 'Unable to connect to mongoDb', function (loggingError) {
+            if (loggingError) {
+                console.error(loggingError);
+            }
+        });        
+    
         console.log('Unable to connect to DB');
         console.log(error);
     } else {
+
+        fs.appendFile('diagnostic.log', 'Connected to mongoDb', function (loggingError) {
+            if (loggingError) {
+                console.error(loggingError);
+            }
+        });  
+
         console.log('Connected to DB!');
     }
 });
