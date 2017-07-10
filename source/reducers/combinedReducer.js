@@ -7,16 +7,9 @@ import windowSizeReducer from './windowSizeReducer.js';
 
 import { reducer as formReducer } from 'redux-form';
 
-const locationReducer = (location = null, action) => {
-     console.log(action);
-
-    switch (action.type) {
-        case '@@router/LOCATION_CHANGE':
-            console.log(action);
-
-        default:
-            return location;
-    }
+const loggerReducer = (state = {}, action) => {
+    console.log(action);
+    return state;
 }
 
 const combinedReducer = combineReducers({
@@ -25,7 +18,7 @@ const combinedReducer = combineReducers({
     redirectUrl:    redirectReducer,
     apiStatus:      apiStatusReducer,
     windowSize:     windowSizeReducer,
-    location:       locationReducer,
+    logger:         loggerReducer,
     form:           formReducer // TODO: Remove if not using redux-form (still weighing pros/cons)
 });
 

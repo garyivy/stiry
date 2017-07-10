@@ -19,6 +19,7 @@ import Menu from './components/layout/Menu.jsx';
 import Home from './components/public/Home.jsx';
 import Signin from './components/authentication/Signin.jsx';
 import Signout from './components/authentication/Signout.jsx';
+import Guest from './components/authentication/Guest.jsx';
 import StartSession from './components/collaboration/StartSession.jsx';
 import JoinSession from './components/collaboration/JoinSession.jsx';
 import Questionnaire from './components/collaboration/Questionnaire.jsx';
@@ -51,6 +52,7 @@ const layout = (
         <Route path="/signin" component={Signin} />
         <Route path="/signout" component={Signout} />
         <Route path="/register" component={NewUser} />
+        <Route path="/guest" component={Guest} />
         <Route path="/forgot" component={ForgotPassword} />
         <Route path="/reset" component={ResetPassword} />
         <PrivateRoute path="/start" component={StartSession} />

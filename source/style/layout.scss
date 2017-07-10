@@ -4,6 +4,7 @@ $aside-breakpoint: 800px;
 $centering-breakpoint: 960px;
 $max-display-width: 800px;
 $content-margin: 10px;
+
 header {
     display: block;
     padding: 5px;
@@ -121,11 +122,14 @@ aside {
 @media (min-width: $aside-breakpoint) {
     main {
         display: inline-block;
-        width: 65%;
+        width: 560px;
     }
     aside {
         display: inline-block;
-        width: 25%;
+        width: calc(100% - 635
+        
+        
+        px);
         vertical-align: top;
         margin-top: 35px;
         margin-left: 35px;

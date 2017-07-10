@@ -43,7 +43,7 @@ app.use('/api', api);
 
 // Setup serving static app 
 const fileDirectory = __dirname.replace('server','build');
-app.get(['/', 'signin', 'reset', 'wait'], function ( request, response ) {
+app.get(['/', '/signin', '/reset', '/wait', '/guest', '/guest', '/scrambled', '/start', '/join'], function ( request, response ) {
     response.sendFile(fileDirectory + '/index.html');
 });
 app.get('/app.js', function ( request, response ) {

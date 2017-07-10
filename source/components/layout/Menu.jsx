@@ -19,6 +19,7 @@ const LargeMenuPresentation = ({ isAuthorizedUser, shouldUseShortNames, shouldSh
                 {isAuthorizedUser && <Link to="/join">{ joinCollaboration }</Link>}
                 {isAuthorizedUser && <Link to="/signout">Sign Out</Link>}
                 {!isAuthorizedUser && <Link to="/signin">Sign In</Link>}
+                {!isAuthorizedUser && <Link to="/guest">Guest</Link>}
                 {shouldShowAbout && <Link to="/about">About</Link>}
             </div>
         </nav>
@@ -34,6 +35,7 @@ const SmallMenuPresentation = ({ isAuthorizedUser, isExpanded, onToggleMenu }) =
                 {isExpanded && isAuthorizedUser && <Link to="/join">Join Collaboration</Link>}
                 {isExpanded && isAuthorizedUser && <Link to="/signout">Sign Out</Link>}
                 {isExpanded && !isAuthorizedUser && <Link to="/signin">Sign In</Link>}
+                {isExpanded && !isAuthorizedUser && <Link to="/guest">Guest</Link>}
                 {isExpanded && <Link to="/about">About</Link>}
             </div>
         </nav>
