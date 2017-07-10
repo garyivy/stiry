@@ -6,22 +6,31 @@ import StepIndicator from './StepIndicator.jsx';
 import PrimaryButton from './../../shared/PrimaryButton.jsx';
 
 import {
+    autoPickAnswer,
     gotoPreviousQuestion,
     gotoNextQuestion,
     submitQuestionnaire
 } from './../../actions/collaborationActionCreators.js';
 
-export const QuestionnairePresentation = ({ windowSize,
+const reducedTextThreshold = 450;
+
+export const QuestionnairePresentation = ({ windowSize, onLazyButtonClick,
     collaborationName, shouldShowPreviousButton, onPreviousButtonClick,
     shouldShowSubmitButton, onNextButtonClick, onSubmitButtonClick }) => {
 
-    let previousQuestionButtonText = windowSize.width < 450 
+    let lazyQuestionButtonText = windowSize.width < reducedTextThreshold
+        ? 'Lazy'
+        : 'I am Lazy';
+
+    let previousQuestionButtonText = windowSize.width < reducedTextThreshold
         ? 'Previous'
         : 'Previous Question';
 
-    let nextQuestionButtonText = windowSize.width < 450 
+    let nextQuestionButtonText = windowSize.width < reducedTextThreshold
         ? 'Next'
         : 'Next Question';
+
+    const lazyButton = <button onClick={onLazyButtonClick}>{lazyQuestionButtonText}</button>;
 
     const previousButton = shouldShowPreviousButton
         ? <button onClick={onPreviousButtonClick}>{previousQuestionButtonText}</button>
@@ -37,8 +46,11 @@ export const QuestionnairePresentation = ({ windowSize,
         // Note: On small devices, show next before previous since the buttons show on separate "lines"
         buttons.push(nextButton);
         buttons.push(previousButton);
+        buttons.push(lazyButton);
+
     } else {
         buttons.push(previousButton);
+        buttons.push(lazyButton);
         buttons.push(nextButton);
     }
 
@@ -73,6 +85,7 @@ const mapStateToProps = ({ collaboration, windowSize }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        onLazyButtonClick: () => dispatch(autoPickAnswer()),
         onPreviousButtonClick: () => dispatch(gotoPreviousQuestion()),
         onNextButtonClick: () => dispatch(gotoNextQuestion()),
         onSubmitButtonClick: () => dispatch(submitQuestionnaire())

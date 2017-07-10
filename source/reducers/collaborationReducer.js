@@ -4,6 +4,7 @@ import {
     START_COLLABORATION,
     JOIN_COLLABORATION,
     RECORD_ANSWER,
+    AUTO_PICK_ANSWER,
     GOTO_NEXT_QUESTION,
     GOTO_PREVIOUS_QUESTION,
     GET_COLLABORATION_STATUS,
@@ -50,6 +51,14 @@ const collaborationReducer = (state = initialState, { type, payload, error }) =>
                     : q);
             return { ...state, answers };
 
+        case AUTO_PICK_ANSWER:
+            var answers = state.answers
+                .map(q => q.id === state.answers[state.currentQuestionIndex].id
+                    ? { id: q.id, prompt: q.prompt, text: getRandomAnswer(q.id) }
+                    : q);
+            return { ...state, answers };
+
+        
         case GOTO_PREVIOUS_QUESTION:
             return state.currentQuestionIndex < state.answers.length - 1
                 ? buildStateForGoto(state, type)
@@ -88,6 +97,22 @@ function buildStateForGoto(state, gotoType) {
         shouldShowSubmitButton: currentQuestionIndex == state.answers.length - 1,
         error: null
     }
+}
+
+const randomAnswers = [
+    [ 'Thomas the tank engine', 'Oprah', 'Donald Trump', 'Snoop Dog', 'Billy the Kid', 'Wonder Woman', 'Superman', 'Ghandi'],
+    [ 'The country fair', 'Rehab', 'Employee Apreciation Dinner', 'Accident, Maryland', 'Embarass, Minnesota', 'Hollywood', 'Disneytown'],
+    [ 'I hitch-hiked', 'On my harley trike', 'Mo-ped', 'VW Hippie Van', 'My private jet', 'I was beammed there', 'I crawled', 'I walked there in high heels'],
+    [ 'Batman', 'Robin', 'Jack Nicholson', 'The employee of the month', 'Hillary Clinton', 'The dude that use to do those sprint commercials', 'My second cousin'],
+    [ 'Where did you get those cookies?', 'I want answers', 'Is that you I smell?', 'Can I borrow a dollar?', 'Buy low, sell high', 'Supreme executive authority is derived by a mandate from the masses'],
+    [ 'You cant handle the truth!', 'Sticks and stones may break my bones but words will never hurt me.', 'If I had a nickel for everytime I heard that, I would be a rich man today']
+];
+
+function getRandomAnswer(questionId) {
+    let questionIndex = questionId -1;
+    let answerCount = randomAnswers[questionIndex].length;
+    let index = Math.floor((Math.random() * answerCount));
+    return randomAnswers[questionIndex][index];
 }
 
 export default collaborationReducer;
