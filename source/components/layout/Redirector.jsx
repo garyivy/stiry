@@ -23,9 +23,6 @@ class Redirector extends React.Component {
     } 
  
     render() {
-        if(this.props.redirectUrl) {
-            console.log('Redirecting to ' + this.props.redirectUrl);
-        }
         return this.props.redirectUrl && <Redirect to={{ pathname: this.props.redirectUrl}}/>;
     }
 }

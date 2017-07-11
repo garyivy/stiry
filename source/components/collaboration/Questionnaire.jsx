@@ -14,7 +14,7 @@ import {
 
 const reducedTextThreshold = 450;
 
-export const QuestionnairePresentation = ({ windowSize, onLazyButtonClick,
+export const Questionnaire = ({ windowSize, onLazyButtonClick,
     collaborationName, shouldShowPreviousButton, onPreviousButtonClick,
     shouldShowSubmitButton, onNextButtonClick, onSubmitButtonClick }) => {
 
@@ -59,8 +59,8 @@ export const QuestionnairePresentation = ({ windowSize, onLazyButtonClick,
     }
 
     return (
-        <div className="questionnaire-container">
-            <h1>The Stiry Questionnaire</h1>
+        <main className="questionnaire-container">
+            <h1>The Stirytime Questionnaire</h1>
             <h2>Collaboration Name: {collaborationName}</h2>
             <StepIndicator />
             <form onSubmit={onSubmit}>
@@ -69,12 +69,11 @@ export const QuestionnairePresentation = ({ windowSize, onLazyButtonClick,
                     {buttons}
                 </div>
             </form>
-        </div>
+        </main>
     )
 }
 
 const mapStateToProps = ({ collaboration, windowSize }) => {
-    // Note: Pick only the values you need (versus a less verbose ...collaboration) because redux's shallow comparison would result in unnecessary renders
     return {
         shouldShowPreviousButton: collaboration.shouldShowPreviousButton,
         shouldShowSubmitButton: collaboration.shouldShowSubmitButton,
@@ -92,7 +91,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const Questionnaire = connect(mapStateToProps, mapDispatchToProps)(QuestionnairePresentation);
+export default connect(mapStateToProps, mapDispatchToProps)(Questionnaire);
 
-export default Questionnaire;
 

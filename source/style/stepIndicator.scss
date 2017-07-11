@@ -9,20 +9,20 @@ $arrow-size: 20px;
     position: relative;
     display: inline-block;
     text-decoration: none;
-    width: calc(16.67% - 13px); // 100% / StepCount - 3px for margin-left and -10px for half the arrow size.
+    width: calc(16.67% - 3px); // 100% / StepCount - 3px for margin-left
     margin-left: 3px;
     text-align: center;
     text-decoration: none;
     font-size: .95em;
     font-weight: 400;
-    color: $clickable-color;
-    background: $menu-separator-color;
+    color: $menu-separator-color;
+    background: $clickable-color;
     cursor: default;
 }
 
 .step-indicator a.active {
     color: $menu-separator-color;
-    background: $clickable-color;
+    background: $clickable-color-hover;
 }
 
 .step-indicator a:hover {
@@ -52,7 +52,7 @@ $arrow-size: 20px;
     height: 0;
     border-top: $arrow-size inset transparent;
     border-bottom: $arrow-size inset transparent;
-    border-left: $arrow-size solid $menu-separator-color;
+    border-left: $arrow-size solid $clickable-color;
     position: absolute;
     content: "";
     top: 0;
@@ -61,7 +61,7 @@ $arrow-size: 20px;
 }
 
 .step-indicator:not(.left-arrow) a.active:after {
-    border-left: $arrow-size solid $clickable-color;
+    border-left: $arrow-size solid $clickable-color-hover;
 }
 
 .step-indicator a:first-child:before,

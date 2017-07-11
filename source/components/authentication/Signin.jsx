@@ -5,13 +5,12 @@ import { Link } from 'react-router-dom';
 import { signin } from './../../actions/authenticationActionCreators.js'
 import PrimaryButton from './../../shared/PrimaryButton.jsx';
 
-// TODO: Consider exporting/naming strategy that best support unit testing.
 export class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: 'garyivy@gmail.com', // TODO: Remove hard code
-            password: 'qwer1234',
+            userName: '', 
+            password: '',
             errors: {}
         };
 
@@ -32,7 +31,11 @@ export class Signin extends React.Component {
         }
 
         let loggedInPath = '/';
-        if (this.props && this.props.location && this.props.location.state && this.props.location.state.from && this.props.location.state.from.pathname) {
+        if (this.props 
+            && this.props.location 
+            && this.props.location.state 
+            && this.props.location.state.from 
+            && this.props.location.state.from.pathname) {
             loggedInPath = this.props.location.state.from.pathname;
         }
 
@@ -63,7 +66,7 @@ export class Signin extends React.Component {
 
     render() {
         return (
-            <div>
+            <main>
                 <h1>Stiry Sign In</h1>
                 <form onSubmit={this.onSubmit} className="form">
                     <div className="field">
@@ -89,7 +92,7 @@ export class Signin extends React.Component {
                     New user? <Link to="/register">Sign up here.</Link>
                     <br/>Forgot password? <Link to="/forgot">Click here.</Link>
                 </p>                
-            </div>
+            </main>
         )
     }
 }

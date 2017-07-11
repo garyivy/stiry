@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-const HeaderPresentation = ({ isAuthorizedUser, isBusy }) => (
+const Header = ({ isBusy }) => (
     <header>
         <div className="header-content">
             <div>St<i>i</i>rytime
@@ -12,14 +12,11 @@ const HeaderPresentation = ({ isAuthorizedUser, isBusy }) => (
     </header>
 );
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({apiStatus}) => {
     return {
-        isAuthorizedUser: state.authentication.isAuthorizedUser,
-        isBusy: state.apiStatus.countRequestsInProgress > 0
+        isBusy: apiStatus.countRequestsInProgress > 0
     };
 }
 
-const Header = connect(mapStateToProps, undefined)(HeaderPresentation);
-
-export default Header;
+export default connect(mapStateToProps)(Header);
 

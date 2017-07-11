@@ -27,12 +27,12 @@ const initialState = {
 
     currentQuestionIndex: 0,
     answers: [
-        { id: 1, prompt: 'Who are you?', text: '1' }, // TODO: Remove hard code
-        { id: 2, prompt: 'Where did you go?', text: '2' },
-        { id: 3, prompt: 'How did you get there?', text: '3' },
-        { id: 4, prompt: 'Who did you meet?', text: '4' },
-        { id: 5, prompt: 'What did they say to you?', text: '5' },
-        { id: 6, prompt: 'What did you say to them?', text: '6' }
+        { id: 1, prompt: 'Who are you?', text: '' }, 
+        { id: 2, prompt: 'Where did you go?', text: '' },
+        { id: 3, prompt: 'How did you get there?', text: '' },
+        { id: 4, prompt: 'Who did you meet?', text: '' },
+        { id: 5, prompt: 'What did they say to you?', text: '' },
+        { id: 6, prompt: 'What did you say to them?', text: '' }
     ],
 
     error: null
@@ -100,12 +100,12 @@ function buildStateForGoto(state, gotoType) {
 }
 
 const randomAnswers = [
-    [ 'Thomas the tank engine', 'Oprah', 'Donald Trump', 'Snoop Dog', 'Billy the Kid', 'Wonder Woman', 'Superman', 'Ghandi'],
+    [ 'The most interesting man in the world','Thomas the tank engine', 'Oprah', 'Donald Trump', 'Snoop Dog', 'Billy the Kid', 'Wonder Woman', 'Superman', 'Ghandi'],
     [ 'The country fair', 'Rehab', 'Employee Apreciation Dinner', 'Accident, Maryland', 'Embarass, Minnesota', 'Hollywood', 'Disneytown'],
     [ 'I hitch-hiked', 'On my harley trike', 'Mo-ped', 'VW Hippie Van', 'My private jet', 'I was beammed there', 'I crawled', 'I walked there in high heels'],
     [ 'Batman', 'Robin', 'Jack Nicholson', 'The employee of the month', 'Hillary Clinton', 'The dude that use to do those sprint commercials', 'My second cousin'],
-    [ 'Where did you get those cookies?', 'I want answers', 'Is that you I smell?', 'Can I borrow a dollar?', 'Buy low, sell high', 'Supreme executive authority is derived by a mandate from the masses'],
-    [ 'You cant handle the truth!', 'Sticks and stones may break my bones but words will never hurt me.', 'If I had a nickel for everytime I heard that, I would be a rich man today']
+    [ 'I dont always drink beer, but when I do it is Stag.', 'Where did you get those cookies?', 'I want answers', 'Is that you I smell?', 'Can I borrow a dollar?', 'Buy low, sell high', 'Supreme executive authority is derived by a mandate from the masses', 'Your instructions are to terminate badger 2.'],
+    [ 'You cant handle the truth!', 'Sticks and stones may break my bones but words will never hurt me.', 'If I had a nickel for everytime I heard that, I would be a rich man today', 'I know you are but what I am I?']
 ];
 
 function getRandomAnswer(questionId) {

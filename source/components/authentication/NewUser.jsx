@@ -75,8 +75,8 @@ export class NewUser extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>Enroll as a New Stiry User</h1>
+            <main>
+                <h1>Enroll as a New Stirytime User</h1>
                 <form onSubmit={this.onSubmit} className="form">
                     <div className="field">
                         <label>User Name</label>
@@ -108,7 +108,7 @@ export class NewUser extends React.Component {
                         <button type="submit" className="primary">Submit</button>
                     </div>
                 </form>
-            </div>
+            </main>
         )
     }
 }

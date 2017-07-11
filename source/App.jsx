@@ -57,7 +57,7 @@ const layout = (
         <Route path="/reset" component={ResetPassword} />
         <PrivateRoute path="/start" component={StartSession} />
         <PrivateRoute path="/join" component={JoinSession} />
-        <CollaborationRoute path="/questionnaire" component={Questionnaire} />
+        <Route path="/questionnaire" component={Questionnaire} />
         <CollaborationRoute path="/wait" component={Wait} />
         <CollaborationRoute path="/scrambled" component={Scrambled} />
         <Route path="/about" component={About} />

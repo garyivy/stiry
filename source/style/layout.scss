@@ -123,13 +123,13 @@ aside {
     main {
         display: inline-block;
         width: 560px;
+        &.questionnaire-container {
+            width: 800px;
+        }
     }
     aside {
         display: inline-block;
-        width: calc(100% - 635
-        
-        
-        px);
+        width: calc(100% - 63px);
         vertical-align: top;
         margin-top: 35px;
         margin-left: 35px;
