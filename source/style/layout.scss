@@ -4,7 +4,6 @@ $aside-breakpoint: 800px;
 $centering-breakpoint: 960px;
 $max-display-width: 800px;
 $content-margin: 10px;
-
 header {
     display: block;
     padding: 5px;
@@ -14,7 +13,7 @@ header {
     background-color: $header-background-color;
     color: $clickable-color;
     i {
-        color:  $clickable-color-hover;
+        color: $clickable-color-hover;
         display: inline-block;
         margin-right: 3px;
     }
@@ -52,7 +51,6 @@ nav {
             &:first-child {
                 border-top: 0;
             }
-
             i {
                 font-size: 2em;
                 display: inline-block;
@@ -108,6 +106,34 @@ nav {
         margin-left: 0;
         margin-right: 0;
     }
+    nav.small-menu .nav-content a:first-child {
+        background-color: $header-background-color;
+        color: $clickable-color;
+        padding: 5px;
+        padding-left: 20px;
+        line-height: inherit;
+        .pull-left {
+            margin-top: -3px;
+            float: left;
+            font-size: 1.6em;
+            font-weight: 700;
+            i {
+                font-weight: 900;
+                font-size: inherit;
+                margin-right: 3px;
+                color: $clickable-color-hover;
+            }
+        }
+        .pull-right {
+            float: right;
+        }
+    }
+    .fixed-header header {
+        display: none;
+    }
+    .main-aside-content {
+        margin-top: 50px;
+    }
 }
 
 
@@ -142,7 +168,6 @@ aside {
 .responsive-content-small {
     display: none;
 }
-
 
 @media(max-width: $phone-breakpoint) {
     .responsive-content-small {

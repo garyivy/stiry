@@ -54,7 +54,7 @@ export class Guest extends React.Component {
     render() {
         return (
             <main>
-                <h1>Sample Stirytime As A Guest User</h1>
+                <h1>Signon As A Guest User</h1>
                 <form onSubmit={this.onSubmit} className="form">
                     <div className="field">
                         <label>User Name</label>
