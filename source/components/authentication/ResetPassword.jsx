@@ -67,7 +67,7 @@ export class ResetPassword extends React.Component {
     render() {
         // TODO: On Right Side of form, give password tips
         return (
-            <div>
+            <main>
                 <h1>Change Password</h1>
                 <form onSubmit={this.onSubmit} className="form">
                     <div className="field">
@@ -85,7 +85,7 @@ export class ResetPassword extends React.Component {
                         <button type="submit" className="primary">Submit</button>
                     </div>
                 </form>
-            </div>
+            </main>
         )
     }
 }

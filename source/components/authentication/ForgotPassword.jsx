@@ -43,7 +43,7 @@ export class ForgotPassword extends React.Component {
 
     render() {
         return (
-            <div>
+            <main>
                 <h1>Forgot Password</h1>
                 <p>
                     THIS PAGE IS UNDER CONSTRUCTION
@@ -63,7 +63,7 @@ export class ForgotPassword extends React.Component {
                         <button type="submit" className="primary" onClick={this.onSubmit}>Send Request</button>
                     </div>
                 </form>
-            </div>
+            </main>
         )
     }
 }

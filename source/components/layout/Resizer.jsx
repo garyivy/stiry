@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { recordWindowSize } from './../../actions/windowSizeActionCreators.js';
 
 // Note: CSS Media Queries can do most of the responsive work.  But this may prove helpful.
+// This component listens for changes in display size and dispatches a event to update windowSize in store.
+
+const styleDisplayNone = { display: 'none' };
 
 class Resizer extends React.Component {
     constructor(props) {
@@ -25,16 +28,10 @@ class Resizer extends React.Component {
     }
  
     render() {
-        var style = { "display": "none" };
         return (
-        <span style={style}>{this.props.windowSize.width} - {this.props.windowSize.height}</span>
-        )
+        <span style={styleDisplayNone}></span>
+        );
     }
-}
-
-const mapStateToProps = ( {windowSize}) =>
-{
-    return { windowSize };
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -43,5 +40,5 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Resizer);
+export default connect(undefined, mapDispatchToProps)(Resizer);
 

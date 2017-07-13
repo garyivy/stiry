@@ -1,9 +1,26 @@
-$default-text-color: #222;
-$default-background-color: #fff;
-$primary-color: #b82601;
-$secondary-color: #062f4f;
-$lightgrey-color: #dfecd3;
-$sunshine-color: #f7b744;
+
+$clickable-color: #001c71;
+$clickable-color-hover: #1c55ff;
+
+$header-background-color: #ffd700;
+$h1-color: $clickable-color-hover;
+$h2-color: $clickable-color;
+$text-color: $clickable-color;
+$background-color: white;
 $error-color: #CC0000;
 
-/* Good Ideas at https://designschool.canva.com/blog/website-color-schemes/ */
+$primary-button-color: $clickable-color;
+$primary-button-color-hover: $clickable-color-hover;
+$primary-button-text-color: #fdfdfd;
+$primary-button-text-color-hover: white;
+$primary-button-border-color: #001658;
+$primary-button-border-color-hover: $clickable-color;
+
+$secondary-button-color: #fdfdfd;
+$secondary-button-color-hover: white;
+$secondary-button-text-color: black;
+$secondary-button-text-color-hover: #010101;
+$secondary-button-border-color: $secondary-button-text-color;
+$secondary-button-border-color-hover: $secondary-button-text-color-hover;
+
+$menu-separator-color: white;

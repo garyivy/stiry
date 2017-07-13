@@ -5,13 +5,12 @@ import { Link } from 'react-router-dom';
 import { signin } from './../../actions/authenticationActionCreators.js'
 import PrimaryButton from './../../shared/PrimaryButton.jsx';
 
-// TODO: Consider exporting/naming strategy that best support unit testing.
 export class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: 'garyivy@gmail.com', // TODO: Remove hard code
-            password: 'qwer1234',
+            userName: '', 
+            password: '',
             errors: {}
         };
 
@@ -32,7 +31,11 @@ export class Signin extends React.Component {
         }
 
         let loggedInPath = '/';
-        if (this.props && this.props.location && this.props.location.state && this.props.location.state.from && this.props.location.state.from.pathname) {
+        if (this.props 
+            && this.props.location 
+            && this.props.location.state 
+            && this.props.location.state.from 
+            && this.props.location.state.from.pathname) {
             loggedInPath = this.props.location.state.from.pathname;
         }
 
@@ -63,12 +66,8 @@ export class Signin extends React.Component {
 
     render() {
         return (
-            <div>
+            <main>
                 <h1>Stiry Sign In</h1>
-                <p>
-                    If you are a new user, <Link to="/register">click here to add your credentials.</Link>
-                    <br />If you forgot your password , <Link to="/forgot">click here to have a temporary password emailed to you.</Link>
-                </p>
                 <form onSubmit={this.onSubmit} className="form">
                     <div className="field">
                         <label>User Name (or Email)</label>
@@ -85,7 +84,15 @@ export class Signin extends React.Component {
                         <PrimaryButton>Login</PrimaryButton>
                     </div>
                 </form>
-            </div>
+                <p className="responsive-content-regular">
+                    If you are a new user, <Link to="/register">click here</Link> to add your credentials.
+                    <br />If you forgot your password , <Link to="/forgot">click here</Link> to have a temporary password emailed to you.
+                </p>                
+                <p className="responsive-content-condensed">
+                    New user? <Link to="/register">Sign up here.</Link>
+                    <br/>Forgot password? <Link to="/forgot">Click here.</Link>
+                </p>                
+            </main>
         )
     }
 }

@@ -9,7 +9,7 @@ const Signout = ({ isSignedOut, onRequestSignout }) => {
     }
 
     return (
-        <div>
+        <main>
             <h1>Stiry Sign-out</h1>
             {
                 isSignedOut 
@@ -23,7 +23,7 @@ const Signout = ({ isSignedOut, onRequestSignout }) => {
                     Your request to sign out is in progress....
                 </p>
             }
-        </div>
+        </main>
     )
 };
 

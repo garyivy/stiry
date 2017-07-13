@@ -5,31 +5,33 @@ import { joinCollaboration } from './../../actions/collaborationActionCreators.j
 import { Link } from 'react-router-dom';
 import PrimaryButton from './../../shared/PrimaryButton.jsx';
 
-// TODO: Refactor using css/component
-const inputStyle = { display: 'inline-block' };
-const buttonDivStyle = { paddingTop: '2px', marginLeft: '8px', display: 'inline-block' };
-const buttonStyle = { marginTop: '0' };
-
 export const JoinSessionPresentation = ({ collaborationName, onChange, onSubmit, error }) => (
     <div>
         <h1>Join a Stiry Collaboration</h1>
-        <p>If you are interested in joining a "Collaboration" that someone else in your group has already started, 
-            enter the session name they provided.
-            If you are interested in starting one for others to join,
-            &nbsp;<Link to="/startsession">click here</Link> or choose "Start&nbsp;Session" from the site menu.
-        </p>
         <form onSubmit={onSubmit}>
             <div className="field">
                 <label>Collaboration Name</label>
                 <div>
-                    <input type="text" name="collaborationName" style={inputStyle} value={collaborationName} onChange={onChange} />
-                    <div style={buttonDivStyle}>
-                        <PrimaryButton style={buttonStyle}>Submit</PrimaryButton>
+                    <input type="text" name="collaborationName" value={collaborationName} onChange={onChange} />
+                    <div>
+                        <PrimaryButton>Join</PrimaryButton>
                     </div>
                 </div>
                 {error && <label className="error">{error}</label>}
             </div>
         </form>
+        <p className="responsive-content-regular">
+            If you are interested in joining a "Collaboration" that someone else in your group has already started, 
+            enter the session name they provided.
+            If you are interested in starting one for others to join,
+            &nbsp;<Link to="/startsession">click here</Link> or choose "Start&nbsp;Session" from the site menu.
+        </p>
+        <p className="responsive-content-small">
+            Note: The person in your group that started the collaboration should provide the name.
+            <br/><br/>
+            To start a collaboration, <Link to="/start">click here.</Link>
+        </p>
+        
     </div>
 );
 

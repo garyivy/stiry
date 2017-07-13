@@ -1,4 +1,5 @@
 import { RECORD_ANSWER, 
+    AUTO_PICK_ANSWER,
     GOTO_PREVIOUS_QUESTION, 
     GOTO_NEXT_QUESTION, 
     START_COLLABORATION, 
@@ -17,6 +18,9 @@ import { createApiCall } from './createApiCall.js'
 
 export const recordAnswer = (answer) =>
     ({ type: RECORD_ANSWER, payload: {answer} });
+
+export const autoPickAnswer = () =>
+    ({ type: AUTO_PICK_ANSWER });
 
 export const gotoPreviousQuestion = () => 
     ({ type: GOTO_PREVIOUS_QUESTION });

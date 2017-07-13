@@ -7,12 +7,18 @@ import windowSizeReducer from './windowSizeReducer.js';
 
 import { reducer as formReducer } from 'redux-form';
 
+const loggerReducer = (state = {}, action) => {
+    console.log(action);
+    return state;
+}
+
 const combinedReducer = combineReducers({
     authentication: authenticationReducer, 
     collaboration:  collaborationReducer,
     redirectUrl:    redirectReducer,
     apiStatus:      apiStatusReducer,
     windowSize:     windowSizeReducer,
+    logger:         loggerReducer,
     form:           formReducer // TODO: Remove if not using redux-form (still weighing pros/cons)
 });
 
