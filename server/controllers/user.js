@@ -22,6 +22,7 @@ client.sendEmail({
 });
 }
 
+
 // TODO: Remove this or restrict to admin users
 module.exports.onGetUsers = (request, response) => {
     User.find().exec()
