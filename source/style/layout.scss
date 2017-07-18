@@ -11,9 +11,9 @@ header {
     font-weight: 800;
     padding-left: 5px;
     background-color: $header-background-color;
-    color: $clickable-color;
+    color: $clickable-color-hover;
     i {
-        color: $clickable-color-hover;
+        color: $clickable-color;
         display: inline-block;
         margin-right: 3px;
     }
