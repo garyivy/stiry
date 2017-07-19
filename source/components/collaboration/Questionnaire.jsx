@@ -61,7 +61,7 @@ export const Questionnaire = ({ windowSize, onLazyButtonClick,
     return (
         <main className="questionnaire-container">
             <h1>The Stirytime Questionnaire</h1>
-            <h2>Collaboration Name: {collaborationName}</h2>
+            <h2>Collaboration Code: {collaborationName}</h2>
             <StepIndicator />
             <form onSubmit={onSubmit}>
                 <Question />

@@ -1,14 +1,17 @@
-import { RECORD_ANSWER, 
+import {
+    RECORD_ANSWER,
     AUTO_PICK_ANSWER,
-    GOTO_PREVIOUS_QUESTION, 
-    GOTO_NEXT_QUESTION, 
-    START_COLLABORATION, 
-    JOIN_COLLABORATION, 
+    GOTO_PREVIOUS_QUESTION,
+    GOTO_NEXT_QUESTION,
+    START_COLLABORATION,
+    JOIN_COLLABORATION,
     GET_COLLABORATION_STATUS,
-    GET_SCRAMBLED_RESULT } from './actionTypes.js';
+    GET_SCRAMBLED_RESULT,
+    SIGNIN
+} from './actionTypes.js';
 
 import { requestRedirect } from './redirectUrlActionCreators.js';
-import { createApiCall } from './createApiCall.js'
+import { createApiCall } from './apiHelpeR.js'; // TODO: Figure why using the same name in authenticationActionCreators.js is confusing webpack.
 
 // Note: action property names are following FLux Standard Action recommendation.
 // However, we are deviating from how it recommends the error boolean property and 
@@ -17,15 +20,15 @@ import { createApiCall } from './createApiCall.js'
 // In this way, error will still provide a truthy check.
 
 export const recordAnswer = (answer) =>
-    ({ type: RECORD_ANSWER, payload: {answer} });
+    ({ type: RECORD_ANSWER, payload: { answer } });
 
 export const autoPickAnswer = () =>
     ({ type: AUTO_PICK_ANSWER });
 
-export const gotoPreviousQuestion = () => 
+export const gotoPreviousQuestion = () =>
     ({ type: GOTO_PREVIOUS_QUESTION });
 
-export const gotoNextQuestion = () => 
+export const gotoNextQuestion = () =>
     ({ type: GOTO_NEXT_QUESTION });
 
 // Note: Thunk middleware (injected during createStore) provides dispatch and getState
@@ -34,6 +37,7 @@ export const gotoNextQuestion = () =>
 
 const startCollaborationPost = createApiCall('post', 'start');
 const joinCollaborationPost = createApiCall('post', 'join');
+const joinCollaborationAsGuestPost = createApiCall('post', 'guest', false);
 const submitQuestionnairePost = createApiCall('post', 'questionnaires');
 const collaborationStatusGet = createApiCall('get', 'collaborationStatus');
 const scrambledGet = createApiCall('get', 'scrambled');
@@ -42,9 +46,9 @@ export const startCollaboration = collaborationName => {
     return dispatch => {
         startCollaborationPost(dispatch, { collaborationName }).then(result => {
             // Note: START_COLLABORATION must happen before requestRedirect so ColloborationRoute has a collaborationToken
-            dispatch({ type: START_COLLABORATION, ...result }); 
+            dispatch({ type: START_COLLABORATION, ...result });
             result.payload.collaborationToken && dispatch(requestRedirect('/questionnaire'));
-        })   
+        })
     }
 }
 
@@ -53,7 +57,24 @@ export const joinCollaboration = collaborationName => {
         joinCollaborationPost(dispatch, { collaborationName }).then(result => {
             dispatch({ type: JOIN_COLLABORATION, ...result });
             result.payload.collaborationToken && dispatch(requestRedirect('/questionnaire'));
-        })   
+        })
+    }
+}
+
+export const joinCollaborationAsGuest = collaborationName => {
+    return dispatch => {
+        joinCollaborationAsGuestPost(dispatch, { collaborationName }).then(result => {
+            dispatch({ type: JOIN_COLLABORATION, ...result });
+            // TODO: Handle failure 
+            dispatch({
+                type: SIGNIN,
+                payload: {
+                    displayName: 'Guest User',
+                    isAuthorized: true
+                }
+            });
+            result.payload.collaborationToken && dispatch(requestRedirect('/questionnaire'));
+        })
     }
 }
 

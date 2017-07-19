@@ -30,7 +30,7 @@ module.exports.onGetUsers = (request, response) => {
 }
 
 module.exports.onRegisterNewUser = (request, response) => {
-    sendMail();
+    //sendMail();
 
     let user = new User({
         userName: request.body.userName,

@@ -8,11 +8,13 @@ var https = require('https')
 var fs = require('fs');
 var hskey = fs.readFileSync('server/key.pem');
 var hscert = fs.readFileSync('server/cert.pem');
+var ca =  fs.readFileSync('server/ca.pem');
 const confidential = require('./common/confidential.js');
 var expressOptions = {
     key: hskey,
     cert: hscert,
-    passphrase: confidential.SSL_PASSPHRASE
+    ca: ca
+    //passphrase: confidential.SSL_PASSPHRASE
 };
 
 
@@ -65,6 +67,13 @@ app.use(function (err, req, res, next) {
     console.error(err.stack)
     res.status(500).send('Something broke!')
 })
+
+/*
+app.listen(3001, ()=>{
+    console.log('Express server listening on port 3001')
+})
+*/
+
 
 https.createServer(expressOptions, app).listen(443, () => {
   console.log('Express server listening on port 443');

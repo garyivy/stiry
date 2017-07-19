@@ -79,10 +79,6 @@ form {
     }
 }
 
-button.primary {
-    height: 36px;
-}
-
 div.button-container {
     width: 100%;
     text-align: center;
@@ -126,6 +122,20 @@ button {
     width: 100%;
 }
 
+.join-prompt {
+    input[type="number"] {
+        width: 180px;
+        max-width: 45%;
+        display: inline-block;
+    }
+    button.primary {
+        width: 180px;
+        //min-width: 100px;
+        max-width: 45%;
+        margin-left: 10px;
+        display: inline-block;
+    }
+}
 @import 'layout';
 @import 'stepIndicator';
 @import 'questionnaire';
