@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./../models/User.js');
 const confidential = require('./../common/confidential.js');
 const statusCodes = require('./../common/statusCodes.js');
+const shortid = require('shortid');
 
 const QUESTION_COUNT = 6;
 
@@ -26,10 +27,20 @@ User.findOne({ userName: 'g3' }).exec().then(u => mockUsers.push(u));
 User.findOne({ userName: 'g4' }).exec().then(u => mockUsers.push(u));
 User.findOne({ userName: 'g5' }).exec().then(u => mockUsers.push(u));
 
+var collaborationSequence = 10;
+
 module.exports.onStartCollaboration = (request, response) => {
+    var random4Digits = Math.floor(Math.random() * 9000) + 1000;
+    var random4DigitString = random4Digits.toString();
+    var collaborationCode = random4DigitString + collaborationSequence.toString();
+    collaborationSequence++;
+    if (collaborationSequence > 99) {
+        collaborationSequence = 10;
+    }
+
     let collaboration = new Collaboration({
-        name: request.body.collaborationName,
-        upperCaseName: request.body.collaborationName.toUpperCase(),
+        name: collaborationCode, //request.body.collaborationName,
+        upperCaseName: collaborationCode, //request.body.collaborationName.toUpperCase(),
         status: 'starting',
         startingUser: request.userId, // Note: provided by authenticate middleware
         users: [request.userId]
@@ -39,7 +50,7 @@ module.exports.onStartCollaboration = (request, response) => {
 
     collaboration.save((error) => {
         return error
-            ? response.status(statusCodes.BAD_REQUEST_400).json({ message: error.message }) 
+            ? response.status(statusCodes.BAD_REQUEST_400).json({ message: error.message })
             : response.send({
                 message: 'Collaboration started.',
                 collaborationToken: collaboration.generateCollaborationToken(),
@@ -50,7 +61,7 @@ module.exports.onStartCollaboration = (request, response) => {
 
 module.exports.onJoinCollaboration = (request, response) => {
     Collaboration.findOne({
-        upperCaseName: request.body.collaborationName.toUpperCase() 
+        upperCaseName: request.body.collaborationName.toUpperCase()
     }).exec().then((collaboration) => {
         if (!collaboration) {
             // Valid response (200), no token returned because name not found.
@@ -70,6 +81,47 @@ module.exports.onJoinCollaboration = (request, response) => {
     });
 }
 
+module.exports.onJoinCollaborationAsGuest = (request, response) => {
+    var userName = shortid.generate();
+    Collaboration.findOne({
+        upperCaseName: request.body.collaborationName.toUpperCase()
+    }).exec().then((collaboration) => {
+        if (!collaboration) {
+            // Valid response (200), no token returned because name not found.
+            return response.json({ collaborationToken: null });
+        }
+        let user = new User({
+            userName: userName,
+            email: userName + '@' + 'baadomeign.com',
+            password: 'guestuser',
+        });
+
+        user.save((error) => {
+            if (error) {
+                return response.status(statusCodes.BAD_REQUEST_400).json({ message: error.message });
+            }
+            var sessionToken = user.generateSessionToken();
+            var userDisplayName = 'Guest User';
+            console.log(user._id);
+            collaboration.users.push(user._id);
+
+            collaboration.save((error) => {
+                return error
+                    ? response.status(statusCodes.BAD_REQUEST_400).json({ message: error.message })
+                    : response.send({
+                        message: 'Collaboration started.',
+                        collaborationToken: collaboration.generateCollaborationToken(),
+                        collaborationName: collaboration.name,
+                        sessionToken: sessionToken,
+                        userDisplayName: userDisplayName
+                    });
+            });
+
+        });
+    });
+}
+
+
 module.exports.onSubmitQuestionnaire = (request, response) => {
     let errorCount = 0;
 
@@ -78,7 +130,7 @@ module.exports.onSubmitQuestionnaire = (request, response) => {
             collaborationId: request.collaborationId,
             user: request.userId,
             scrambledUser: null,
-            questionId: answer.id, 
+            questionId: answer.id,
             prompt: answer.prompt,
             text: answer.text
         })
@@ -92,7 +144,7 @@ module.exports.onSubmitQuestionnaire = (request, response) => {
     return errorCount == 0
         ? response.json({ message: 'Questionnaire saved.' })
         : response.status(statusCodes.INTERNAL_SERVER_ERROR_500)
-            .json({ message: 'Error while saving collaboration' });        
+            .json({ message: 'Error while saving collaboration' });
 }
 
 const scramble = (collaboration, usersWithAnswers) => {
@@ -119,7 +171,7 @@ const getCollaboration = (id, callback) => {
             });
 
             let incompleteSurveyCount = usersWithAnswers.filter(u => u.answers.length < QUESTION_COUNT).length;
-            
+
             if (incompleteSurveyCount) {
                 /*
                 mockUsers.forEach(u => {
@@ -172,10 +224,12 @@ const getScramble = (id, userId, callback) => {
             try {
                 let scrambledAnswers;
                 collaboration.users.forEach((u) => {
-                    if(u._id.toString() === userId) {
+                    if (u._id.toString() === userId) {
                         scrambledAnswers = answers.filter(a => {
-                            return a.scrambledUser._id.toString() == u._id.toString()})
-                    }});
+                            return a.scrambledUser._id.toString() == u._id.toString()
+                        })
+                    }
+                });
                 callback(collaboration, scrambledAnswers);
             } catch (e) {
                 console.log(e);

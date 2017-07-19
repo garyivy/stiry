@@ -59,4 +59,3 @@ export const createApiCall = (method, url, shouldIncludeAuthorizationHeader = tr
         return promise;
     }
 }
-

@@ -1,5 +1,27 @@
 const User = require('./../models/User.js');
 const statusCodes = require('./../common/statusCodes.js');
+const confidential = require('./../common/confidential.js');
+
+function sendMail() {
+    var ses = require('node-ses')
+  , client = ses.createClient({ key: confidential.AMAZON_WEB_SERVICES_KEY, secret: confidential.AMAZON_WEB_SERVICES_SECRET });
+
+// Give SES the details and let it construct the message for you.
+client.sendEmail({
+   to: 'stirytimewebsite@gmail.com'
+ , from: 'stirytimewebsite@gmail.com'
+ , cc: ''
+ , bcc: ''
+ , subject: 'Hello World'
+ , message: 'your <b>message</b> goes here'
+ , altText: 'plain text'
+}, function (err, data, res) {
+ if(err) {
+     console.log(err);
+ }
+});
+}
+
 
 // TODO: Remove this or restrict to admin users
 module.exports.onGetUsers = (request, response) => {
@@ -8,6 +30,8 @@ module.exports.onGetUsers = (request, response) => {
 }
 
 module.exports.onRegisterNewUser = (request, response) => {
+    //sendMail();
+
     let user = new User({
         userName: request.body.userName,
         email: request.body.email,

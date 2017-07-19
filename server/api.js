@@ -25,6 +25,7 @@ api.route('/reset').post(authenticatePasswordResetToken, user.onResetPassword);
 
 api.route('/start').post(authenticate, collaboration.onStartCollaboration);
 api.route('/join').post(authenticate, collaboration.onJoinCollaboration);
+api.route('/guest').post(collaboration.onJoinCollaborationAsGuest);
 api.route('/collaborationStatus/:collaborationToken').get(authenticate, ensureCollaborationToken, collaboration.onGetStatus);
 api.route('/questionnaires').post(authenticate, ensureCollaborationToken, collaboration.onSubmitQuestionnaire);
 api.route('/scrambled/:collaborationToken').get(authenticate, ensureCollaborationToken, collaboration.onGetScrambled);
