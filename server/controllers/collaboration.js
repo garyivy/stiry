@@ -90,6 +90,8 @@ module.exports.onJoinCollaborationAsGuest = (request, response) => {
             // Valid response (200), no token returned because name not found.
             return response.json({ collaborationToken: null });
         }
+
+        // TODO: Need a way to keep guest users from cluttering up the DB.
         let user = new User({
             userName: userName,
             email: userName + '@' + 'baadomeign.com',
@@ -102,7 +104,7 @@ module.exports.onJoinCollaborationAsGuest = (request, response) => {
             }
             var sessionToken = user.generateSessionToken();
             var userDisplayName = 'Guest User';
-            console.log(user._id);
+            
             collaboration.users.push(user._id);
 
             collaboration.save((error) => {
@@ -120,7 +122,6 @@ module.exports.onJoinCollaborationAsGuest = (request, response) => {
         });
     });
 }
-
 
 module.exports.onSubmitQuestionnaire = (request, response) => {
     let errorCount = 0;
@@ -199,8 +200,6 @@ const getCollaboration = (id, callback) => {
     })
 }
 
-
-
 module.exports.onGetStatus = (request, response) => {
     getCollaboration(request.collaborationId, (collaboration, usersWithAnswers) => {
         try {
@@ -210,7 +209,6 @@ module.exports.onGetStatus = (request, response) => {
             let result = { incompleteSurveyCount, userStatuses, isScrambled };
 
             return response.json(result);
-
         }
         catch (e) {
             console.log(e);
