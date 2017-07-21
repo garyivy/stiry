@@ -42,7 +42,9 @@ const collaborationReducer = (state = initialState, { type, payload, error }) =>
     switch (type) {
         case START_COLLABORATION:
         case JOIN_COLLABORATION:
-            return { ...initialState, ...payload }; // payload provides collaborationName/Token
+            return payload.collaborationToken 
+                ? { ...initialState, ...payload } // payload provides collaborationName/Token
+                : { ...initialState, error: 'Invalid collaboration code.'};
 
         case RECORD_ANSWER:
             var answers = state.answers

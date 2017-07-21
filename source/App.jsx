@@ -19,9 +19,8 @@ import Menu from './components/layout/Menu.jsx';
 import Home from './components/public/Home.jsx';
 import Signin from './components/authentication/Signin.jsx';
 import Signout from './components/authentication/Signout.jsx';
-import Guest from './components/authentication/Guest.jsx';
-import StartSession from './components/collaboration/StartSession.jsx';
-import JoinSession from './components/collaboration/JoinSession.jsx';
+import StartCollaboration from './components/collaboration/StartCollaboration.jsx';
+import JoinCollaboration from './components/collaboration/JoinCollaboration.jsx';
 import Questionnaire from './components/collaboration/Questionnaire.jsx';
 import Wait from './components/collaboration/Wait.jsx';
 import Scrambled from './components/collaboration/Scrambled.jsx';
@@ -31,11 +30,9 @@ import ForgotPassword from './components/authentication/ForgotPassword.jsx';
 import ResetPassword from './components/authentication/ResetPassword.jsx';
 import Redirector from './components/layout/Redirector.jsx';
 import Resizer from './components/layout/Resizer.jsx';
-import Aside from './components/layout/Aside.jsx';
 
 // Style
 import './style/app.scss';
-
 
 // Layout
 const layout = (
@@ -52,12 +49,11 @@ const layout = (
         <Route path="/signin" component={Signin} />
         <Route path="/signout" component={Signout} />
         <Route path="/register" component={NewUser} />
-        <Route path="/guest" component={Guest} />
         <Route path="/forgot" component={ForgotPassword} />
         <Route path="/reset" component={ResetPassword} />
-        <PrivateRoute path="/start" component={StartSession} />
-        <PrivateRoute path="/join" component={JoinSession} />
-        <Route path="/questionnaire" component={Questionnaire} />
+        <PrivateRoute path="/start" component={StartCollaboration} />
+        <PrivateRoute path="/join" component={JoinCollaboration} />
+        <CollaborationRoute path="/questionnaire" component={Questionnaire} />
         <CollaborationRoute path="/wait" component={Wait} />
         <CollaborationRoute path="/scrambled" component={Scrambled} />
         <Route path="/about" component={About} />

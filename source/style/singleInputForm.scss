@@ -1,0 +1,44 @@
+.single-input-form {
+    margin:0;
+    margin-top: 10px;
+
+    width: 100%;
+    max-width: 400px;
+    
+    label {
+        display: block;
+    }
+
+    input {
+        display: inline-block;
+        padding: 7px;
+    }
+
+    input[type='number'] {
+        width: 50%;
+    }
+    input[type='number'] + button.primary {
+        width: calc(50% - 10px);
+    }
+
+    input[type='email'] {
+        width: 60%;
+    }
+    input[type='email'] + button.primary {
+        width: calc(40% - 10px);
+    }
+
+    input[type='text'] {
+        width: 70%;
+    }
+    input[type='text'] + button.primary {
+        width: calc(30% - 10px);
+    }
+    
+    button.primary {
+        display: inline-block;
+        margin: 0;
+        margin-left: 10px;
+        min-width: 100px;
+    }
+}

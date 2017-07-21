@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-const LargeMenuPresentation = ({ isAuthorizedUser, shouldUseShortNames, shouldShowAbout }) => {
+const LargeMenuPresentation = ({ isAuthorizedUser, shouldUseShortNames, shouldShowAbout, isLoggedInRegisterUser }) => {
     let startCollaboration = 'Start Collaboration';
     let joinCollaboration = 'Join Collaboration';
 
@@ -15,18 +15,17 @@ const LargeMenuPresentation = ({ isAuthorizedUser, shouldUseShortNames, shouldSh
         <nav>
             <div className="nav-content">
                 <Link to="/">Home</Link>
-                {isAuthorizedUser && <Link to="/start">{startCollaboration}</Link>}
+                {isLoggedInRegisterUser && <Link to="/start">{startCollaboration}</Link>}
                 {isAuthorizedUser && <Link to="/join">{joinCollaboration}</Link>}
-                {isAuthorizedUser && <Link to="/signout">Sign Out</Link>}
+                {isLoggedInRegisterUser && <Link to="/signout">Sign Out</Link>}
                 {!isAuthorizedUser && <Link to="/signin">Sign In</Link>}
-                {!isAuthorizedUser && <Link to="/guest">Guest</Link>}
                 {shouldShowAbout && <Link to="/about">About</Link>}
             </div>
         </nav>
     )
 };
 
-const SmallMenuPresentation = ({ isAuthorizedUser, isExpanded, onToggleMenu, isBusy }) => {
+const SmallMenuPresentation = ({ isAuthorizedUser, isExpanded, onToggleMenu, isBusy, isLoggedInRegisterUser }) => {
 
     return (
         <nav className="small-menu" onClick={onToggleMenu}>
@@ -35,11 +34,10 @@ const SmallMenuPresentation = ({ isAuthorizedUser, isExpanded, onToggleMenu, isB
                     <div className="pull-left">St<i>i</i>rytime{isBusy && <i className="fa fa-spinner fa-spin busy"></i>}</div>
                     <div className="pull-right"><i className="fa fa-bars"></i></div>
                 </a>
-                {isExpanded && isAuthorizedUser && <Link to="/start">Start Collaboration</Link>}
+                {isExpanded && isLoggedInRegisterUser && <Link to="/start">Start Collaboration</Link>}
                 {isExpanded && isAuthorizedUser && <Link to="/join">Join Collaboration</Link>}
-                {isExpanded && isAuthorizedUser && <Link to="/signout">Sign Out</Link>}
+                {isExpanded && isLoggedInRegisterUser && <Link to="/signout">Sign Out</Link>}
                 {isExpanded && !isAuthorizedUser && <Link to="/signin">Sign In</Link>}
-                {isExpanded && !isAuthorizedUser && <Link to="/guest">Guest</Link>}
                 {isExpanded && <Link to="/about">About</Link>}
             </div>
         </nav>
@@ -82,10 +80,12 @@ class MenuContainer extends React.Component {
             ? <SmallMenuPresentation
                 isBusy={this.props.isBusy}
                 isAuthorizedUser={this.props.isAuthorizedUser}
+                isLoggedInRegisterUser={this.props.isLoggedInRegisterUser}
                 onToggleMenu={this.onToggleMenu}
                 isExpanded={this.state.isExpanded} />
             : <LargeMenuPresentation
                 isAuthorizedUser={this.props.isAuthorizedUser}
+                isLoggedInRegisterUser={this.props.isLoggedInRegisterUser}                
                 shouldUseShortNames={this.props.windowSize.width < 635}
                 shouldShowAbout={this.props.windowSize.width > 570 || !this.props.isAuthorizedUser}
             />
@@ -94,8 +94,9 @@ class MenuContainer extends React.Component {
 
 const mapStateToProps = ({ authentication, apiStatus, windowSize }) => {
     return {
+        isLoggedInRegisterUser: authentication.isAuthorized && !authentication.isGuest,
         isAuthorizedUser: authentication.isAuthorized,
-         isBusy: apiStatus.countRequestsInProgress > 0,
+        isBusy: apiStatus.countRequestsInProgress > 0,
         windowSize
     };
 }

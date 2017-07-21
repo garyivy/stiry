@@ -2,24 +2,27 @@ const User = require('./../models/User.js');
 const statusCodes = require('./../common/statusCodes.js');
 const confidential = require('./../common/confidential.js');
 
-function sendMail() {
+function sendMail(userEmail, passwordResetToken) {
     var ses = require('node-ses')
-  , client = ses.createClient({ key: confidential.AMAZON_WEB_SERVICES_KEY, secret: confidential.AMAZON_WEB_SERVICES_SECRET });
+        , client = ses.createClient({ key: confidential.AMAZON_WEB_SERVICES_KEY, secret: confidential.AMAZON_WEB_SERVICES_SECRET });
 
-// Give SES the details and let it construct the message for you.
-client.sendEmail({
-   to: 'stirytimewebsite@gmail.com'
- , from: 'stirytimewebsite@gmail.com'
- , cc: ''
- , bcc: ''
- , subject: 'Hello World'
- , message: 'your <b>message</b> goes here'
- , altText: 'plain text'
-}, function (err, data, res) {
- if(err) {
-     console.log(err);
- }
-});
+    // Give SES the details and let it construct the message for you.
+    client.sendEmail({
+        to: userEmail
+        , from: 'stirytimewebsite@gmail.com'
+        , cc: ''
+        , bcc: ''
+        , subject: 'Password Reset'
+        , message: 'Click this link to reset your Stirytime account: <a href="https://www.stirytime.com/reset?' + token + '>Click Here.'
+        , altText: 'Token=' + token
+    }, function (err, data, res) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log('Sent password reset to ' + userEmail)
+        }
+    });
 }
 
 
@@ -57,22 +60,34 @@ module.exports.onSignin = (request, response) => {
     });
 }
 
+
+
+
+
+
 module.exports.onForgotPassword = (request, response) => {
+    console.log('Password reset request');
+    try {
     User.findOne(
         {
             email: request.body.email
         }).exec().then((user) => {
             if (!user) {
-                return response.json({ resetToken: null }); // TODO: What is the best status/message to send to the client here?
+                return response.status(statusCodes.FAILED_DEPENDENCY_424).json({})
             }
 
             let token = user.generatePasswordResetToken();
-
+            sendMail(request.body.email, token);
             // TODO: Send token via email instead of response :)
-            return user
+            return token
                 ? response.json({ resetLink: '/reset?' + token })
                 : response.json({ resetLink: null });
         });
+
+    } catch(e) {
+        console.log(e);
+        response.status(statusCodes.UNAUTHORIZED_401).json({});
+    }
 }
 
 module.exports.onResetPassword = (request, response) => {

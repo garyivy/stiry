@@ -64,16 +64,19 @@ export const joinCollaboration = collaborationName => {
 export const joinCollaborationAsGuest = collaborationName => {
     return dispatch => {
         joinCollaborationAsGuestPost(dispatch, { collaborationName }).then(result => {
+            // TODO: Refactor for clarity - more logic in moved to/from reducer.
             dispatch({ type: JOIN_COLLABORATION, ...result });
-            // TODO: Handle failure 
-            dispatch({
+            if(result.payload.collaborationToken) {
+                 dispatch({
                 type: SIGNIN,
                 payload: {
                     displayName: 'Guest User',
-                    isAuthorized: true
+                    isAuthorized: true,
+                    isGuest: true
                 }
             });
-            result.payload.collaborationToken && dispatch(requestRedirect('/questionnaire'));
+                dispatch(requestRedirect('/questionnaire'));
+            }
         })
     }
 }

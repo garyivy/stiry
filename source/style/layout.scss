@@ -8,12 +8,13 @@ header {
     display: block;
     padding: 5px;
     font-size: 1.8em;
-    font-weight: 800;
+    font-weight: 700;
     padding-left: 5px;
     background-color: $header-background-color;
     color: $clickable-color-hover;
     i {
-        color: $clickable-color;
+        font-weight: 900;
+        color: white;
         display: inline-block;
         margin-right: 3px;
     }
@@ -72,11 +73,9 @@ nav {
     margin-top: 100px;
 }
 
-
 /*
     Centering content inside content-wrapper and limiting width of display.
 */
-
 .header-content,
 .nav-content,
 .main-aside-content {
@@ -108,20 +107,20 @@ nav {
     }
     nav.small-menu .nav-content a:first-child {
         background-color: $header-background-color;
-        color: $clickable-color;
+                color: $clickable-color-hover;
         padding: 5px;
         padding-left: 20px;
         line-height: inherit;
         .pull-left {
             margin-top: -3px;
             float: left;
-            font-size: 1.6em;
+            font-size: 1.8em;
             font-weight: 700;
             i {
                 font-weight: 900;
                 font-size: inherit;
                 margin-right: 3px;
-                color: $clickable-color-hover;
+                color: white;
             }
         }
         .pull-right {
@@ -140,7 +139,6 @@ nav {
 /*
     Showing/hiding asides.
 */
-
 aside {
     display: none;
 }
@@ -148,19 +146,19 @@ aside {
 @media (min-width: $aside-breakpoint) {
     main {
         display: inline-block;
-        width: 560px;
+        width: 65%;
         &.questionnaire-container {
             width: 800px;
         }
     }
     aside {
+        width: calc(35% - 35px);
         display: inline-block;
-        //width: calc(100% - 63px);
         vertical-align: top;
         margin-top: 35px;
         margin-left: 35px;
         border-left: 1px dotted $header-background-color;
-        padding-left: 35px;
+        padding-left: 34px;
         height: 280px;
     }
 }
@@ -173,6 +171,9 @@ aside {
     .responsive-content-small {
         display: inline;
     }
+    ul.responsive-content-small {
+        display: inherit;
+    }
     .responsive-content-regular {
         display: none;
     }
@@ -180,15 +181,18 @@ aside {
     textarea {
         display: block;
         width: 100%;
-        font-size: 1.5em;
+        font-size: 1.5em; // Making the input a little larger (touch friendly).
+        height: 50px;
+        line-height: 50px;
     }
     button {
         display: block;
-        font-size: 1.5em;
+        font-size: 1.5em; // Making the input a little larger (touch friendly).
         height: 50px;
         line-height: 50px;
         width: 60%;
         margin-left: auto;
-        margin-right: auto;
+        margin-right: auto !important;
     }
 }
+

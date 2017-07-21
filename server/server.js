@@ -68,13 +68,13 @@ app.use(function (err, req, res, next) {
     res.status(500).send('Something broke!')
 })
 
-/*
+
 app.listen(3001, ()=>{
     console.log('Express server listening on port 3001')
 })
-*/
 
+/*
 https.createServer(expressOptions, app).listen(443, () => {
   console.log('Express server listening on port 443');
 });
-
+*/
