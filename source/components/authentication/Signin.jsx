@@ -72,12 +72,12 @@ export class Signin extends React.Component {
                     <form onSubmit={this.onSubmit} className="form">
                         <div className="field">
                             <label>User Name (or Email)</label>
-                            <input name="userName" value={this.state.userName} onChange={this.onChange} maxLength="20" />
+                            <input name="userName" value={this.state.userName} onChange={this.onChange} maxLength="40" />
                             {this.state.errors.userName && <label className="error">{this.state.errors.userName}</label>}
                         </div>
                         <div className="field">
                             <label>Password</label>
-                            <input type="password" name="password" value={this.state.password} onChange={this.onChange} maxLength="40" />
+                            <input type="password" name="password" value={this.state.password} onChange={this.onChange} maxLength="60" />
                             {this.state.errors.password && <label className="error">{this.state.errors.password}</label>}
                             {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}
                         </div>
