@@ -2,7 +2,7 @@ import * as actionTypes from './../actions/actionTypes.js';
 
 const initialState = {
     displayName: null,
-    isGuest: false,
+    isGuest: true,
     isAuthorized: false
 }
 

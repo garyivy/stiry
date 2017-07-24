@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { isNullOrWhitespace } from './../../shared/utilities.js';
+import { Logo } from './../../shared/Logo.jsx';
+import { MENU_BREAKPOINT } from './../../style/breakpoints.js';
 
 const LargeMenuPresentation = ({ isAuthorizedUser, shouldUseShortNames, shouldShowAbout, isLoggedInRegisterUser }) => {
     let startCollaboration = 'Start Collaboration';
@@ -28,11 +31,11 @@ const LargeMenuPresentation = ({ isAuthorizedUser, shouldUseShortNames, shouldSh
 const SmallMenuPresentation = ({ isAuthorizedUser, isExpanded, onToggleMenu, isBusy, isLoggedInRegisterUser }) => {
 
     return (
-        <nav className="small-menu" onClick={onToggleMenu}>
+        <nav onClick={onToggleMenu}>
             <div className="nav-content">
                 <a>
-                    <div className="pull-left">St<i>i</i>rytime{isBusy && <i className="fa fa-spinner fa-spin busy"></i>}</div>
-                    <div className="pull-right"><i className="fa fa-bars"></i></div>
+                    <Logo/>
+                    <div className="navicon"><i className="fa fa-bars"></i></div>   
                 </a>
                 {isExpanded && isLoggedInRegisterUser && <Link to="/start">Start Collaboration</Link>}
                 {isExpanded && isAuthorizedUser && <Link to="/join">Join Collaboration</Link>}
@@ -76,7 +79,7 @@ class MenuContainer extends React.Component {
     }
 
     render() {
-        return this.props.windowSize.width < 480 // Note: Keep this constant in sync with $menu-breakpoint in layout.scss
+        return this.props.windowSize.width <= MENU_BREAKPOINT
             ? <SmallMenuPresentation
                 isBusy={this.props.isBusy}
                 isAuthorizedUser={this.props.isAuthorizedUser}

@@ -1,19 +1,16 @@
+@import 'normalize'; // Similar to reset.css
 @import 'colors';
+
+$default-spacing: 10px;
+$default-spacing-half: 5px;
+
+/* Font */
+
 $fa-font-path: "./../../node_modules/font-awesome/fonts";
 @import './../../node_modules/font-awesome/scss/font-awesome.scss';
-
-$base-font-family: 'Open Sans', sans-serif;
+$base-font-family: 'Open Sans',
+sans-serif;
 $base-font-size: 16px;
-
-@import 'reset';
-@import 'base';
-html {
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
 body {
     color: $text-color;
     background-color: $background-color;
@@ -22,71 +19,83 @@ body {
     font-size: $base-font-size;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
     font-family: $base-font-family;
     font-size: $base-font-size;
 }
 
-a {
-    color: $clickable-color;
-}
 
+/* 
+    Headings and paragraphs
+*/
 
 h1 {
     display: block;
     color: $h1-color;
     font-size: 1.3em;
     font-weight: bold;
-    padding-top: 10px;
+    padding-top: $default-spacing;
 }
 
 h2 {
     color: $h2-color;
     font-size: 1.15em;
-    padding-top: 10px;
+    padding-top: $default-spacing;
 }
 
-i.busy {
-    display: inline-block;
-    margin-left: 10px;
-    font-size: .8em;
+p {
+    display: block;
+    margin: 0;
+    padding-top: $default-spacing;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
 }
 
-input{
-    height: 36px;
-}
+
+/* 
+Form input
+*/
 
 form {
     width: 100%;
     max-width: 400px;
+    input,
+    textarea,
+    select {
+        display: block;
+        width: 100%;
+        padding: $default-spacing-half;
+    }
+    input {
+        height: 40px;
+    }
+    label {
+        display: block;
+        margin-top: $default-spacing;
+    }
+    label.error {
+        margin-top: 0;
+        color: $error-color;
+    }
 }
 
 .questionnaire-container {
     form {
-                max-width: 800px;    
+        max-width: 800px;
     }
 }
 
 
-.field {
-    width: 100%;
-    margin-top: 10px;
-    label {
-        display: block;
-    }
-    input,
-    textarea {
-        display: block;
-        width: 100%;
-        padding: 7px;
-    }
-    div input {
-        display: inline-block;
-        padding: 7px;
-    }
-    button.primary {
-        min-width: 100px;
-    }
+/*
+    Buttons and Links
+*/
+
+a {
+    color: $clickable-color;
 }
 
 div.button-container {
@@ -94,20 +103,6 @@ div.button-container {
     text-align: center;
 }
 
-.error {
-    color: $error-color;
-}
-
-p {
-    display: block;
-    margin: 0;
-    padding-top: 10px;
-    -webkit-margin-before: 0;
-    -webkit-margin-after: 0;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-
-}
 button {
     margin: 0;
     margin-top: 15px;
@@ -137,31 +132,6 @@ button {
     }
 }
 
-
-
-.width-100 {
-    width: 100%;
-}
-
-.join-prompt {
-    input[type="number"] {
-        width: 180px;
-        max-width: 45%;
-        display: inline-block;
-    }
-    input[type="email"] {
-        width: 180px;
-        max-width: 45%;
-        display: inline-block;
-    }
-    button.primary {
-        width: 180px;
-        //min-width: 100px;
-        max-width: 45%;
-        margin-left: 10px;
-        display: inline-block;
-    }
-}
 @import 'layout';
 @import 'stepIndicator';
 @import 'questionnaire';

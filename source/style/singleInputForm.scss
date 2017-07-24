@@ -15,10 +15,10 @@
     }
 
     input[type='number'] {
-        width: 50%;
+        width: 40%;
     }
     input[type='number'] + button.primary {
-        width: calc(50% - 10px);
+        width: calc(60% - 10px);
     }
 
     input[type='email'] {

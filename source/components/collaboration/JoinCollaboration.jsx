@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import JoinCollaborationForm from './../../shared/JoinCollaborationForm.jsx';
+import JoinCollaborationForm from './JoinCollaborationForm.jsx';
 
 export const JoinCollaboration = () => (
     <main>
         <h1>Join a Stiry Collaboration</h1>
-        <JoinCollaborationForm isGuest={false}/>
+        <JoinCollaborationForm/>
         <h2>Directions</h2>
         <p className="responsive-content-regular">
             Use this if you want to join a "Collaboration" that another has started.  Enter the six digit code they provide and click "Join".

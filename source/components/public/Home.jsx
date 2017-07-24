@@ -2,7 +2,7 @@ import React from 'react';
 import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import JoinCollaborationForm from './../../shared/JoinCollaborationForm.jsx';
+import JoinCollaborationForm from './../collaboration/JoinCollaborationForm.jsx';
 
 export const Home = ({ isLoggedInRegisterUser }) => {
     return (
@@ -25,7 +25,7 @@ export const Home = ({ isLoggedInRegisterUser }) => {
                             : 'Unregistered users can play as guests by getting a six-digit "collaboration code" from a registered user.'
                     }
                 </p>
-                <JoinCollaborationForm isGuest={!isLoggedInRegisterUser}/>
+                <JoinCollaborationForm/>
 
                 <h2>How do I start a Stirytime collaboration?</h2>
                 {

@@ -3,6 +3,8 @@ $clickable-color:#001c71; //#06C1B6; // #001c71;
 $clickable-color-hover: #1c55ff;// #E4060A;// #1c55ff;
 
 $header-background-color: #FF7300; // #FDC225; //#ffd700;
+$logo-color: $clickable-color-hover;
+$logo-i-color: white;
 $h1-color: $clickable-color-hover;
 $h2-color: $clickable-color;
 $text-color: $clickable-color;
@@ -24,3 +26,5 @@ $secondary-button-border-color: $secondary-button-text-color;
 $secondary-button-border-color-hover: $secondary-button-text-color-hover;
 
 $menu-separator-color: white;
+$placeholder-hidden-color: white;
+$placeholder-color: gray;

@@ -1,0 +1,5 @@
+export const CONDENSED_TEXT_BREAKPOINT = 350;
+export const TOUCH_INPUT_BREAKPOINT = 400;
+export const MENU_BREAKPOINT = 480;
+export const ASIDE_BREAKPOINT = 800;
+export const CENTERING_BREAKPOINT = 960;
