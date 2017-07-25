@@ -7,6 +7,7 @@ import {
     JOIN_COLLABORATION,
     GET_COLLABORATION_STATUS,
     GET_SCRAMBLED_RESULT,
+    FORCED_COLLABORATION_END,
     SIGNIN
 } from './actionTypes.js';
 
@@ -41,6 +42,7 @@ const joinCollaborationAsGuestPost = createApiCall('post', 'guest', false);
 const submitQuestionnairePost = createApiCall('post', 'questionnaires');
 const collaborationStatusGet = createApiCall('get', 'collaborationStatus');
 const scrambledGet = createApiCall('get', 'scrambled');
+const forceCollaborationPost = createApiCall('post', 'force');
 
 export const startCollaboration = collaborationName => {
     return dispatch => {
@@ -99,6 +101,15 @@ export const getCollaborationStatus = () => {
             dispatch({ type: GET_COLLABORATION_STATUS, ...result });
         })
     }
+}
+
+export const forceCollaborationEnd = () => {
+    return (dispatch, getState) => {
+        let collaboration = getState().collaboration;
+        forceCollaborationPost(dispatch, collaboration).then(result => {
+            console.log(result);
+        });
+    }    
 }
 
 export const getScrambledResult = () => {

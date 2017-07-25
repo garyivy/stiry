@@ -24,6 +24,7 @@ export class QuestionContainer extends React.Component {
 
         this.onChange = this.onChange.bind(this);
         this.onBlur = this.onBlur.bind(this);
+        this.onUnload = this.onUnload.bind(this);
     }
 
     onChange(event) {
@@ -38,6 +39,18 @@ export class QuestionContainer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({ answer: nextProps.initialAnswer, error: nextProps.error });
+    }
+
+    onUnload(event) {
+        event.returnValue = 'This action will exit you questionnairre.  Did you mean to do that?';
+    }
+
+    componentDidMount() {
+        window.addEventListener('beforeunload', this.onUnload);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('beforeunload', this.onUnload);
     }
 
     render() {

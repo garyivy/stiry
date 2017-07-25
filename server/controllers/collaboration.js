@@ -19,14 +19,6 @@ module.exports.onGetAnswers = (request, response) => {
     Answer.find().exec()
         .then((answers) => response.json(answers));
 }
-
-let mockUsers = [];
-User.findOne({ userName: 'g1' }).exec().then(u => mockUsers.push(u));
-User.findOne({ userName: 'g2' }).exec().then(u => mockUsers.push(u));
-User.findOne({ userName: 'g3' }).exec().then(u => mockUsers.push(u));
-User.findOne({ userName: 'g4' }).exec().then(u => mockUsers.push(u));
-User.findOne({ userName: 'g5' }).exec().then(u => mockUsers.push(u));
-
 var collaborationSequence = 10;
 
 module.exports.onStartCollaboration = (request, response) => {
@@ -45,8 +37,6 @@ module.exports.onStartCollaboration = (request, response) => {
         startingUser: request.userId, // Note: provided by authenticate middleware
         users: [request.userId]
     });
-
-    //mockUsers.forEach(u => { collaboration.users.push(u._id); });
 
     collaboration.save((error) => {
         return error
@@ -104,7 +94,7 @@ module.exports.onJoinCollaborationAsGuest = (request, response) => {
             }
             var sessionToken = user.generateSessionToken();
             var userDisplayName = 'Guest User';
-            
+
             collaboration.users.push(user._id);
 
             collaboration.save((error) => {
@@ -161,37 +151,38 @@ const scramble = (collaboration, usersWithAnswers) => {
     }
 }
 
-const getCollaboration = (id, callback) => {
+const getCollaboration = (id, callback, shouldForceScramble = false) => {
     Collaboration.findOne({ _id: id }).sort({ user: 1 }).populate('users').exec().then((collaboration) => {
 
+        var completeUsers = [];
         Answer.find({ collaborationId: id }).sort({ questionId: 1, user: 1 }).populate('user').exec().then((answers) => {
             let usersWithAnswers = [];
             collaboration.users.forEach((u) => {
                 let userAnswers = answers.filter(a => a.user._id.toString() == u._id.toString());
-                usersWithAnswers.push({ userName: u.userName, userId: u._id, answers: userAnswers });
+                if (shouldForceScramble) {
+                    if (userAnswers.length > 0) {
+                        usersWithAnswers.push({ userName: u.userName, userId: u._id, answers: userAnswers });
+                        completeUsers.push(u._id);
+                    } 
+                } else {
+                    usersWithAnswers.push({ userName: u.userName, userId: u._id, answers: userAnswers });
+                }
             });
+
+            if(shouldForceScramble) {
+                collaboration.users = completeUsers;
+                collaboration.save( error => { 
+                    error && console.log(error);
+                });
+            }
 
             let incompleteSurveyCount = usersWithAnswers.filter(u => u.answers.length < QUESTION_COUNT).length;
 
             if (incompleteSurveyCount) {
-                /*
-                mockUsers.forEach(u => {
-                    for (let i = 1; i < 7; i++) {
-                        let answer = new Answer({
-                            collaborationId: id,
-                            user: u._id,
-                            scrambledUser: null,
-                            questionId: i,
-                            prompt: i + '?',
-                            text: u.userName + i
-                        });
-                        answer.save((error) => console.log(error));
-                    }
-
-                });
-                */
             } else {
                 if (usersWithAnswers.length && usersWithAnswers[0].answers.length && !usersWithAnswers[0].answers[0].scrambledUser) {
+                    scramble(collaboration, usersWithAnswers);
+                } else if (shouldForceScramble) {
                     scramble(collaboration, usersWithAnswers);
                 }
             }
@@ -245,4 +236,8 @@ module.exports.onGetScrambled = (request, response) => {
             console.log(e);
         }
     });
+}
+
+module.exports.onForceCollaborationEnd = (request, response) => {
+    getCollaboration(request.collaborationId, () => response.json({ message: 'scrambled' }), true);
 }

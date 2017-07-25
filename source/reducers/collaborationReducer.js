@@ -62,7 +62,7 @@ const collaborationReducer = (state = initialState, { type, payload, error }) =>
 
         
         case GOTO_PREVIOUS_QUESTION:
-            return state.currentQuestionIndex < state.answers.length - 1
+            return state.currentQuestionIndex > 0
                 ? buildStateForGoto(state, type)
                 : state;
 

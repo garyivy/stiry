@@ -3,62 +3,52 @@ import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { registerUser }from './../../actions/authenticationActionCreators.js'
 import { Link } from 'react-router-dom';
+import Form from './../../shared/Form.jsx';
+import { Field } from './../../shared/Form.jsx';
 
 export class NewUser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: '',
-            email: '',
-            emailConfirmation: '',
-            password: '',
-            passwordConfirmation: '',
             errors: {}
         };
 
-        this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.hasErrors = this.hasErrors.bind(this);
     }
 
-    onChange(event) {
-        this.setState({ [event.target.name]: event.target.value, errors: {} });
-    }
-
-    onSubmit(event) {
-        event.preventDefault();
-
-        if(!this.hasErrors()) {
-            this.props.registerUser(this.state.userName, this.state.email, this.state.password);
+    onSubmit(formValues) {
+        if(!this.hasErrors(formValues)) {
+            this.props.registerUser(formValues.userName, formValues.email, formValues.password);
         }
     }
 
-    hasErrors() {
+    hasErrors(formValues) {
         let errors = {};
 
-        if(isNullOrWhitespace(this.state.userName)) {
+        if(isNullOrWhitespace(formValues.userName)) {
             errors.userName = 'User Name is required.';
         }
 
-        if(isNullOrWhitespace(this.state.email)) {
+        if(isNullOrWhitespace(formValues.email)) {
             errors.email = 'Email is required.';
         }
 
-        if(isNullOrWhitespace(this.state.emailConfirmation)) {
+        if(isNullOrWhitespace(formValues.emailConfirmation)) {
             errors.emailConfirmation = 'Email (Re-enter) is required.';
-        } else if(this.state.email != this.state.emailConfirmation){
+        } else if(formValues.email != formValues.emailConfirmation){
             errors.emailConfirmation = 'Email (Re-enter) must match Email.';
         }
 
-        if(isNullOrWhitespace(this.state.password)) {
+        if(isNullOrWhitespace(formValues.password)) {
             errors.password = 'Password is required.';
-        } else if(this.state.password.length < 8) {
+        } else if(formValues.password.length < 8) {
             errors.password = 'Password must be at least 8 characters long.';            
         }
 
-        if(isNullOrWhitespace(this.state.passwordConfirmation)) {
+        if(isNullOrWhitespace(formValues.passwordConfirmation)) {
             errors.passwordConfirmation = 'Password (Re-enter) is required.';
-        } else if(this.state.password != this.state.passwordConfirmation){
+        } else if(formValues.password != formValues.passwordConfirmation){
             errors.passwordConfirmation = 'Password (Re-enter) must match Password.';
         }
 
@@ -77,37 +67,42 @@ export class NewUser extends React.Component {
         return (
             <main>
                 <h1>Enroll as a New Stirytime User</h1>
-                <form onSubmit={this.onSubmit} className="form">
-                    <div className="field">
-                        <label>User Name</label>
-                        <input name="userName" value={this.state.userName} onChange={this.onChange} maxLength="20" placeholder="User Name"/>
-                        {this.state.errors.userName && <label className="error">{this.state.errors.userName}</label>}
-                        {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}
-                    </div>
-                    <div className="field">
-                        <label>Email</label>
-                        <input name="email" value={this.state.email} onChange={this.onChange} maxLength="40" placeholder="Email" />
-                        {this.state.errors.email && <label className="error">{this.state.errors.email}</label>}
-                    </div>
-                    <div className="field">
-                        <label>Email (Re-enter)</label>
-                        <input name="emailConfirmation" value={this.state.emailConfirmation} onChange={this.onChange} maxLength="40" placeholder="Email Again"/>
-                        {this.state.errors.emailConfirmation && <label className="error">{this.state.errors.emailConfirmation}</label>}
-                    </div>
-                    <div className="field">
-                        <label>Password</label>
-                        <input type="password" name="password" value={this.state.password} onChange={this.onChange} maxLength="40" placeholder="Password"/>
-                        {this.state.errors.password && <label className="error">{this.state.errors.password}</label>}
-                    </div>
-                    <div className="field">
-                        <label>Password (Re-enter)</label>
-                        <input type="password" name="passwordConfirmation" value={this.state.passwordConfirmation} onChange={this.onChange} maxLength="40" placeholder="Password Again"/>
-                        {this.state.errors.passwordConfirmation && <label className="error">{this.state.errors.passwordConfirmation}</label>}
-                    </div>
+                {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}
+                <Form onSubmit={this.onSubmit}>
+                    <Field type="text"
+                        name="userName"
+                        label="User Name"
+                        error={this.state.errors.userName}
+                        maxLength="20"
+                    />
+                    <Field type="email"
+                        name="email"
+                        label="Email"
+                        error={this.state.errors.email}
+                        maxLength="40"
+                    />
+                    <Field type="email"
+                        name="emailConfirmation"
+                        label="Email (Re-enter)"
+                        error={this.state.errors.emailConfirmation}
+                        maxLength="40"
+                    />
+                    <Field type="password"
+                        name="password"
+                        label="Password"
+                        error={this.state.errors.password}
+                        maxLength="40"
+                    />
+                    <Field type="password"
+                        name="passwordConfirmation"
+                        label="Password (Re-enter)"
+                        error={this.state.errors.passwordConfirmation}
+                        maxLength="40"
+                    />
                     <div className="button-container">
                         <button type="submit" className="primary">Submit</button>
                     </div>
-                </form>
+                </Form>
             </main>
         )
     }

@@ -28,6 +28,7 @@ api.route('/join').post(authenticate, collaboration.onJoinCollaboration);
 api.route('/guest').post(collaboration.onJoinCollaborationAsGuest);
 api.route('/collaborationStatus/:collaborationToken').get(authenticate, ensureCollaborationToken, collaboration.onGetStatus);
 api.route('/questionnaires').post(authenticate, ensureCollaborationToken, collaboration.onSubmitQuestionnaire);
+api.route('/force').post(authenticate, ensureCollaborationToken, collaboration.onForceCollaborationEnd);
 api.route('/scrambled/:collaborationToken').get(authenticate, ensureCollaborationToken, collaboration.onGetScrambled);
 
 api.route('/collaborations').get(collaboration.onGetCollaborations);

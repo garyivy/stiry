@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { Logo } from './../../shared/Logo.jsx';
-import { MENU_BREAKPOINT } from './../../style/breakpoints.js';
+import { MENU_BREAKPOINT, MENU_ABOUT_HIDE_BREAKPOINT, MENU_SHORTEN_NAMES_BREAKPOINT } from './../../style/breakpoints.js';
 
 const LargeMenuPresentation = ({ isAuthorizedUser, shouldUseShortNames, shouldShowAbout, isLoggedInRegisterUser }) => {
     let startCollaboration = 'Start Collaboration';
@@ -37,6 +37,7 @@ const SmallMenuPresentation = ({ isAuthorizedUser, isExpanded, onToggleMenu, isB
                     <Logo/>
                     <div className="navicon"><i className="fa fa-bars"></i></div>   
                 </a>
+                {isExpanded && !isAuthorizedUser && <Link to="/">Home</Link>}
                 {isExpanded && isLoggedInRegisterUser && <Link to="/start">Start Collaboration</Link>}
                 {isExpanded && isAuthorizedUser && <Link to="/join">Join Collaboration</Link>}
                 {isExpanded && isLoggedInRegisterUser && <Link to="/signout">Sign Out</Link>}
@@ -89,8 +90,8 @@ class MenuContainer extends React.Component {
             : <LargeMenuPresentation
                 isAuthorizedUser={this.props.isAuthorizedUser}
                 isLoggedInRegisterUser={this.props.isLoggedInRegisterUser}                
-                shouldUseShortNames={this.props.windowSize.width < 635}
-                shouldShowAbout={this.props.windowSize.width > 570 || !this.props.isAuthorizedUser}
+                shouldUseShortNames={this.props.windowSize.width < MENU_SHORTEN_NAMES_BREAKPOINT}
+                shouldShowAbout={this.props.windowSize.width > MENU_ABOUT_HIDE_BREAKPOINT || !this.props.isAuthorizedUser}
             />
     }
 }

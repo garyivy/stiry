@@ -227,6 +227,7 @@ aside {
     }
     input,
     textarea {
+        margin-top: $default-spacing;
         display: block;
         width: 100%;
         font-size: 1.5em; // Making the input a little larger (touch friendly).

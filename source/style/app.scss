@@ -69,6 +69,8 @@ form {
         display: block;
         width: 100%;
         padding: $default-spacing-half;
+        border: 1px solid gray;
+        border-radius: 3px;
     }
     input {
         height: 40px;
@@ -113,6 +115,7 @@ button {
     font-size: 1.05em;
     font-weight: 400;
     border: 1px solid $secondary-button-border-color;
+    border-radius: 3px;
     font-family: $base-font-family;
     cursor: pointer;
     &:hover {

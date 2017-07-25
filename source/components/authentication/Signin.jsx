@@ -4,29 +4,22 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { signin } from './../../actions/authenticationActionCreators.js'
 import PrimaryButton from './../../shared/PrimaryButton.jsx';
+import Form from './../../shared/Form.jsx';
+import { Field } from './../../shared/Form.jsx';
 
 export class Signin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: '',
-            password: '',
             errors: {}
         };
 
-        this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.hasErrors = this.hasErrors.bind(this);
     }
 
-    onChange(event) {
-        this.setState({ [event.target.name]: event.target.value, errors: {} });
-    }
-
-    onSubmit(event) {
-        event.preventDefault();
-
-        if (this.hasErrors()) {
+    onSubmit(formValues) {
+        if (this.hasErrors(formValues)) {
             return;
         }
 
@@ -39,17 +32,17 @@ export class Signin extends React.Component {
             loggedInPath = this.props.location.state.from.pathname;
         }
 
-        this.props.signin(this.state.userName, this.state.password, loggedInPath);
+        this.props.signin(formValues.userName, formValues.password, loggedInPath);
     }
 
-    hasErrors() {
+    hasErrors(formValues) {
         let errors = {};
 
-        if (isNullOrWhitespace(this.state.userName)) {
+        if (isNullOrWhitespace(formValues.userName)) {
             errors.userName = 'User Name (or Email) is required.';
         }
 
-        if (isNullOrWhitespace(this.state.password)) {
+        if (isNullOrWhitespace(formValues.password)) {
             errors.password = 'Password is required.';
         }
 
@@ -69,22 +62,14 @@ export class Signin extends React.Component {
             <div>
                 <main>
                     <h1>Stiry Sign In</h1>
-                    <form onSubmit={this.onSubmit} className="form">
-                        <div className="field">
-                            <label>User Name (or Email)</label>
-                            <input name="userName" value={this.state.userName} onChange={this.onChange} maxLength="40" placeholder="User Name or Email" />
-                            {this.state.errors.userName && <label className="error">{this.state.errors.userName}</label>}
-                        </div>
-                        <div className="field">
-                            <label>Password</label>
-                            <input type="password" name="password" value={this.state.password} onChange={this.onChange} maxLength="60" placeholder="Password" />
-                            {this.state.errors.password && <label className="error">{this.state.errors.password}</label>}
-                            {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}
-                        </div>
+                    <Form onSubmit={this.onSubmit}>
+                        <Field type="text" name="userName" label="User Name (or Email)" error={this.state.errors.userName} maxLength="40" />
+                        <Field type="password" name="password" label="Password" error={this.state.errors.password} maxLength="60" />
+                        {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}
                         <div className="button-container">
                             <PrimaryButton>Sign In</PrimaryButton>
                         </div>
-                    </form>
+                    </Form>
                     <h2>Directions</h2>
                     <ul className="responsive-content-regular">
                         <li>If have already registered, enter your User Name or Email, your password, and click "Sign In".</li>
@@ -100,13 +85,13 @@ export class Signin extends React.Component {
                 <aside>
                     <h1>Stirytime Security</h1>
                     <ul>
-                      <li>HTTPS<br/>Transmission</li>
+                        <li>HTTPS<br />Transmission</li>
                     </ul>
                     <ul>
-                      <li>Trusted<br/>Certificate</li>
+                        <li>Trusted<br />Certificate</li>
                     </ul>
                     <ul>
-                      <li>Passwords<br/>saved as<br/>bcrypt hashes.</li>
+                        <li>Passwords<br />saved as<br />bcrypt hashes.</li>
                     </ul>
                 </aside>
             </div>
