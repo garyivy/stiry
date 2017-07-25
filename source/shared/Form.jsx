@@ -6,7 +6,7 @@ export const Field = (props) => (
     <span></span>
 )
 
-class Form extends React.Component {
+export class FormContainer extends React.Component {
     constructor(props) {
         super(props);
 
@@ -87,4 +87,4 @@ const mapStateToProps = ({ apiStatus }) => {
     };
 }
 
-export default connect(mapStateToProps)(Form);
+export const Form = connect(mapStateToProps)(FormContainer);

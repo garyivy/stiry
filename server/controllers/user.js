@@ -105,10 +105,17 @@ module.exports.onForgotPassword = (request, response) => {
 module.exports.onResetPassword = (request, response) => {
     // Note: At this point, authenticatePasswordResetToken middleware should have populated request.user
     request.user.password = request.body.password;
-    request.user.save();
 
-    response.json({
-        sessionToken: request.user.generateSessionToken(),
-        userDisplayName: request.user.getDisplayName()
+    console.log(request.user);
+
+    request.user.save({ validateBeforeSave: false }, error => {
+        if (error) {
+            console.log(error);
+        } else {
+            response.json({
+                sessionToken: request.user.generateSessionToken(),
+                userDisplayName: request.user.getDisplayName()
+            });
+        }
     });
 }

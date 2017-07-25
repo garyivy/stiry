@@ -12,7 +12,7 @@ const About = () => (
             <h2>How do I use Stirytime?</h2>
             <p>
                 After logging in, use the menu to Start a "collaboration" for you and your participants.
-            Or, if a session is already started, you can use the menu to Join a session.
+            Or, if a "collaboration" is already started, you can use the menu to Join a session.
         </p>
         </main>
         <aside>
@@ -22,6 +22,7 @@ const About = () => (
             <br/><a href="https://expressjs.com/">Express</a>
             <br/><a href="https://www.mongodb.com/">MongoDB</a>
             <br/><a href="https://webpack.github.io/">Webpack</a>
+            <br/><a href="https://aws.amazon.com/">Amazon Web Services</a>
         </aside>
     </div>
 );

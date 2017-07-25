@@ -3,8 +3,7 @@ import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { registerUser }from './../../actions/authenticationActionCreators.js'
 import { Link } from 'react-router-dom';
-import Form from './../../shared/Form.jsx';
-import { Field } from './../../shared/Form.jsx';
+import { Form, Field } from './../../shared/Form.jsx';
 
 export class NewUser extends React.Component {
     constructor(props) {

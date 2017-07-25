@@ -2,23 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-class PrimaryButtonPresentation extends React.Component {
-    constructor(props) {
-        super(props);
-        // TODO: Use a function instead of a class.
-    }
-
-    render() {
-        let { onSubmit, onClick, isBusy, style, children, title } = this.props;
-        return (
-            <button className="primary"
-                title={title}
-                onClick={onSubmit || onClick}
-                disabled={isBusy}
-                style={style}>{children}</button>
-        )
-    }
-}
+export const PrimaryButton = 
+    ({ isBusy, disabled, children, onClick, dispatch, ...rest }) => ( // Note: onClick not used since button type is submit (Form onSubmit expected)
+    <button type="submit" 
+        className="primary"
+        disabled={isBusy || disabled} 
+        {...rest}>{children}</button>
+)
 
 const mapStateToProps = (state) => {
     return {
@@ -26,7 +16,5 @@ const mapStateToProps = (state) => {
     };
 }
 
-const PrimaryButton = connect(mapStateToProps, undefined)(PrimaryButtonPresentation);
-
-export default PrimaryButton;
+export default connect(mapStateToProps)(PrimaryButton);
 

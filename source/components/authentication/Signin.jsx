@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { signin } from './../../actions/authenticationActionCreators.js'
 import PrimaryButton from './../../shared/PrimaryButton.jsx';
-import Form from './../../shared/Form.jsx';
-import { Field } from './../../shared/Form.jsx';
+import { Form, Field } from './../../shared/Form.jsx';
 
 export class Signin extends React.Component {
     constructor(props) {

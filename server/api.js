@@ -36,4 +36,5 @@ api.route('/answers').get(collaboration.onGetAnswers);
 api.route('/users').get(user.onGetUsers);
 api.route('/test').get(requestLogger, authenticate, (request, response) => { 
     response.json({ message: 'authenticated' });})
+
 module.exports = api;

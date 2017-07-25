@@ -3,40 +3,36 @@ import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { forgotPassword } from './../../actions/authenticationActionCreators.js'
+import { Form, Field } from './../../shared/Form.jsx';
+import PrimaryButton from './../../shared/PrimaryButton.jsx';
 
-// TODO: Add responsive directions and eliminate inline style.
+const style = { width: "100%", maximumWidth: "400px" };
 
 export class ForgotPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
             errors: {},
             shouldShowMessage: false
         };
 
-        this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.hasErrors = this.hasErrors.bind(this);
     }
 
-    onChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
-    }
-
-    onSubmit(event) {
+    onSubmit(formValues) {
         event.preventDefault();
 
-        if (!this.hasErrors()) {
-            this.props.requestPasswordReset(this.state.email);
+        if (!this.hasErrors(formValues)) {
+            this.props.requestPasswordReset(formValues.email);
             this.setState({ shouldShowMessage: true, errors: {} });
         }
     }
 
-    hasErrors() {
+    hasErrors(formValues) {
         let errors = {};
 
-        if (isNullOrWhitespace(this.state.email)) {
+        if (isNullOrWhitespace(formValues.email)) {
             errors.email = 'Email is required.';
         }
 
@@ -57,14 +53,16 @@ export class ForgotPassword extends React.Component {
                 }
                 {
                     !this.state.shouldShowMessage &&
-                    <form onSubmit={this.onSubmit}>
-                        <div className="field">
-                            <label>Email</label>
-                            <input type="email" name="email" value={this.state.email} onChange={this.onChange} maxLength="40" style={{ width:'300px', margin:'10px 0 0 0'}}/>
-                            <button type="submit" className="primary" style={{ width:'300px', margin:'10px 0 0 0'}} onClick={this.onSubmit}>Request Password Reset</button>
-                            {this.state.errors.email && <label className="error">{this.state.errors.email}</label>}
-                        </div>
-                    </form>
+                    <Form onSubmit={this.onSubmit}>
+                        <Field type="email"
+                            name="email"
+                            label="Email"
+                            maxLength="40"
+                            error={this.state.errors.email}
+                            style={style}
+                            />
+                        <PrimaryButton style={style}>Request Password Reset</PrimaryButton>
+                    </Form>
                 }
                 <h2>Directions</h2>
                 {
@@ -86,12 +84,6 @@ export class ForgotPassword extends React.Component {
     }
 }
 
-const mapStateToProps = ({ authentication }) => {
-    return {
-        resetLink: authentication.resetLink // TODO: Send email with link instead showing on page :)
-    }
-};
-
 const mapDispatchToProps = (dispatch) => {
     return {
         requestPasswordReset: (email) =>
@@ -99,5 +91,5 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
+export default connect(null, mapDispatchToProps)(ForgotPassword);
 
