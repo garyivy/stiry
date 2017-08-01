@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { recordAnswer } from './../../actions/collaborationActionCreators.js';
+import { Form, Field } from './../../shared/input/Form.jsx';
 
 export const QuestionPresentation = ({ questionText, answer, onChange, onBlur, error }) => (
-    <div className="field question-container">
-        <label htmlFor="txtQuestion">{questionText}</label>
-        <textarea onChange={onChange} onBlur={onBlur} value={answer}></textarea>
-        {error && <label htmlFor="txtQuestion">{error}</label>}
+    <div className="question-container">
+        <Field type="textarea" name="question" label={questionText} error={error}/>
     </div>
 );
 

@@ -3,7 +3,9 @@ import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { registerUser }from './../../actions/authenticationActionCreators.js'
 import { Link } from 'react-router-dom';
-import { Form, Field } from './../../shared/Form.jsx';
+import Form from './../../shared/input/Form.jsx';
+import Field  from './../../shared/input/Field.jsx';
+import PrimaryButton from './../../shared/input/PrimaryButton.jsx';
 
 export class NewUser extends React.Component {
     constructor(props) {
@@ -64,6 +66,7 @@ export class NewUser extends React.Component {
 
     render() {
         return (
+            <div>
             <main>
                 <h1>Enroll as a New Stirytime User</h1>
                 {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}
@@ -99,10 +102,20 @@ export class NewUser extends React.Component {
                         maxLength="40"
                     />
                     <div className="button-container">
-                        <button type="submit" className="primary">Submit</button>
+                        <PrimaryButton>Submit</PrimaryButton>
                     </div>
                 </Form>
             </main>
+            <aside>
+                <h1>Password Tips</h1>
+                <ul>
+                    <li>Use different password for each site.  This is especially true for you email account.</li>
+                    <li>Longer passwords are generally safer.  Stirytime requires at least a length of eight.</li>
+                    <li>Do not write passwords down.  Perhaps a hint saved to a safe place will be enough to help you remember.</li>
+                    <li>Do you use dictionary words.</li>
+                </ul>
+            </aside>
+            </div>
         )
     }
 }

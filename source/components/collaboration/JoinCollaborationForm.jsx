@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { joinCollaboration, joinCollaborationAsGuest } from './../../actions/collaborationActionCreators.js';
-import PrimaryButton from './../../shared/PrimaryButton.jsx';
+import PrimaryButton from './../../shared/input/PrimaryButton.jsx';
 import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { CONDENSED_TEXT_BREAKPOINT } from './../../style/breakpoints.js';
 

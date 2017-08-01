@@ -100,6 +100,9 @@ a {
     color: $clickable-color;
 }
 
+li {
+    margin-top: $default-spacing;
+}
 div.button-container {
     width: 100%;
     text-align: center;

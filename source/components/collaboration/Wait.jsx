@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getCollaborationStatus, getScrambledResult, forceCollaborationEnd } from './../../actions/collaborationActionCreators.js';
-import { Form, Field } from './../../shared/Form.jsx';
-import PrimaryButton from './../../shared/PrimaryButton.jsx';
+import Form from './../../shared/input/Form.jsx';
+import Field  from './../../shared/input/Form.jsx';
+import PrimaryButton from './../../shared/input/PrimaryButton.jsx';
 
 class Wait extends React.Component {
     constructor(props) {

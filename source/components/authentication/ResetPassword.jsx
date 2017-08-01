@@ -3,6 +3,9 @@ import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { resetPassword } from './../../actions/authenticationActionCreators.js'
 import { Link } from 'react-router-dom';
+import Form from './../../shared/input/Form.jsx';
+import Field  from './../../shared/input/Form.jsx';
+import PrimaryButton from './../../shared/input/PrimaryButton.jsx';
 
 export class ResetPassword extends React.Component {
     constructor(props) {
@@ -69,22 +72,26 @@ export class ResetPassword extends React.Component {
         return (
             <main>
                 <h1>Change Password</h1>
-                <form onSubmit={this.onSubmit} className="form">
-                    <div className="field">
-                        <label>New Password</label>
-                        <input type="password" name="password" value={this.state.password} onChange={this.onChange} maxLength="40" />
-                        {this.state.errors.password && <label className="error">{this.state.errors.password}</label>}
-                    </div>
-                    <div className="field">
-                        <label>New Password (Re-enter)</label>
-                        <input type="password" name="passwordConfirmation" value={this.state.passwordConfirmation} onChange={this.onChange} maxLength="40" />
-                        {this.state.errors.passwordConfirmation && <label className="error">{this.state.errors.passwordConfirmation}</label>}
-                        {this.state.errors.signinError && <label className="error">{this.state.errors.signinError}</label>}                        
-                    </div>
+                <Form onSubmit={this.onSubmit}>
+                    <Field type="password"
+                        name="password"
+                        label="New Password"
+                        error={this.state.errors.password}
+                    />
+                    <Field type="password"
+                        name="newPpassword"
+                        label="New Password"
+                        error={this.state.errors.password}
+                    />
+                    <Field type="password"
+                        name="passwordConfirmation"
+                        label="New Password (Re-enter)"
+                        error={this.state.errors.passwordConfirmation}
+                    />
                     <div className="button-container">
-                        <button type="submit" className="primary">Submit</button>
+                        <PrimaryButton>Submit</PrimaryButton>
                     </div>
-                </form>
+                </Form>
             </main>
         )
     }

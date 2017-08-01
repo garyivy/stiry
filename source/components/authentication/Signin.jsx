@@ -3,8 +3,9 @@ import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { signin } from './../../actions/authenticationActionCreators.js'
-import PrimaryButton from './../../shared/PrimaryButton.jsx';
-import { Form, Field } from './../../shared/Form.jsx';
+import Form from './../../shared/input/Form.jsx';
+import Field from './../../shared/input/Field.jsx';
+import PrimaryButton from './../../shared/input/PrimaryButton.jsx';
 
 export class Signin extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ export class Signin extends React.Component {
     }
 
     onSubmit(formValues) {
+        console.log(formValues);
         if (this.hasErrors(formValues)) {
             return;
         }

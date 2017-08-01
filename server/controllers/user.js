@@ -13,13 +13,16 @@ function sendMail(userEmail, token) {
 
     try {
         // Give SES the details and let it construct the message for you.
+
+        let link = 'https://www.stirytime.com/reset?' + token;
+
         client.sendEmail({
             to: userEmail
             , from: 'stirytimewebsite@gmail.com'
             , cc: ''
             , bcc: ''
             , subject: 'Password Reset'
-            , message: 'Click this link to reset your Stirytime account: <a href="https://www.stirytime.com/reset?' + token + '>Click Here.'
+            , message: 'Click this link to reset your Stirytime account: <a href="' + link + '">' + link + '</a>'
             , altText: 'Token=' + token
         }, function (err, data, res) {
             if (err) {

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 export const SecondaryButton = 
-    ({ isBusy, disabled, children, dispatch, ...rest }) => (
-    <button disabled={isBusy || disabled} 
+    ({ isBusy, disabled, children, dispatch, type, onclick, name, ...rest }) => (
+    <button name={name} type="reset" disabled={isBusy || disabled} 
         {...rest}>{children}</button>
 )
 

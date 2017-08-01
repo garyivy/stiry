@@ -3,7 +3,7 @@ import { isNullOrWhitespace } from './../../shared/utilities.js';
 import { connect } from 'react-redux';
 import { startCollaboration } from './../../actions/collaborationActionCreators.js';
 import { Link } from 'react-router-dom';
-import PrimaryButton from './../../shared/PrimaryButton.jsx';
+import PrimaryButton from './../../shared/input/PrimaryButton.jsx';
 
 export const StartCollaboration = ({ onSubmit, error }) => (
     <main>
