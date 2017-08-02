@@ -5,6 +5,7 @@ import { resetRedirect } from './../../actions/redirectUrlActionCreators.js';
 
 // HACK: This component renders a <Redirect /> based on a dispatched REQUEST_REDIRECT action.
 // TODO: Revisit once react-router-redux version 5 is out of beta.
+// FOR MORE INFO: See https://github.com/ReactTraining/react-router/tree/master/packages/react-router-redux
 
 class Redirector extends React.Component {
     constructor(props) {

@@ -1,4 +1,4 @@
-import * as actionTypes from './../actions/actionTypes.js';
+import { API_CALL_STARTED, API_CALL_FINISHED }  from './../actions/actionTypes.js';
 
 const initialState = {
     countRequestsInProgress: 0
@@ -6,10 +6,10 @@ const initialState = {
 
 const apiStatusReducer = (state = initialState, {type}) => {
     switch (type) {
-        case actionTypes.API_CALL_STARTED:
+        case API_CALL_STARTED:
             return { countRequestsInProgress: state.countRequestsInProgress + 1 };
 
-        case actionTypes.API_CALL_FINISHED:
+        case API_CALL_FINISHED:
             return {
                 countRequestsInProgress: state.countRequestsInProgress > 0
                     ?  state.countRequestsInProgress - 1

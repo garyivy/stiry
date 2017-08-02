@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getCollaborationStatus, getScrambledResult, forceCollaborationEnd } from './../../actions/collaborationActionCreators.js';
 import Form from './../../shared/input/Form.jsx';
-import Field  from './../../shared/input/Form.jsx';
+import Field from './../../shared/input/Form.jsx';
 import PrimaryButton from './../../shared/input/PrimaryButton.jsx';
 
 class Wait extends React.Component {
@@ -65,17 +65,17 @@ class Wait extends React.Component {
                 {
                     this.shouldAllowForce &&
                     <span>
-                    <Form onSubmit={this.props.onEndCollaboration}>
-                        <PrimaryButton>End Collaboration</PrimaryButton>
-                    </Form>
-                    <h2>Directions</h2>
-                    <ul>
-                        <li>Sometimes, a participant may accidentally restart a session.</li>
-                        <li>When this happens Stirytime thinks there is an extra user.</li>
-                        <li>Or, perhaps a participant lost internet access.</li>
-                        <li>Rather than have the whole group of participants miss out on the results, you can click "End Collaboration".</li>
-                        <li>At that point, Stirytime will deliver results as best it can.</li>
-                    </ul>
+                        <Form onSubmit={this.props.onEndCollaboration}>
+                            <PrimaryButton>End Collaboration</PrimaryButton>
+                        </Form>
+                        <h2>Directions</h2>
+                        <ul>
+                            <li>Sometimes, a participant may accidentally restart a session.</li>
+                            <li>When this happens Stirytime thinks there is an extra user.</li>
+                            <li>Or, perhaps a participant lost internet access.</li>
+                            <li>Rather than have the whole group of participants miss out on the results, you can click "End Collaboration".</li>
+                            <li>At that point, Stirytime will deliver results as best it can.</li>
+                        </ul>
                     </span>
                 }
             </div>

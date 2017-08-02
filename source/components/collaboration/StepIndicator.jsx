@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { TOUCH_INPUT_BREAKPOINT, MENU_SHORTEN_NAMES_BREAKPOINT } from './../../style/breakpoints.js';
 
 export const StepIndicatorPresentation = ({totalSteps, currentQuestionIndex, width}) => {
-    if(width < 400) {
+    if(width < TOUCH_INPUT_BREAKPOINT) {
         return null;
     }
 
@@ -14,7 +15,7 @@ export const StepIndicatorPresentation = ({totalSteps, currentQuestionIndex, wid
             className = 'active';
         }
 
-        if(width < 700) {
+        if(width < MENU_SHORTEN_NAMES_BREAKPOINT) {
             steps.push(
                 <a className={className} key={i}>{i + 1}</a>
             );

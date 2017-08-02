@@ -1,6 +1,5 @@
 @import 'normalize'; // Similar to reset.css
 @import 'colors';
-
 $default-spacing: 10px;
 $default-spacing-half: 5px;
 
@@ -83,14 +82,21 @@ form {
         margin-top: 0;
         color: $error-color;
     }
-}
-
-.questionnaire-container {
-    form {
-        max-width: 800px;
+    textarea {
+        height: 120px;
     }
 }
 
+.questionnaire-container {
+    max-width: 800px;
+    form {
+        width: calc(100% - 3px);
+        max-width: 797px;
+        padding: 0;
+        margin-top: 3px;
+
+    }
+}
 
 /*
     Buttons and Links
@@ -103,9 +109,13 @@ a {
 li {
     margin-top: $default-spacing;
 }
+
 div.button-container {
     width: 100%;
     text-align: center;
+    button:not(:first-of-type) {
+        margin-left: 10px;        
+    }
 }
 
 button {
@@ -140,5 +150,4 @@ button {
 
 @import 'layout';
 @import 'stepIndicator';
-@import 'questionnaire';
 @import 'singleInputForm';

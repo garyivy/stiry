@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { isNullOrWhitespace } from './../../shared/utilities.js';
-import { Logo } from './../../shared/Logo.jsx';
+import { Logo } from './Logo.jsx';
 import { MENU_BREAKPOINT, MENU_ABOUT_HIDE_BREAKPOINT, MENU_SHORTEN_NAMES_BREAKPOINT } from './../../style/breakpoints.js';
 
 const LargeMenuPresentation = ({ isAuthorizedUser, shouldUseShortNames, shouldShowAbout, isLoggedInRegisterUser }) => {
@@ -37,7 +37,7 @@ const SmallMenuPresentation = ({ isAuthorizedUser, isExpanded, onToggleMenu, isB
                     <Logo/>
                     <div className="navicon"><i className="fa fa-bars"></i></div>   
                 </a>
-                {isExpanded && !isAuthorizedUser && <Link to="/">Home</Link>}
+                {isExpanded && <Link to="/">Home</Link>}
                 {isExpanded && isLoggedInRegisterUser && <Link to="/start">Start Collaboration</Link>}
                 {isExpanded && isAuthorizedUser && <Link to="/join">Join Collaboration</Link>}
                 {isExpanded && isLoggedInRegisterUser && <Link to="/signout">Sign Out</Link>}

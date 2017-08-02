@@ -16,7 +16,7 @@ class Resizer extends React.Component {
 
     onWindowSizeChange(event) {
         this.props.onWindowSizeChange(window.innerWidth, window.innerHeight);
-    } 
+    }
 
     componentDidMount() {
         window.addEventListener('resize', this.onWindowSizeChange);
@@ -26,10 +26,10 @@ class Resizer extends React.Component {
     componentWillUnmount() {
         window.removeEventListener('resize', this.onWindowSizeChange);
     }
- 
+
     render() {
         return (
-        <span style={styleDisplayNone}></span>
+            <span style={styleDisplayNone}></span>
         );
     }
 }

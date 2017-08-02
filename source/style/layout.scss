@@ -169,12 +169,14 @@ aside {
     main {
         display: inline-block;
         width: 65%;
+        min-width:  549px;
         &.questionnaire-container {
             width: 800px;
         }
     }
     aside {
         width: calc(35% - 35px);
+        max-width: 196px;
         display: inline-block;
         vertical-align: top;
         margin-top: 35px;
@@ -235,15 +237,21 @@ aside {
         height: 50px;
         line-height: 50px;
     }
-    button {
+    button, div.button-container button  {
         display: block;
         font-size: 1.5em; // Making the input a little larger (touch friendly).
         height: 50px;
         line-height: 50px;
         width: 60%;
-        margin-left: auto;
+        margin-left: auto !important;
         margin-right: auto !important;
     }
+    
+    div.button-container button:not(:first-of-type){
+        margin-left: 0;
+    }
+
+
     .field label {
         /* Showing placeholder text on smaller displays (because they will not have a label to prompt user input) */
         display: none;
@@ -251,7 +259,11 @@ aside {
             display: block;
         }
     }
-     ::-webkit-input-placeholder {
+    .questionnaire-container .field label {
+        display: block;
+    }
+
+    ::-webkit-input-placeholder {
         /* Chrome/Opera/Safari */
         color: $placeholder-color;
         /* Hiding placeholder text on larger displays (because they will have a label to prompt user input) */

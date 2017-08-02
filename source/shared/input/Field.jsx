@@ -34,7 +34,6 @@ export default class Field extends React.Component {
                     <textarea name={name}
                         value={this.state.value}
                         onChange={this.onChange}
-                        placeholder={label}
                     />
                     :
                     <input name={name}
