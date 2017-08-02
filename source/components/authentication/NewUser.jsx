@@ -112,7 +112,7 @@ export class NewUser extends React.Component {
                     <li>Use different password for each site.  This is especially true for you email account.</li>
                     <li>Longer passwords are generally safer.  Stirytime requires at least a length of eight.</li>
                     <li>Do not write passwords down.  Perhaps a hint saved to a safe place will be enough to help you remember.</li>
-                    <li>Do you use dictionary words.</li>
+                    <li>Do not use dictionary words.</li>
                 </ul>
             </aside>
             </div>

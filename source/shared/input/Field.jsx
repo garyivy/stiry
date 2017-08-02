@@ -8,7 +8,7 @@ export default class Field extends React.Component {
         this.onChange = this.onChange.bind(this);
 
         this.state = {
-            value: this.props.value === null ? '' : this.props.value,
+            value: this.props.value != null ? this.props.value : '',
             error: null
         };
     }
@@ -20,7 +20,7 @@ export default class Field extends React.Component {
     }
 
     componentWillReceiveProps({ value, error }) {
-        this.setState({ value: value === null ? this.state.value : value, error });
+        this.setState({ value: value != null ? value : this.state.value, error });
     }
 
     render() {
