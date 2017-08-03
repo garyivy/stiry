@@ -16,7 +16,8 @@ import {
     FORCED_COLLABORATION_END,
     GET_SCRAMBLED_REQUEST,
     GET_SCRAMBLED_RESPONSE,
-    SIGNIN
+    SIGNIN_REQUEST,
+    SIGNIN_RESPONSE
 } from './actionTypes.js';
 
 import { requestRedirect } from './redirectUrlActionCreators.js';
@@ -66,11 +67,12 @@ export const joinCollaborationAsGuest = collaborationCode => {
     return dispatch => {
         // TODO: Refactor and/or document how this relates to non-guest authentication.
         dispatch({ type: JOIN_COLLABORATION_REQUEST });
+        dispatch({ type: SIGNIN_REQUEST });
         joinCollaborationAsGuestPost(dispatch, { collaborationName: collaborationCode }).then(result => {
             dispatch({ type: JOIN_COLLABORATION_RESPONSE, payload: result.payload, error: result.error });
             if (result.payload.collaborationToken) {
                 dispatch({
-                    type: SIGNIN,
+                    type: SIGNIN_RESPONSE,
                     payload: {
                         displayName: 'Guest User',
                         isAuthorized: true,

@@ -60,13 +60,13 @@ app.use(function (err, req, res, next) {
     res.status(500).send('Something broke!')
 });
 
-/*
+
 // Serve Locally
 app.listen(3001, ()=>{
     console.log('Express server listening on port 3001')
 });
-*/
 
+/*
 // Server over HTTPS
 var https = require('https')
 var fs = require('fs');
@@ -81,5 +81,5 @@ var expressOptions = {
 https.createServer(expressOptions, app).listen(443, () => {
   console.log('Express server listening on port 443');
 });
-
+*/
 
