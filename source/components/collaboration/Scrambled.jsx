@@ -22,7 +22,7 @@ export const Scrambled = ({ answers, collaborationCode }) => (
 const mapStateToProps = ({ collaboration }) => {
     return {
         answers: collaboration.answers,
-        collaborationCode: collaboration.collaborationName
+        collaborationCode: collaboration.collaborationCode
     }
 }
 

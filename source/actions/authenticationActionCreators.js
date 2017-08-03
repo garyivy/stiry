@@ -1,4 +1,10 @@
-import { SIGNIN, SIGNOUT, FORGOT_PASSWORD } from './actionTypes.js';
+import {
+    SIGNIN_REQUEST,
+    SIGNIN_RESPONSE,
+    SIGNOUT,
+    RESET_PASSWORD_REQUEST,
+    RESET_PASSWORD_RESPONSE,
+} from './actionTypes.js';
 import { requestRedirect } from './redirectUrlActionCreators.js';
 import { createApiCall } from './apiHelper.js';
 
@@ -18,7 +24,7 @@ export const signout = () => {
     return (dispatch, getState) => {
         // TODO: Perhaps refactor so the setting and removing happen in the same place.
         localStorage.removeItem('sessionToken');
-        dispatch( {type: SIGNOUT});
+        dispatch({ type: SIGNOUT });
     }
 }
 
@@ -38,29 +44,28 @@ export const resetPassword = (resetToken, password) => {
 
 export const forgotPassword = (email) => {
     return (dispatch, getState) => {
+        dispatch({ type: RESET_PASSWORD_RESPONSE });
         forgotPasswordPost(dispatch, { email }).then(result =>
-            dispatch({ type: FORGOT_PASSWORD, ...result }))
+            dispatch({ type: RESET_PASSWORD_RESPONSE, ...result }))
     }
 }
 
 const handleAuthenticationResult = (dispatch, promise, redirectPath, errorMessage) => {
-    promise.then(({payload}) => {
-        if (payload && payload.userDisplayName) {
-            dispatch({
-                type: SIGNIN,
-                payload: {
-                    displayName: payload.userDisplayName,
-                    isAuthorized: true
-                }
-            });
+    dispatch({ type: SIGNIN_REQUEST });
+    promise.then(({ payload }) => {
+        let wasAuthenticationSuccessful = payload && payload.userDisplayName;
+        
+        let translatedPayload = wasAuthenticationSuccessful
+            ? { displayName: payload.userDisplayName, isAuthorized: true }
+            : null;
 
-            dispatch(requestRedirect(redirectPath));
-        } else {
-            dispatch({
-                type: SIGNIN,
-                error: errorMessage
-            });
-        }
+        dispatch({
+            type: SIGNIN_RESPONSE,
+            payload: wasAuthenticationSuccessful ? { displayName: payload.userDisplayName, isAuthorized: true } : null, 
+            error: wasAuthenticationSuccessful ? null : errorMessage
+        });
+
+        dispatch(requestRedirect(redirectPath));
     });
 }
 

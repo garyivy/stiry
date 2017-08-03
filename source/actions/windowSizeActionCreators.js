@@ -1,7 +1,7 @@
-import { WINDOW_SIZE }  from './actionTypes.js';
+import { WINDOW_RESIZED }  from './actionTypes.js';
 
 export const recordWindowSize = (width, height) => 
-    ({ type: WINDOW_SIZE , payload: { width, height }});
+    ({ type: WINDOW_RESIZED , payload: { width, height }});
 
 
 

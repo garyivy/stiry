@@ -14,7 +14,7 @@ export const Questionnaire = ({ collaborationCode }) => (
 
 const mapStateToProps = ({ collaboration }) => {
     return {
-        collaborationCode: collaboration.collaborationName,
+        collaborationCode: collaboration.collaborationCode
     }
 }
 

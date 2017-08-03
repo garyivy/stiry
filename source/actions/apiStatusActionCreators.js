@@ -1,10 +1,10 @@
-import * as actionTypes from './actionTypes.js';
+import {API_CALL_STARTED, API_CALL_FINISHED} from './actionTypes.js';
 
 export const apiStarted = () => 
-    ({ type: actionTypes.API_CALL_STARTED })
+    ({ type: API_CALL_STARTED })
 
 export const apiFinished = () => 
-    ({ type: actionTypes.API_CALL_FINISHED })
+    ({ type: API_CALL_FINISHED })
 
 
 

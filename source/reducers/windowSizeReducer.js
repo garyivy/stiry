@@ -1,4 +1,4 @@
-import { WINDOW_SIZE } from './../actions/actionTypes.js';
+import { WINDOW_RESIZED } from './../actions/actionTypes.js';
 
 const initialState = {
     width: 640,
@@ -8,7 +8,7 @@ const initialState = {
 const windowSizeReducer = (state = initialState, { type, payload }) => {
 
     switch (type) {
-        case WINDOW_SIZE:
+        case WINDOW_RESIZED:
             return { width: payload.width, height: payload.height };
 
         default:

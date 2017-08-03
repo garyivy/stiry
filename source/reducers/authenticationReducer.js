@@ -1,28 +1,39 @@
-import * as actionTypes from './../actions/actionTypes.js';
+import {
+    SIGNIN_REQUEST,
+    SIGNIN_RESPONSE,
+    SIGNOUT,
+    RESET_PASSWORD_REQUEST,
+    RESET_PASSWORD_RESPONSE,
+} from './../actions/actionTypes.js';
 
 const initialState = {
     displayName: null,
     isGuest: true,
-    isAuthorized: false
+    isAuthorized: false,
+    error: null
 }
 
-const authenticationReducer = (state = initialState, { type, payload, error })  => {
+const authenticationReducer = (state = initialState, { type, payload, error }) => {
     switch (type) {
-        case actionTypes.SIGNIN: 
+        case SIGNIN_REQUEST:
+            return initialState;
+            
+        case SIGNIN_RESPONSE:
             return error
                 ? { ...initialState, error }
-                : { 
+                : {
                     isAuthorized: true,
                     displayName: payload.displayName,
-                    isGuest: payload.isGuest,
-                    resetLink: null
-                 } 
+                    isGuest: payload.isGuest
+                }
 
-        case actionTypes.SIGNOUT:
+        case SIGNOUT:
             return initialState;
 
-        case actionTypes.FORGOT_PASSWORD:
-            return { ...initialState };
+        case RESET_PASSWORD_REQUEST:
+            return initialState;
+        case RESET_PASSWORD_RESPONSE:
+            return initialState; // Not really needed since reset response is communicted by email.
 
         default:
             return state;
