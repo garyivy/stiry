@@ -5,13 +5,15 @@ import {
     RESET_PASSWORD_REQUEST,
     RESET_PASSWORD_RESPONSE,
 } from './actionTypes.js';
-import { requestRedirect } from './redirectUrlActionCreators.js';
-import { createApiCall } from './apiHelper.js';
 
-const signinPost = createApiCall('post', 'signin', false);
-const registerUserPost = createApiCall('post', 'users', false);
-const forgotPasswordPost = createApiCall('post', 'forgot', false);
-const resetPasswordPost = createApiCall('post', 'reset', false);
+import {
+    signinPost,
+    registerUserPost,
+    forgotPasswordPost,
+    resetPasswordPost,
+} from './api.js';
+
+import { requestRedirect } from './redirectUrlActionCreators.js';
 
 export const signin = (userName, password, redirectPath = '/') => {
     return (dispatch, getState) => {
@@ -54,14 +56,14 @@ const handleAuthenticationResult = (dispatch, promise, redirectPath, errorMessag
     dispatch({ type: SIGNIN_REQUEST });
     promise.then(({ payload }) => {
         let wasAuthenticationSuccessful = payload && payload.userDisplayName;
-        
+
         let translatedPayload = wasAuthenticationSuccessful
             ? { displayName: payload.userDisplayName, isAuthorized: true }
             : null;
 
         dispatch({
             type: SIGNIN_RESPONSE,
-            payload: wasAuthenticationSuccessful ? { displayName: payload.userDisplayName, isAuthorized: true } : null, 
+            payload: wasAuthenticationSuccessful ? { displayName: payload.userDisplayName, isAuthorized: true } : null,
             error: wasAuthenticationSuccessful ? null : errorMessage
         });
 

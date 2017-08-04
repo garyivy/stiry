@@ -20,8 +20,17 @@ import {
     SIGNIN_RESPONSE
 } from './actionTypes.js';
 
+import {
+    startCollaborationPost,
+    joinCollaborationPost,
+    joinCollaborationAsGuestPost,
+    submitQuestionnairePost,
+    collaborationStatusGet,
+    scrambledGet,
+    forceCollaborationPost
+} from './api.js';
+
 import { requestRedirect } from './redirectUrlActionCreators.js';
-import { createApiCall } from './apiHelpeR.js'; // TODO: Figure why using the same name in authenticationActionCreators.js is confusing webpack.
 
 // Design Notes:
 // Thunk middleware (injected during createStore) provides dispatch and getState
@@ -33,14 +42,6 @@ import { createApiCall } from './apiHelpeR.js'; // TODO: Figure why using the sa
 // overloading the payload with an Error.  Instead, when there are error(s), the
 // error property will be set to an string/object and payload will be null.
 // In this way, error will still provide a truthy check.
-
-const startCollaborationPost = createApiCall('post', 'start');
-const joinCollaborationPost = createApiCall('post', 'join');
-const joinCollaborationAsGuestPost = createApiCall('post', 'guest', false);
-const submitQuestionnairePost = createApiCall('post', 'questionnaires');
-const collaborationStatusGet = createApiCall('get', 'collaborationStatus');
-const scrambledGet = createApiCall('get', 'scrambled');
-const forceCollaborationPost = createApiCall('post', 'force');
 
 export const startCollaboration = () => {
     return dispatch => {
@@ -113,27 +114,27 @@ export const getCollaborationStatus = () => {
         dispatch({ type: GET_COLLABORATION_STATUS_REQUEST });
         let collaborationToken = getState().collaboration.collaborationToken;
         collaborationStatusGet(dispatch, collaborationToken).then(result => {
-            dispatch({ type: GET_COLLABORATION_STATUS_RESPONSE, payload: result.payload, error: result.error});
+            dispatch({ type: GET_COLLABORATION_STATUS_RESPONSE, payload: result.payload, error: result.error });
         })
     }
 }
 
 export const forceCollaborationEnd = () => {
     return (dispatch, getState) => {
-        dispatch({ type: FORCE_COLLABORATION_END_REQUEST });        
+        dispatch({ type: FORCE_COLLABORATION_END_REQUEST });
         let collaboration = getState().collaboration;
         forceCollaborationPost(dispatch, collaboration).then(result => {
-            dispatch({ type: FORCE_COLLABORATION_END_RESPONSE, payload: result.payload, error: result.error });        
+            dispatch({ type: FORCE_COLLABORATION_END_RESPONSE, payload: result.payload, error: result.error });
         });
     }
 }
 
 export const getScrambledResult = () => {
     return (dispatch, getState) => {
-        dispatch({ type: GET_SCRAMBLED_REQUEST });       
+        dispatch({ type: GET_SCRAMBLED_REQUEST });
         let collaborationToken = getState().collaboration.collaborationToken;
         scrambledGet(dispatch, collaborationToken).then(result => {
-            dispatch({ type: GET_SCRAMBLED_RESPONSE, payload: result.payload, error: result.error });       
+            dispatch({ type: GET_SCRAMBLED_RESPONSE, payload: result.payload, error: result.error });
             !result.error && dispatch(requestRedirect('/scrambled'));
         })
     }

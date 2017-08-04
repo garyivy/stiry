@@ -26,6 +26,7 @@ var config = {
     },
     module: {
         rules: [
+            /* TODO: Moving to typescript and will revisiting linting then.
             {
                 enforce: 'pre',
                 test: /\.(js|jsx)$/,
@@ -36,17 +37,16 @@ var config = {
                     useEslintrc: false
                 },
             },
+            */
             {
                 test: /\.(js|jsx)$/,
                 include: SOURCE_DIR,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: { presets: ['es2015', 'react'], plugins: ["transform-object-rest-spread"] }
-                 
             },
             {
                 test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)(\?.*)?$/,
-                //exclude: /node_modules/, TODO: GLI - Why is OK for style-loader to have node_modules excluded? (app.scss imports from node_modules)
                 loader: 'file-loader?name=[name].[ext]'
             },
             {
@@ -75,8 +75,19 @@ var config = {
     ]
 };
 
-module.exports = function (apiPath) {
-    console.log('API path: ' + apiPath);
-    config.plugins.push(new webpack.DefinePlugin({ 'API_PATH': JSON.stringify(apiPath)}));
+module.exports = function (isDevelopment) {
+    if (!isDevelopment) {
+        config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+            // Eliminate comments
+            comments: false,
+            // Compression specific options
+            compress: {
+                // remove warnings
+                warnings: false,
+                // Drop console statements
+                drop_console: true
+            },
+        }));
+    }
     return config;
 }

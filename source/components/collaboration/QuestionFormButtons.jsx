@@ -4,8 +4,8 @@ import PrimaryButton from './../../shared/input/PrimaryButton.jsx';
 import SecondaryButton from './../../shared/input/SecondaryButton.jsx';
 
 export const LAZY_BUTTON_NAME = 'lazy';
-const lazyButton = <SecondaryButton name={LAZY_BUTTON_NAME} key={LAZY_BUTTON_NAME}>I am lazy</SecondaryButton>;
-const lazyShortTextButton = <SecondaryButton name={LAZY_BUTTON_NAME} key={LAZY_BUTTON_NAME}>Lazy</SecondaryButton>;
+const lazyButton = <SecondaryButton name={LAZY_BUTTON_NAME} key={LAZY_BUTTON_NAME}>See An Example</SecondaryButton>;
+const lazyShortTextButton = <SecondaryButton name={LAZY_BUTTON_NAME} key={LAZY_BUTTON_NAME}>Example</SecondaryButton>;
 
 export const PREVIOUS_BUTTON_NAME = 'previous';
 const previousButton = <SecondaryButton name={PREVIOUS_BUTTON_NAME} key={PREVIOUS_BUTTON_NAME}>Previous Question</SecondaryButton>;

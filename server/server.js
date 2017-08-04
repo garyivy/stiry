@@ -1,13 +1,5 @@
-const express = require('express');
-var app = express();
-
-const bodyParser = require('body-parser');
+// Connect to MongoDB using mongoose.
 const mongoose = require('mongoose');
-
-const api = require('./api.js');
-const confidential = require('./common/confidential.js'); // Note: This file is not in GitHub, rename example.js.
-
-// Setup REST API
 const dbName = 'stiryDB';
 var options = {
     server: {
@@ -28,6 +20,12 @@ var connectWithRetry = function () {
 };
 connectWithRetry();
 
+
+// Setup REST API
+const express = require('express');
+const bodyParser = require('body-parser');
+const api = require('./api.js');
+var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use('/api', api);
@@ -60,26 +58,28 @@ app.use(function (err, req, res, next) {
     res.status(500).send('Something broke!')
 });
 
+if (process.env.NODE_ENV === 'dev') {
+    // Serve over http://localhost:3001
+    app.listen(3001, () => {
+        console.log('Express server listening on port 3001')
+    });
+} else {
+    // Server over HTTPS
+    var https = require('https')
+    var fs = require('fs');
+    var hskey = fs.readFileSync('key.pem');
+    var hscert = fs.readFileSync('cert.pem');
+    var ca =  fs.readFileSync('ca.pem');
+    var expressOptions = {
+        key: hskey,
+        cert: hscert,
+        ca: ca
+    };
+    https.createServer(expressOptions, app).listen(443, () => {
+    console.log('Express server listening on port 443');
+    });
+}
 
-// Serve Locally
-app.listen(3001, ()=>{
-    console.log('Express server listening on port 3001')
-});
 
-/*
-// Server over HTTPS
-var https = require('https')
-var fs = require('fs');
-var hskey = fs.readFileSync('server/key.pem');
-var hscert = fs.readFileSync('server/cert.pem');
-var ca =  fs.readFileSync('server/ca.pem');
-var expressOptions = {
-    key: hskey,
-    cert: hscert,
-    ca: ca
-};
-https.createServer(expressOptions, app).listen(443, () => {
-  console.log('Express server listening on port 443');
-});
-*/
+
 

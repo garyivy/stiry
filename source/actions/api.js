@@ -4,7 +4,7 @@ import { signout } from './authenticationActionCreators.js';
 
 const apiPath = 'api/';
 
-export const createApiCall = (method, url, shouldIncludeAuthorizationHeader = true) => {
+const createApiCall = (method, url, shouldIncludeAuthorizationHeader = true) => {
     return (dispatch, data = null) => {
         dispatch(apiStarted());
 
@@ -59,3 +59,17 @@ export const createApiCall = (method, url, shouldIncludeAuthorizationHeader = tr
         return promise;
     }
 }
+
+export const signinPost = createApiCall('post', 'signin', false);
+export const registerUserPost = createApiCall('post', 'users', false);
+export const forgotPasswordPost = createApiCall('post', 'forgot', false);
+export const resetPasswordPost = createApiCall('post', 'reset', false);
+
+export const startCollaborationPost = createApiCall('post', 'start');
+export const joinCollaborationPost = createApiCall('post', 'join');
+export const joinCollaborationAsGuestPost = createApiCall('post', 'guest', false);
+export const submitQuestionnairePost = createApiCall('post', 'questionnaires');
+export const collaborationStatusGet = createApiCall('get', 'collaborationStatus');
+export const scrambledGet = createApiCall('get', 'scrambled');
+export const forceCollaborationPost = createApiCall('post', 'force');
+
